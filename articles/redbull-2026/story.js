@@ -11,13 +11,17 @@ window.RBStory = function (api) {
   const signed = (v, d) => (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(d);
 
   // ---------- formatting of quoted numbers
-  const DELTA = /chg|vs_mer|_p3_|ls_p|str_p/;
+  const UNSIGNED = /closed|cost|slope|^dur_|^taper_|^ot_full|^mguk|^soc|^recharge|^monza|^superclip/;
   function fmtNum(row) {
-    const v = +row.value, u = row.unit || '';
-    if (!u) return d3.format(',')(Math.round(v));
-    const dec = u === '%' ? 2 : (u === 's' || u === 's/lap') ? (Math.abs(v) < 0.1 ? 3 : 2) : (u === 'ms/lap' ? 1 : (Number.isInteger(v) ? 0 : 1));
-    const n = DELTA.test(row.key) && ['s', 's/lap', 'km/h'].includes(u) ? signed(v, dec) : minus(v, dec);
-    return u === '%' ? n + '%' : n + ' ' + u;
+    const v = +row.value, u = row.unit || '', k = row.key;
+    if (!u) return /_p$/.test(k) ? v.toFixed(2) : d3.format(',')(Math.round(v));
+    if (/_conf$|^rbs_share$|^grid_reject$/.test(k)) return Math.round(v) + '%';
+    if (u === 'hp') return Math.round(v) + ' hp';
+    if (u === 'm/s²') return signed(v, 2) + ' m/s²';
+    if (u === '%') return (/^cr_/.test(k) ? signed(v, 2) : v.toFixed(2)) + '%';
+    const dec = (u === 's' || u === 's/lap') ? (Math.abs(v) < 0.1 ? 3 : 2) : (u === 'ms/lap' ? 1 : (Number.isInteger(v) ? 0 : 1));
+    const n = ['s', 's/lap', 'km/h'].includes(u) && !UNSIGNED.test(k) ? signed(v, dec) : minus(v, dec);
+    return n + ' ' + u;
   }
   function fillNumbers() {
     const d = api.get('numbers');
@@ -39,12 +43,36 @@ window.RBStory = function (api) {
       const tr = document.createElement('tr');
       const c0 = document.createElement('td'); c0.textContent = r.metric; if (+r.indent) c0.className = 'ind'; tr.appendChild(c0);
       ['r1_5', 'r6_11', 'r12_17'].forEach((k) => {
-        const td = document.createElement('td'); const v = +r[k];
-        td.textContent = r.unit === '%' ? v.toFixed(2) + '%' : signed(v, Math.abs(v) < 0.1 ? 3 : 2) + ' s';
-        tr.appendChild(td);
+        const td = document.createElement('td');
+        const f = (x) => (r.unit === '%' ? (+x).toFixed(2) : signed(+x, Math.abs(+x) < 0.1 ? 3 : 2));
+        const main = document.createElement('span'); main.textContent = f(r[k]) + (r.unit === '%' ? '%' : ' s');
+        const ci = document.createElement('span'); ci.className = 'ci';
+        ci.textContent = r[k + '_lo'] !== '' && Number.isFinite(+r[k + '_lo']) ? ` [${f(r[k + '_lo'])}, ${f(r[k + '_hi'])}]` : '';
+        td.append(main, ci); tr.appendChild(td);
       });
       tb.appendChild(tr);
     });
+  }
+  const CRM = { race_peak_speed: 'Race peak speed', race_late_speed: 'Race late-straight speed', race_straight_time: 'Race time on straights',
+                quali_straight_time: 'Qualifying time on straights', quali_trap: 'Qualifying speed trap' };
+  function fillCrTable() {
+    const t = root.querySelector('#tab-cr');
+    if (!t) return;
+    const d = api.get('cr_windows');
+    const tb = t.querySelector('tbody');
+    tb.replaceChildren();
+    if (d.status !== 'ok') return;
+    const order = Object.keys(CRM);
+    d.rows.slice().sort((a, b) => order.indexOf(a.metric) - order.indexOf(b.metric) || (b.window.startsWith('R7') - a.window.startsWith('R7')) || (b.group.startsWith('Merc') - a.group.startsWith('Merc')))
+      .forEach((r) => {
+        const tr = document.createElement('tr');
+        tr.dataset.key = [r.metric, r.window, r.group].map(encodeURIComponent).join(',');
+        const u = /time/.test(r.metric) ? '%' : ' km/h';
+        const cells = [CRM[r.metric] || r.metric, r.window.startsWith('R7') ? 'R7–12' : 'R13–17', r.group.replace('-powered', ''),
+          signed(+r.beta, 2) + u, `[${signed(+r.lo, 2)}, ${signed(+r.hi, 2)}]`, Math.round(+r.confidence_pct) + '%'];
+        cells.forEach((c) => { const td = document.createElement('td'); td.textContent = c; tr.appendChild(td); });
+        tb.appendChild(tr);
+      });
   }
 
   // ---------- chart scaffolding (pgfplots look)
@@ -115,9 +143,10 @@ window.RBStory = function (api) {
   }
   function series(svg, pts, x, y, c, o = {}) {
     const ok = pts.filter((p) => Number.isFinite(p.y));
-    svg.append('path').datum(ok).style('fill', 'none').style('stroke', c).attr('stroke-width', o.sw || 1.6)
+    svg.append('path').datum(pts).style('fill', 'none').style('stroke', c).attr('stroke-width', o.sw || 1.6)
       .attr('stroke-linejoin', 'round').attr('stroke-linecap', 'round').attr('stroke-dasharray', o.dash || null)
-      .attr('d', d3.line().x((p) => x(p.x)).y((p) => y(p.y)));
+      .attr('stroke-opacity', o.opacity ?? 1)
+      .attr('d', d3.line().defined((p) => Number.isFinite(p.y)).x((p) => x(p.x)).y((p) => y(p.y)));
     if (o.s) svg.selectAll(null).data(ok).join('path').attr('d', d3.symbol(o.s, o.size || 28)())
       .attr('transform', (p) => `translate(${x(p.x)},${y(p.y)})`).style('fill', o.hollow ? css('paper') : c).style('stroke', c).attr('stroke-width', 1);
     return ok;
@@ -226,7 +255,7 @@ window.RBStory = function (api) {
       svg.append('line').attr('x1', x(r)).attr('x2', x(r)).attr('y1', m.t).attr('y2', h - m.b).style('stroke', css('muted')).attr('stroke-dasharray', '2 3').attr('stroke-width', .8);
       svg.append('text').attr('class', 'ann').attr('x', x(r) + 3).attr('y', h - m.b - 6).text(`(${l})`);
     });
-    teams.forEach((t) => series(svg, rows.filter((r) => r.team === t).sort((a, b) => a.round - b.round).map((r) => ({ x: r.round, y: r[k] })), x, y, col(t),
+    teams.forEach((t) => series(svg, rounds.map((rd) => { const q = rows.find((r) => r.team === t && r.round === rd); return { x: rd, y: q ? q[k] : NaN }; }), x, y, col(t),
       { s: sym(t), sw: t === 'Red Bull' ? 2.2 : 1.3, size: t === 'Red Bull' ? 34 : 24, hollow: t !== 'Red Bull' }));
     legendRow(svg, teams.slice().reverse().map((t) => ({ c: col(t), s: sym(t), label: t, sw: t === 'Red Bull' ? 2.2 : 1.3, fill: t === 'Red Bull' })), (m.l + w - m.r) / 2, 12);
     const tip = tooltip(el.closest('figure'));
@@ -248,13 +277,13 @@ window.RBStory = function (api) {
   // ---------- Fig 4: segments
   function figSeg() {
     const el = document.getElementById('c-seg');
-    const rows = rowsOf(el, 'segments_phase', ['dt_vs_mer']); if (!rows) return;
+    const rows = rowsOf(el, 'segments_phase', ['dt_vs_mer', 'lo', 'hi']); if (!rows) return;
     const cls = [['straight', 'straights'], ['low', 'slow'], ['medium', 'medium'], ['high', 'fast']];
     const ph = ['R1-5', 'R6-11', 'R12-17'];
     const fills = [0.25, 0.6, 1];
     const narrow = W(el) < 560, H = 250;
     const { svg, w } = svgIn(el, narrow ? 2 * H + 10 : H);
-    const ext = d3.extent(rows, (r) => r.dt_vs_mer);
+    const ext = [d3.min(rows, (r) => Math.min(r.dt_vs_mer, r.lo)), d3.max(rows, (r) => Math.max(r.dt_vs_mer, r.hi))];
     const pw = narrow ? w : (w - 16) / 2;
     const tip = tooltip(el.closest('figure'));
     ['Red Bull', 'Racing Bulls'].forEach((t, i) => {
@@ -270,8 +299,10 @@ window.RBStory = function (api) {
         const v = r.dt_vs_mer;
         g.append('rect').attr('x', x(r.class) + xs(r.phase)).attr('width', xs.bandwidth()).attr('y', Math.min(y(v), y(0))).attr('height', Math.abs(y(v) - y(0)))
           .style('fill', css('rb')).style('fill-opacity', fills[ph.indexOf(r.phase)]).style('stroke', css('rb')).attr('stroke-width', .6)
-          .on('mousemove', (ev) => tip.show(ev, `${t}, ${cls.find((c) => c[0] === r.class)[1]}`, [[r.phase, signed(v, 3) + ' s', css('rb')]]))
+          .on('mousemove', (ev) => tip.show(ev, `${t}, ${cls.find((c) => c[0] === r.class)[1]}`, [[r.phase, signed(v, 3) + ' s', css('rb')], ['95% interval', `${signed(r.lo, 2)} to ${signed(r.hi, 2)} s`]]))
           .on('mouseleave', () => tip.hide());
+        const cx = x(r.class) + xs(r.phase) + xs.bandwidth() / 2;
+        g.append('line').attr('x1', cx).attr('x2', cx).attr('y1', y(r.lo)).attr('y2', y(r.hi)).style('stroke', css('ink')).attr('stroke-width', .8);
       });
       if (i === 0) {
         const lg = g.append('g').attr('transform', `translate(${pw - m.r - 152},${m.t + 8})`);
@@ -325,7 +356,8 @@ window.RBStory = function (api) {
     box(svg, x, y, m, w, h, { xv: rounds.filter((r, i) => i % every === 0), xf: (r) => abbr.get(r), yt: 6, yf: (v) => signed(v, 2), yl: 'seconds vs Mercedes' });
     svg.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(0)).attr('y2', y(0)).style('stroke', col('Mercedes')).attr('stroke-width', 1.4);
     const T = [['Ferrari', 1.1], ['McLaren', 1.1], ['Racing Bulls', 1.4], ['Red Bull', 2.2]];
-    T.forEach(([t, sw]) => series(svg, rows.filter((r) => r.team === t).sort((a, b) => a.round - b.round).map((r) => ({ x: r.round, y: r.t_vs_mer })), x, y,
+    const allR = d3.range(1, d3.max(rounds) + 1);
+    T.forEach(([t, sw]) => series(svg, allR.map((rd) => { const q = rows.find((r) => r.team === t && r.round === rd); return { x: rd, y: q ? q.t_vs_mer : NaN }; }), x, y,
       t === 'Red Bull' || t === 'Racing Bulls' ? col(t) : css('grey'), { s: sym(t), sw, size: t === 'Red Bull' ? 34 : 22, hollow: t !== 'Red Bull' }));
     const L1 = [{ c: col('Red Bull'), s: sym('Red Bull'), label: 'Red Bull', sw: 2.2 }, { c: col('Racing Bulls'), s: sym('Racing Bulls'), label: 'Racing Bulls', sw: 1.4, fill: false },
       { c: css('grey'), s: sym('McLaren'), label: 'McLaren', fill: false, sw: 1.1 }, { c: css('grey'), s: sym('Ferrari'), label: 'Ferrari', fill: false, sw: 1.1 },
@@ -344,13 +376,13 @@ window.RBStory = function (api) {
   const CHGU = { race_longest_straight: 's', quali_all_straights: 's', quali_speed_trap: 'km/h' };
   function figChg() {
     const el = document.getElementById('c-chg');
-    const all = rowsOf(el, 'straight_change', ['before', 'after', 'change']); if (!all) return;
+    const all = rowsOf(el, 'straight_change', ['before', 'after', 'change', 'lo', 'hi', 'p']); if (!all) return;
     const rows = all.filter((r) => r.kind === chgKind).sort((a, b) => a.change - b.change);
     const u = CHGU[chgKind];
     const { svg, w, h } = svgIn(el, 46 + rows.length * 22);
     const m = { l: 96, r: 52, t: 6, b: 38 };
-    const e = d3.extent(rows, (r) => r.change);
-    const x = d3.scaleLinear([Math.min(0, e[0]) * 1.12, Math.max(0, e[1]) * 1.12], [m.l, w - m.r]).nice();
+    const e = [d3.min(rows, (r) => Math.min(r.change, r.lo)), d3.max(rows, (r) => Math.max(r.change, r.hi))];
+    const x = d3.scaleLinear([Math.min(0, e[0]) * 1.05, Math.max(0, e[1]) * 1.05], [m.l, w - m.r]).nice();
     const y = d3.scaleBand(rows.map((r) => r.team), [m.t, h - m.b]).padding(0.28);
     const bx = d3.axisBottom(x).ticks(5).tickSizeInner(-4).tickSizeOuter(0).tickPadding(6).tickFormat((v) => signed(v, u === 'km/h' ? 0 : 2));
     svg.append('g').attr('transform', `translate(0,${h - m.b})`).call(bx).call((g) => { g.attr('font-size', null).attr('font-family', null); g.select('.domain').remove(); g.selectAll('line').style('stroke', css('rule')); });
@@ -363,11 +395,13 @@ window.RBStory = function (api) {
       const hi = ['Red Bull', 'Racing Bulls', 'Mercedes'].includes(r.team), c = hi ? col(r.team) : css('grey');
       svg.append('rect').attr('x', Math.min(x(0), x(r.change))).attr('width', Math.abs(x(r.change) - x(0))).attr('y', y(r.team)).attr('height', y.bandwidth())
         .style('fill', c).style('fill-opacity', hi ? .9 : .45)
-        .on('mousemove', (ev) => tip.show(ev, r.team, [['R1–5 vs field', signed(r.before, 3) + ' ' + u], ['R6–17 vs field', signed(r.after, 3) + ' ' + u], ['change', signed(r.change, 3) + ' ' + u, c]]))
+        .on('mousemove', (ev) => tip.show(ev, r.team, [['R1–5 vs field', signed(r.before, 3) + ' ' + u], ['R6–17 vs field', signed(r.after, 3) + ' ' + u], ['change', signed(r.change, 3) + ' ' + u, c], ['95% interval', `${signed(r.lo, 3)} to ${signed(r.hi, 3)}`], ['permutation p', r.p.toFixed(2)]]))
         .on('mouseleave', () => tip.hide());
+      const yc = y(r.team) + y.bandwidth() / 2;
+      svg.append('line').attr('x1', x(r.lo)).attr('x2', x(r.hi)).attr('y1', yc).attr('y2', yc).style('stroke', css('ink')).attr('stroke-width', .8);
+      [r.lo, r.hi].forEach((e_) => svg.append('line').attr('x1', x(e_)).attr('x2', x(e_)).attr('y1', yc - 3).attr('y2', yc + 3).style('stroke', css('ink')).attr('stroke-width', .8));
       svg.append('text').attr('x', m.l - 7).attr('y', y(r.team) + y.bandwidth() / 2 + 4).attr('text-anchor', 'end').style('font-weight', hi ? 700 : 400).text(r.team);
-      svg.append('text').attr('class', 'ann').attr('x', r.change < 0 ? x(r.change) - 4 : x(r.change) + 4).attr('y', y(r.team) + y.bandwidth() / 2 + 4)
-        .attr('text-anchor', r.change < 0 ? 'end' : 'start').text(signed(r.change, u === 'km/h' ? 1 : 3));
+
     });
   }
   function setChg(k, btn) {
@@ -377,29 +411,89 @@ window.RBStory = function (api) {
   }
 
   // ---------- Fig 8: profile along the straight
+  let profMeas = 'raw';
   function figProf() {
     const el = document.getElementById('c-prof');
-    const rows = rowsOf(el, 'straight_profile', ['pos_pct', 'dv_vs_mer']); if (!rows) return;
-    const S = [['Red Bull race R1-5', 'races, R1–5', css('rbs'), null, d3.symbolCircle, true],
-               ['Red Bull race R12-17', 'races, R12–17', css('rb'), null, d3.symbolCircle, false],
-               ['Red Bull quali R12-17', 'qualifying, R12–17', css('ot'), '6 3', d3.symbolTriangle, true]];
-    const { svg, w, h } = svgIn(el, 320);
+    const rows = rowsOf(el, 'straight_profile', ['pos_pct', 'dv_vs_mer', 'lo', 'hi']); if (!rows) return;
+    const cd = api.get('profile_circuits');
+    const circ = cd.status === 'ok' ? cd.rows.map((r) => ({ ...r, pos_pct: +r.pos_pct, dv_vs_mer: +r.dv_vs_mer })) : [];
+    const S = [[`Red Bull race R1-5 ${profMeas}`, 'races, R1–5', css('rbs'), null, d3.symbolCircle, true],
+               [`Red Bull race R12-17 ${profMeas}`, 'races, R12–17', css('rb'), null, d3.symbolCircle, false],
+               [`Red Bull quali R12-17 ${profMeas}`, 'qualifying, R12–17', css('ot'), '6 3', d3.symbolTriangle, true]];
+    const late = circ.filter((r) => r.kind === 'race' && r.phase === 'R12-17' && r.measure === profMeas);
+    const sel = rows.filter((r) => S.some((q) => q[0] === r.series));
+    const band = rows.filter((r) => r.series === S[1][0]).sort((p, q) => p.pos_pct - q.pos_pct);
+    const vals = sel.map((r) => r.dv_vs_mer).concat(band.map((r) => r.lo), band.map((r) => r.hi), late.map((r) => r.dv_vs_mer)).filter(Number.isFinite);
+    const { svg, w, h } = svgIn(el, 330);
     const m = { l: 52, r: 10, t: w < 560 ? 48 : 30, b: 42 };
     const x = d3.scaleLinear([0, 100], [m.l, w - m.r]);
-    const sel = rows.filter((r) => S.some((s) => s[0] === r.series));
-    const e = d3.extent(sel, (r) => r.dv_vs_mer);
-    const y = d3.scaleLinear([Math.min(e[0], 0) - .6, Math.max(e[1], 0) + .6], [h - m.b, m.t]);
-    box(svg, x, y, m, w, h, { xt: 5, yt: 6, yf: (v) => signed(v, 0), xl: 'position along the longest straight (% of its length)', yl: 'Red Bull − Mercedes (km/h)' });
+    const y = d3.scaleLinear([Math.min(d3.min(vals), 0) - .5, Math.max(d3.max(vals), 0) + .5], [h - m.b, m.t]);
+    box(svg, x, y, m, w, h, { xt: 5, yt: 6, yf: (v) => signed(v, 0), xl: 'position along the longest straight (% of its length)',
+      yl: profMeas === 'raw' ? 'Red Bull − Mercedes (km/h)' : 'speed gained, RB − MER (km/h)' });
+    svg.append('path').datum(band).style('fill', css('rb')).style('fill-opacity', .1)
+      .attr('d', d3.area().x((r) => x(r.pos_pct)).y0((r) => y(r.lo)).y1((r) => y(r.hi)));
+    d3.groups(late, (r) => r.round).forEach(([, g]) => series(svg, g.sort((p, q) => p.pos_pct - q.pos_pct).map((r) => ({ x: r.pos_pct, y: r.dv_vs_mer })), x, y, css('rb'), { sw: .8, opacity: .25 }));
     svg.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(0)).attr('y2', y(0)).style('stroke', col('Mercedes')).attr('stroke-width', 1.4);
-    S.forEach(([k, , c, dash, s, hollow], i) => series(svg, rows.filter((r) => r.series === k).sort((a, b) => a.pos_pct - b.pos_pct).map((r) => ({ x: r.pos_pct, y: r.dv_vs_mer })), x, y, c,
-      { s, dash, hollow, sw: i === 1 ? 2.2 : 1.5, size: 28 }));
-    const L2 = S.map(([, lab, c, dash, s, hollow], i) => ({ c, s, dash, label: lab, fill: !hollow, sw: i === 1 ? 2.2 : 1.5 })).concat([{ c: col('Mercedes'), label: 'Mercedes (zero)', sw: 1.4 }]);
+    S.forEach(([k, , c, dash, sy, hollow], i) => series(svg, rows.filter((r) => r.series === k).sort((p, q) => p.pos_pct - q.pos_pct).map((r) => ({ x: r.pos_pct, y: r.dv_vs_mer })), x, y, c,
+      { s: sy, dash, hollow, sw: i === 1 ? 2.2 : 1.5, size: 28 }));
+    const L2 = S.map(([, lab, c, dash, sy, hollow], i) => ({ c, s: sy, dash, label: lab, fill: !hollow, sw: i === 1 ? 2.2 : 1.5 })).concat([{ c: col('Mercedes'), label: 'Mercedes (zero)', sw: 1.4 }]);
     if (w < 560) { legendRow(svg, L2.slice(0, 2), (m.l + w - m.r) / 2, 12); legendRow(svg, L2.slice(2), (m.l + w - m.r) / 2, 30); }
     else legendRow(svg, L2, (m.l + w - m.r) / 2, 12);
     const tip = tooltip(el.closest('figure'));
-    hover(svg, m, w, h, (ev) => { const p = Math.max(5, Math.min(95, Math.round((x.invert(d3.pointer(ev)[0]) - 5) / 10) * 10 + 5));
-      tip.show(ev, `${p - 5}–${p + 5}% along the straight`, S.map(([k, lab, c]) => { const q = rows.find((r) => r.series === k && r.pos_pct === p);
-        return [lab, q ? signed(q.dv_vs_mer, 1) + ' km/h' : '—', c]; })); }, () => tip.hide());
+    hover(svg, m, w, h, (ev) => {
+      const p = Math.max(5, Math.min(95, Math.round((x.invert(d3.pointer(ev)[0]) - 5) / 10) * 10 + 5));
+      const rr = S.map(([k, lab, c]) => { const q = rows.find((r) => r.series === k && r.pos_pct === p); return [lab, q ? signed(q.dv_vs_mer, 1) + ' km/h' : '—', c]; });
+      const bq = band.find((r) => r.pos_pct === p);
+      if (bq) rr.push(['95% interval, races R12–17', `${signed(bq.lo, 1)} to ${signed(bq.hi, 1)}`]);
+      tip.show(ev, `${p - 5}–${p + 5}% along the straight`, rr);
+    }, () => tip.hide());
+  }
+  function setProf(mode, btn) {
+    profMeas = mode;
+    document.querySelectorAll('#fig-prof .subfig button').forEach((q) => q.setAttribute('aria-pressed', q === btn));
+    figProf();
+  }
+
+  // ---------- compression-ratio event study vs Ferrari-powered cars
+  let crMetric = 'race_peak_speed';
+  function figCr() {
+    const el = document.getElementById('c-cr');
+    if (!el) return;
+    const rows = rowsOf(el, 'cr_ferrari_event', ['round', 'gap_vs_ferrari']); if (!rows) return;
+    const sel = rows.filter((r) => r.metric === crMetric);
+    const abbr = new Map(rows.map((r) => [r.round, r.abbr]));
+    const allR = d3.range(1, d3.max(rows, (r) => r.round) + 1);
+    const { svg, w, h } = svgIn(el, 310);
+    const m = { l: 56, r: 10, t: w < 560 ? 48 : 30, b: 42 };
+    const x = d3.scaleLinear([0.5, d3.max(allR) + 0.5], [m.l, w - m.r]);
+    const e = d3.extent(sel, (r) => r.gap_vs_ferrari);
+    const pad = (e[1] - e[0]) * .12;
+    const y = d3.scaleLinear([Math.min(e[0], 0) - pad, Math.max(e[1], 0) + pad], [h - m.b, m.t]);
+    svg.append('rect').attr('x', x(6.5)).attr('width', x(12.5) - x(6.5)).attr('y', m.t).attr('height', h - m.t - m.b).style('fill', css('hl'));
+    svg.append('rect').attr('x', x(12.5)).attr('width', x(d3.max(allR) + .5) - x(12.5)).attr('y', m.t).attr('height', h - m.t - m.b).style('fill', css('mcl')).style('fill-opacity', .08);
+    const every = w < 560 ? 2 : 1;
+    const pct = /time/.test(crMetric);
+    box(svg, x, y, m, w, h, { xv: allR.filter((r, i) => i % every === 0), xf: (r) => abbr.get(r) || '', yt: 6, yf: (v) => signed(v, pct ? 2 : 1),
+      yl: pct ? '% vs Ferrari-powered (+ slower)' : 'km/h vs Ferrari-powered' });
+    svg.append('line').attr('x1', x(6)).attr('x2', x(6)).attr('y1', m.t).attr('y2', h - m.b).style('stroke', css('ot')).attr('stroke-dasharray', '5 3').attr('stroke-width', 1.1);
+    [8, 13].forEach((r) => svg.append('line').attr('x1', x(r)).attr('x2', x(r)).attr('y1', m.t).attr('y2', h - m.b).style('stroke', css('fer')).attr('stroke-dasharray', '1 3').attr('stroke-width', 1.2));
+    svg.append('line').attr('x1', m.l).attr('x2', w - m.r).attr('y1', y(0)).attr('y2', y(0)).style('stroke', css('rule')).attr('stroke-width', .7);
+    const G = [['MER', 'Mercedes-powered', col('Mercedes'), d3.symbolSquare], ['RBPT', 'Red Bull-Ford', col('Red Bull'), d3.symbolCircle]];
+    G.forEach(([g, , c, sy]) => series(svg, allR.map((rd) => { const q = sel.find((r) => r.group === g && r.round === rd); return { x: rd, y: q ? q.gap_vs_ferrari : NaN }; }), x, y, c, { s: sy, sw: 1.8, size: 30 }));
+    const LG = G.map(([, lab, c, sy]) => ({ c, s: sy, label: lab, sw: 1.8 })).concat([{ c: css('ot'), dash: '5 3', label: 'test, 1 June' }, { c: css('fer'), dash: '1 3', label: 'Ferrari engine upgrades' }]);
+    if (w < 560) { legendRow(svg, LG.slice(0, 2), (m.l + w - m.r) / 2, 12); legendRow(svg, LG.slice(2), (m.l + w - m.r) / 2, 30); }
+    else legendRow(svg, LG, (m.l + w - m.r) / 2, 12);
+    const tip = tooltip(el.closest('figure'));
+    hover(svg, m, w, h, (ev) => {
+      const r = Math.round(x.invert(d3.pointer(ev)[0]));
+      tip.show(ev, `Round ${r}, ${abbr.get(r) || ''}`, G.map(([g, lab, c]) => { const q = sel.find((z) => z.group === g && z.round === r);
+        return [lab, q ? signed(q.gap_vs_ferrari, 2) + (pct ? '%' : ' km/h') : '—', c]; }));
+    }, () => tip.hide());
+  }
+  function setCr(metric, btn) {
+    crMetric = metric;
+    document.querySelectorAll('#fig-cr .subfig button').forEach((q) => q.setAttribute('aria-pressed', q === btn));
+    figCr();
   }
 
   // ---------- Fig 9: timeline
@@ -432,19 +526,21 @@ window.RBStory = function (api) {
   // ---------- Fig 10: degradation
   function figDeg() {
     const el = document.getElementById('c-deg');
-    const rows = rowsOf(el, 'deg_phase', ['deg']); if (!rows) return;
+    const rows = rowsOf(el, 'deg_phase', ['deg_ms', 'lo', 'hi']); if (!rows) return;
     const T = ['Red Bull', 'Mercedes', 'McLaren', 'Ferrari'], ph = ['R1-5', 'R6-11', 'R12-17'], fo = [0.25, 0.6, 1];
     const { svg, w, h } = svgIn(el, 240);
     const m = { l: 52, r: 10, t: 26, b: 34 };
     const x = d3.scaleBand(T, [m.l, w - m.r]).padding(0.22), xs = d3.scaleBand(ph, [0, x.bandwidth()]).padding(0.08);
-    const y = d3.scaleLinear([0, d3.max(rows, (r) => r.deg * 1000) * 1.15], [h - m.b, m.t]);
+    const y = d3.scaleLinear([Math.min(0, d3.min(rows, (r) => r.lo)), d3.max(rows, (r) => r.hi) * 1.05], [h - m.b, m.t]);
     box(svg, x, y, m, w, h, { band: true, yt: 4, yl: 'ms per lap of tyre age' });
     const tip = tooltip(el.closest('figure'));
     rows.forEach((r) => {
-      const v = r.deg * 1000, c = col(r.team);
+      const v = r.deg_ms, c = col(r.team);
       svg.append('rect').attr('x', x(r.team) + xs(r.phase)).attr('width', xs.bandwidth()).attr('y', y(v)).attr('height', y(0) - y(v))
         .style('fill', c).style('fill-opacity', fo[ph.indexOf(r.phase)]).style('stroke', c).attr('stroke-width', .6)
-        .on('mousemove', (ev) => tip.show(ev, `${r.team}, ${r.phase}`, [['degradation', v.toFixed(1) + ' ms/lap', c]])).on('mouseleave', () => tip.hide());
+        .on('mousemove', (ev) => tip.show(ev, `${r.team}, ${r.phase}`, [['median slope', v.toFixed(1) + ' ms/lap', c], ['95% interval', `${r.lo.toFixed(0)} to ${r.hi.toFixed(0)}`]])).on('mouseleave', () => tip.hide());
+      const cx = x(r.team) + xs(r.phase) + xs.bandwidth() / 2;
+      svg.append('line').attr('x1', cx).attr('x2', cx).attr('y1', y(r.lo)).attr('y2', y(r.hi)).style('stroke', css('ink')).attr('stroke-width', .8);
     });
     const lg = svg.append('g').attr('transform', `translate(${w - m.r - 160},${m.t - 10})`);
     ph.forEach((p, j) => { lg.append('rect').attr('x', j * 52).attr('y', -8).attr('width', 10).attr('height', 10).style('fill', css('ink')).style('fill-opacity', fo[j]);
@@ -457,9 +553,11 @@ window.RBStory = function (api) {
   [['chg-race', 'race_longest_straight'], ['chg-q', 'quali_all_straights'], ['chg-trap', 'quali_speed_trap']].forEach(([id, k]) => {
     const b = document.getElementById(id); b.addEventListener('click', () => setChg(k, b));
   });
+  [['prof-raw', 'raw'], ['prof-adj', 'entry_adjusted']].forEach(([id, k]) => { const q = document.getElementById(id); if (q) q.addEventListener('click', () => setProf(k, q)); });
+  [['cr-peak', 'race_peak_speed'], ['cr-time', 'race_straight_time'], ['cr-trap', 'quali_trap']].forEach(([id, k]) => { const q = document.getElementById(id); if (q) q.addEventListener('click', () => setCr(k, q)); });
   const draw = () => {
-    fillNumbers(); fillTable();
-    [figLoop, figTaper, figPace, figSeg, figClip, figRst, figChg, figProf, figTl, figDeg].forEach((f) => {
+    fillNumbers(); fillTable(); fillCrTable();
+    [figLoop, figTaper, figPace, figSeg, figClip, figRst, figChg, figProf, figCr, figTl, figDeg].forEach((f) => {
       try { f(); } catch (e) { console.error(f.name, e); }
     });
   };

@@ -1,13 +1,13 @@
-team,phase,deg,key
-Ferrari,R1-5,0.0302,Ferrari|R1-5
-Ferrari,R12-17,0.026,Ferrari|R12-17
-Ferrari,R6-11,0.0749,Ferrari|R6-11
-McLaren,R1-5,0.0128,McLaren|R1-5
-McLaren,R12-17,0.0127,McLaren|R12-17
-McLaren,R6-11,0.0776,McLaren|R6-11
-Mercedes,R1-5,0.0223,Mercedes|R1-5
-Mercedes,R12-17,0.0239,Mercedes|R12-17
-Mercedes,R6-11,0.0515,Mercedes|R6-11
-Red Bull,R1-5,0.0297,Red Bull|R1-5
-Red Bull,R12-17,0.0165,Red Bull|R12-17
-Red Bull,R6-11,0.0732,Red Bull|R6-11
+team,phase,deg_ms,lo,hi,n,key
+Red Bull,R1-5,29.71,-24.84,51.6,5,Red Bull|R1-5
+Red Bull,R12-17,16.64,8.1,92.04,5,Red Bull|R12-17
+Red Bull,R6-11,74.0,45.54,148.72,5,Red Bull|R6-11
+Mercedes,R1-5,22.26,-22.3,42.65,5,Mercedes|R1-5
+Mercedes,R12-17,24.23,-9.82,95.9,5,Mercedes|R12-17
+Mercedes,R6-11,63.78,38.23,145.4,5,Mercedes|R6-11
+McLaren,R1-5,12.66,-18.32,40.53,4,McLaren|R1-5
+McLaren,R12-17,12.66,-15.01,96.44,5,McLaren|R12-17
+McLaren,R6-11,84.12,66.9,134.6,5,McLaren|R6-11
+Ferrari,R1-5,30.87,2.47,43.9,5,Ferrari|R1-5
+Ferrari,R12-17,25.87,0.09,74.17,5,Ferrari|R12-17
+Ferrari,R6-11,79.68,66.81,161.67,5,Ferrari|R6-11

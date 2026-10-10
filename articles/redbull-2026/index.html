@@ -23,40 +23,54 @@
     <h1 id="title">How Red Bull found its straight-line speed in 2026, and why Mercedes lost it</h1>
     <p class="author">Jatin Garg</p>
     <p class="affil">Independent analysis of public Formula 1 timing data</p>
-    <p class="date">10 October 2026</p>
+    <p class="date">10 October 2026, revised 11 October 2026</p>
   </header>
 
-  <aside class="notice" id="revision-notice"><b>Under revision.</b> Two independent reviews found errors in some figures and overstated conclusions.
-    A corrected version is being prepared; until then, treat the straight-line and energy-strategy conclusions below as provisional.</aside>
+  <aside class="notice" id="revision-notice"><b>Revised after independent review.</b> Two reviews (OpenAI Codex, gpt-5.6-sol; Anthropic Claude Fable 5.1)
+    found a geometry bug and several overstated conclusions in the first version. This version fixes them, adds uncertainty to every comparison and
+    tests the compression-ratio hypothesis directly. Appendix A lists the changes.</aside>
+
+  <section class="tldr" id="tldr">
+    <h2 class="unnumbered">Main findings</h2>
+    <ol>
+      <li><b>Red Bull closed most of its pace deficit.</b> Its qualifying gap to pole fell from <span class="num" data-source="numbers" data-field="value" data-where="key=rb_q_p1">—</span> in rounds 1–5 (95% CI <span class="num" data-source="numbers" data-field="value" data-where="key=rb_q_p1_lo">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=rb_q_p1_hi">—</span>) to
+        <span class="num" data-source="numbers" data-field="value" data-where="key=rb_q_p3">—</span> in rounds 12–17 (<span class="num" data-source="numbers" data-field="value" data-where="key=rb_q_p3_lo">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=rb_q_p3_hi">—</span>). Corrected race pace went from <span class="num" data-source="numbers" data-field="value" data-where="key=rb_r_p1">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=rb_r_p3">—</span> off the best.</li>
+      <li><b>Straights were about half of the qualifying gain.</b> Of the <span class="num" data-source="numbers" data-field="value" data-where="key=lap_closed">—</span> per lap closed on Mercedes, <span class="num" data-source="numbers" data-field="value" data-where="key=str_closed">—</span> came on full-throttle sections.
+        On the longest straight in races, Red Bull is now level with Mercedes (<span class="num" data-source="numbers" data-field="value" data-where="key=rb_ls_p3">—</span> per pass; CI <span class="num" data-source="numbers" data-field="value" data-where="key=rb_ls_p3_lo">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=rb_ls_p3_hi">—</span>), not ahead.</li>
+      <li><b>The gain came at corner exit, not top speed.</b> Red Bull now starts the longest straight <span class="num" data-source="numbers" data-field="value" data-where="key=entry_p3">—</span> relative to Mercedes (it was <span class="num" data-source="numbers" data-field="value" data-where="key=entry_p1">—</span>),
+        and ends it at <span class="num" data-source="numbers" data-field="value" data-where="key=prof_end">—</span>. Its qualifying trap speed changed by <span class="num" data-source="numbers" data-field="value" data-where="key=rb_trap_chg">—</span> relative to the field (CI <span class="num" data-source="numbers" data-field="value" data-where="key=rb_trap_chg_lo">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=rb_trap_chg_hi">—</span>).</li>
+      <li><b>The energy-deployment explanation is not confirmed.</b> Once entry speed is controlled for, Red Bull gains less speed along straights than Mercedes.
+        Public data carry no battery channel, so the hypothesis cannot be ruled out, only left unconfirmed.</li>
+      <li><b>Mercedes' race straight-line edge faded, but the compression-ratio test shows no immediate effect.</b> Mercedes changed by <span class="num" data-source="numbers" data-field="value" data-where="key=mer_ls_chg">—</span> per pass
+        relative to the field (CI <span class="num" data-source="numbers" data-field="value" data-where="key=mer_ls_chg_lo">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=mer_ls_chg_hi">—</span>). In the six races after the test, Mercedes-powered cars moved <span class="num" data-source="numbers" data-field="value" data-where="key=cr_peak_m_e">—</span> in race
+        top speed against Ferrari-powered cars (<span class="num" data-source="numbers" data-field="value" data-where="key=cr_peak_m_e_conf">—</span> confidence of any loss). The larger drop from Monza onward coincides with Ferrari's second
+        engine upgrade and also hits Red Bull-Ford engines. An independent strongest-case analysis (<span class="num" data-source="numbers" data-field="value" data-where="key=astra_n_specs">—</span> specifications) found slower acceleration at
+        290–340 km/h across all four Mercedes teams, but nothing that survives correction for multiple testing.</li>
+      <li><b>Tyre wear cannot separate the teams</b> with this much noise.</li>
+    </ol>
+  </section>
 
   <section class="abstract" id="abstract">
     <h2>Abstract</h2>
     <p>The 2026 Formula 1 rules made roughly half of a car's peak power electric and placed it under a per-lap energy budget and a speed-dependent limit.
-      I study how Red Bull Racing closed its early-season deficit, using every session of the season so far:
-      <span class="num" data-source="numbers" data-field="value" data-where="key=n_sessions">—</span> sessions,
-      <span class="num" data-source="numbers" data-field="value" data-where="key=n_laps">—</span> timed laps and
-      <span class="num" data-source="numbers" data-field="value" data-where="key=n_straight_passes">—</span> passes along full-throttle straights.
-      Laps are aligned by projecting car positions onto a reference racing line, and race pace is corrected for fuel, tyre age, compound and dirty air.
-      Red Bull's qualifying gap to pole fell from <span class="num" data-source="numbers" data-field="value" data-where="key=rb_q_p1">—</span> in rounds 1–5 to
-      <span class="num" data-source="numbers" data-field="value" data-where="key=rb_q_p3">—</span> in rounds 12–17. Its corrected race-pace gap fell from
-      <span class="num" data-source="numbers" data-field="value" data-where="key=rb_r_p1">—</span> to
-      <span class="num" data-source="numbers" data-field="value" data-where="key=rb_r_p3">—</span>.
-      Straights account for <span class="num" data-source="numbers" data-field="value" data-where="key=str_closed">—</span> of the
-      <span class="num" data-source="numbers" data-field="value" data-where="key=lap_closed">—</span> per lap closed on Mercedes.
-      Relative to the field, Red Bull's straight-line time improved while Mercedes' worsened by more. The gain is not top speed: Red Bull's speed-trap reading
-      fell relative to the field, while it gained in the first half of each straight. This is consistent with a strong combustion engine paired with a weaker
-      battery, under rules that from Miami let the engine recharge the battery at full throttle.</p>
-    <p class="keywords"><b>Keywords:</b> Formula 1, telemetry, energy management, power units, FastF1</p>
+      I study how Red Bull Racing closed its early-season deficit using <span class="num" data-source="numbers" data-field="value" data-where="key=n_sessions">—</span> sessions, <span class="num" data-source="numbers" data-field="value" data-where="key=n_laps">—</span> timed laps and <span class="num" data-source="numbers" data-field="value" data-where="key=n_straight_passes">—</span> passes along
+      full-throttle straights. Laps are aligned by projecting car positions onto a reference racing line and reconciled to official lap times. Race pace is
+      corrected for fuel, tyre age, compound and dirty air. Every comparison carries a 95% bootstrap interval over rounds. Red Bull's qualifying gap to pole
+      fell from <span class="num" data-source="numbers" data-field="value" data-where="key=rb_q_p1">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=rb_q_p3">—</span>, and about half of its gain on Mercedes came on straights. The straight-line gain is a corner-exit gain: Red Bull's
+      speed-trap reading fell relative to the field, and it accelerates less than Mercedes once on a straight. The hypothesis that Red Bull won time by spending
+      its electric energy better is consistent with some of the data but not supported by the entry-controlled test. Mercedes' straight-line advantage in races
+      faded. A difference-in-differences test against Ferrari-powered cars finds no immediate effect of the 1 June compression-ratio test.</p>
+    <p class="keywords"><b>Keywords:</b> Formula 1, telemetry, energy management, power units, difference-in-differences, FastF1</p>
   </section>
 
   <section id="intro">
     <h2>Introduction</h2>
     <p>In March Red Bull qualified more than a second off pole at Suzuka. By October it had taken consecutive poles at Sepang and Singapore.
-      The paddock explanation is that Red Bull "found straight-line speed" and is now quicker than Mercedes on the straights. That claim is hard to test from
-      speed traps, because in 2026 a car can lose fifty kilometres per hour on a straight while its driver keeps the throttle pressed (Section 4.3).</p>
-    <p>This note asks three questions. Where on the lap did Red Bull find its time? How much of its straight-line gain is its own, and how much is Mercedes
-      slowing down? And what does the shape of the gain say about the cause? Section 2 summarises the 2026 power-unit rules, Section 3 the data and methods,
-      Section 4 the results and Section 5 the interpretation.</p>
+      The paddock explanation is that Red Bull "found straight-line speed" and is now quicker than Mercedes on the straights. A second claim is that the
+      FIA's compression-ratio test of 1 June took away a Mercedes engine advantage. Both are hard to test from speed traps: in 2026 a car can lose fifty kilometres
+      per hour on a straight while its driver keeps the throttle pressed (Section 4.3).</p>
+    <p>This note asks four questions. Where on the lap did Red Bull find its time? How much of its straight-line gain is its own, and how much is Mercedes
+      slowing down? What does the shape of the gain say about its cause? And did the compression-ratio test leave a measurable mark?</p>
   </section>
 
   <section id="background">
@@ -64,17 +78,18 @@
     <p>The terms below carry the argument. All rule values are from the FIA 2026 Technical Regulations <a class="cite" href="#ref-1">[1]</a> unless stated.</p>
     <dl class="glossary">
       <dt>ICE</dt><dd>The 1.6-litre V6 combustion engine. After the first review period the FIA rated Red Bull-Ford's as the best on the grid <a class="cite" href="#ref-4">[4]</a>.</dd>
-      <dt>MGU-K</dt><dd>The electric motor-generator on the drivetrain. It can deliver up to <span class="num" data-source="numbers" data-field="value" data-where="key=mguk_kw">—</span>
-        to the wheels, or absorb the same to charge the battery.</dd>
-      <dt>Energy budget</dt><dd>The battery's state of charge may swing by <span class="num" data-source="numbers" data-field="value" data-where="key=soc_mj">—</span> on track. Energy recovery is capped at
-        <span class="num" data-source="numbers" data-field="value" data-where="key=recharge_mj">—</span> per lap, and lower at some events: Monza qualifying used
-        <span class="num" data-source="numbers" data-field="value" data-where="key=monza_q_mj">—</span>.</dd>
-      <dt>Overtake mode</dt><dd>Extends full electric power to higher speed. It is on all lap in practice and qualifying, and in races only within the detection gap to the car ahead <a class="cite" href="#ref-2">[2]</a>.</dd>
-      <dt>Super-clipping</dt><dd>Harvesting energy while the driver stays at full throttle, so the car decelerates with the pedal pressed. The cap rose from
-        <span class="num" data-source="numbers" data-field="value" data-where="key=superclip_old">—</span> to
-        <span class="num" data-source="numbers" data-field="value" data-where="key=superclip_new">—</span> from Miami <a class="cite" href="#ref-3">[3]</a>.</dd>
-      <dt>Straight Mode</dt><dd>Active aerodynamics that flatten both wings inside FIA-defined zones on every lap. Its state is not in the public data.</dd>
-      <dt>ADUO</dt><dd>Additional Development and Upgrade Opportunities: extra engine homologations for manufacturers whose ICE trails the best. Red Bull received none <a class="cite" href="#ref-4">[4]</a>.</dd>
+      <dt>MGU-K</dt><dd>The electric motor-generator. It can deliver up to <span class="num" data-source="numbers" data-field="value" data-where="key=mguk_kw">—</span> to the wheels, or absorb the same to charge the battery.</dd>
+      <dt>Energy budget</dt><dd>The battery's state of charge may swing by <span class="num" data-source="numbers" data-field="value" data-where="key=soc_mj">—</span> on track. Recovery is capped at <span class="num" data-source="numbers" data-field="value" data-where="key=recharge_mj">—</span> per lap, and lower at some
+        events: Monza qualifying used <span class="num" data-source="numbers" data-field="value" data-where="key=monza_q_mj">—</span>.</dd>
+      <dt>Overtake mode</dt><dd>Extends full electric power to higher speed. It is on all lap in practice and qualifying, and in races only within the detection
+        gap to the car ahead <a class="cite" href="#ref-2">[2]</a>.</dd>
+      <dt>Super-clipping</dt><dd>Harvesting energy while the driver stays at full throttle, so the car decelerates with the pedal pressed. It was always allowed;
+        from Miami the cap rose from <span class="num" data-source="numbers" data-field="value" data-where="key=superclip_old">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=superclip_new">—</span> <a class="cite" href="#ref-3">[3]</a>.</dd>
+      <dt>Straight Mode</dt><dd>Active aerodynamics that flatten both wings inside FIA-defined zones. Its state is not in the public data.</dd>
+      <dt>ADUO</dt><dd>Extra engine homologations for manufacturers whose ICE trails the best. Red Bull received none. Audi, Ferrari and Honda raced upgrades from
+        Barcelona, Austria and Zandvoort; Ferrari added a second at Monza <a class="cite" href="#ref-4">[4]</a>.</dd>
+      <dt>Compression-ratio test</dt><dd>From 1 June the 16.0:1 limit must also hold at 130 °C. It was aimed at a reported Mercedes design that raised the ratio when hot;
+        Red Bull-Ford was early on reported to use a similar idea <a class="cite" href="#ref-11">[11]</a><a class="cite" href="#ref-12">[12]</a>.</dd>
     </dl>
     <p>Electric power is limited by speed (Article C5.2.8). In normal race mode, with <math><mi>v</mi></math> in km/h and power in kW,</p>
     <div class="eq">
@@ -94,32 +109,34 @@
       <span class="eqno">(1)</span>
     </div>
     <p class="noindent">With Overtake on, the limit is <math><msubsup><mi>P</mi><mtext>K</mtext><mtext>OT</mtext></msubsup><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo><mo>=</mo><mo>min</mo><mo stretchy="false">(</mo><mn>350</mn><mo>,</mo><mspace width=".2em"/><mo>max</mo><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mspace width=".2em"/><mn>7100</mn><mo>−</mo><mn>20</mn><mi>v</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></math>,
-      which holds full power to <span class="num" data-source="numbers" data-field="value" data-where="key=ot_full">—</span>. Figure 2 plots both. The consequence for this study is that
-      <em>qualifying and races test different things</em>. In qualifying the battery supplies full power almost to the end of every straight. In a race the electric
-      contribution fades from <span class="num" data-source="numbers" data-field="value" data-where="key=taper_start">—</span> and is gone by
-      <span class="num" data-source="numbers" data-field="value" data-where="key=taper_zero">—</span>, so the ICE carries the top end.</p>
+      which permits full power to <span class="num" data-source="numbers" data-field="value" data-where="key=ot_full">—</span>. Figure 2 plots both. These are maxima: whether a car uses them depends on its energy budget. From Miami, races also apply
+      FIA-defined sectors capped at 250 kW below 310 km/h, and Monaco and Singapore use a lower curve. The consequence for this study is that <em>qualifying and races
+      test different things</em>. In qualifying the battery may supply full power almost to the end of a straight. In a race the electric contribution fades from
+      <span class="num" data-source="numbers" data-field="value" data-where="key=taper_start">—</span> and is gone by <span class="num" data-source="numbers" data-field="value" data-where="key=taper_zero">—</span>, so the ICE carries the top end.</p>
     <figure id="fig-loop">
       <div class="chart short" id="c-loop"></div>
-      <figcaption><span class="lab">Figure 1.</span> The energy cycle on one straight (schematic). Electric power is spent hardest at corner exit (i). It fades with speed (ii).
-        Late on the straight the MGU-K harvests while the driver stays flat out (iii), and braking recovers more (iv). A strong ICE helps in phases (ii) and (iii).</figcaption>
+      <figcaption><span class="lab">Figure 1.</span> How the rules shape one straight (schematic). Electric power is limited at corner exit only by the 350 kW cap (i), fades with speed (ii),
+        may be harvested while the driver stays flat out (iii), and braking recovers more (iv). Which phase a team gains in is a hypothesis tested in Section 4.5.</figcaption>
     </figure>
     <figure id="fig-taper">
       <div class="chart dash-skeleton" id="c-taper" data-source="taper"></div>
-      <figcaption><span class="lab">Figure 2.</span> Maximum MGU-K power against speed, from Eq. (1) and the Overtake variant. Shaded areas show the electric power available in each mode.</figcaption>
+      <figcaption><span class="lab">Figure 2.</span> Maximum MGU-K power against speed, from Eq. (1) and the Overtake variant.</figcaption>
     </figure>
   </section>
 
   <section id="methods">
     <h2>Data and methods</h2>
     <h3>Data</h3>
-    <p>The data are every 2026 session available on 10 October, from Australia to Singapore qualifying. They were downloaded from Formula 1's live-timing archive
-      with FastF1 <a class="cite" href="#ref-6">[6]</a>: lap timing, car telemetry (speed, RPM, gear, throttle, brake) at about 4 Hz, car positions at about 4 Hz,
+    <p>The data are every 2026 session available on 10 October, from Australia to Singapore qualifying, downloaded from Formula 1's live-timing archive with
+      FastF1 <a class="cite" href="#ref-6">[6]</a>. They cover lap timing, car telemetry (speed, RPM, gear, throttle, brake) at about 4 Hz, car positions at about 4 Hz,
       weather and race-control messages. The 2026 Bahrain Grand Prix was held at Sepang and is treated as Sepang throughout. The public feed carries no battery,
-      Overtake or wing-state channel. The legacy <code>DRS</code> field is zero for all of 2026.</p>
+      Overtake or wing-state channel, and the legacy <code>DRS</code> field is zero for all of 2026.</p>
+    <p><em>Exclusions.</em> Monaco is excluded from every straight-line and race measure: several cars had power-unit failures, it has no Straight-Mode zones, and its
+      race position feed stops halfway. Hungary's race position data are degraded, so it is excluded from race straight-line measures. Only laps on slick tyres are used,
+      and qualifying uses each team's fastest non-deleted lap with valid telemetry.</p>
     <h3>Alignment on the racing line</h3>
-    <p>Distance obtained by integrating speed drifts by up to several per cent, and in some sessions the timing and telemetry clocks differ by seconds
-      (21 s in the rain-delayed Sepang race). Instead, for each circuit I build a reference line <math><mi>𝐫</mi><mo stretchy="false">(</mo><mi>s</mi><mo stretchy="false">)</mo></math>
-      from the position samples of a clean pole lap, densified to 1 m. Every position sample <math><msub><mi>𝐩</mi><mi>i</mi></msub></math> is then mapped to the track coordinate</p>
+    <p>For each circuit I build a reference line <math><mi>𝐫</mi><mo stretchy="false">(</mo><mi>s</mi><mo stretchy="false">)</mo></math> from the position samples
+      of a clean pole lap, densified to 1 m. Every position sample <math><msub><mi>𝐩</mi><mi>i</mi></msub></math> is mapped to the track coordinate</p>
     <div class="eq">
       <math display="block">
         <mrow><msub><mi>s</mi><mi>i</mi></msub><mo>=</mo>
@@ -129,13 +146,16 @@
       </math>
       <span class="eqno">(2)</span>
     </div>
-    <p class="noindent">and car-data samples inherit <math><mi>s</mi></math> by interpolation in time. The median sample lies 0.3 m from the reference line.
-      Each driver's clock offset is estimated from the line crossings it implies. Laps are resampled on a 5 m grid.</p>
+    <p class="noindent">and car-data samples inherit <math><mi>s</mi></math> by interpolation in time. Each driver's clock offset between timing and telemetry is estimated from the
+      line crossings it implies (it reached 21 s in the rain-delayed Sepang race). Laps are rejected when they leave the racing line, when their reconstructed duration
+      differs from the official lap time by more than 0.25 s, or when a residual clock offset remains. That removes <span class="num" data-source="numbers" data-field="value" data-where="key=grid_reject">—</span> of timed qualifying and race laps.
+      The accepted laps have a median duration error of <span class="num" data-source="numbers" data-field="value" data-where="key=dur_p50">—</span> (99th percentile <span class="num" data-source="numbers" data-field="value" data-where="key=dur_p99">—</span>), and each is then rescaled so that its time matches the official lap time
+      exactly.</p>
     <h3>Straights, corners and clean air</h3>
-    <p>A circuit's straights are the full-throttle zones of its reference lap that are at least 200 m long. Every lap of every car is measured on each one: entry speed,
-      peak, exit, time taken, and speed lost at full throttle. Non-straight track is assigned to the nearest corner and classed by the reference apex speed:
-      slow below 120 km/h, medium 120–200 km/h, fast above that. The clean-air gap <math><mi>g</mi></math> is the time since any other car, lapped or not,
-      crossed the line ahead. A lap is <em>clean</em> when <math><mi>g</mi><mo>&gt;</mo><mn>2</mn></math> s.</p>
+    <p>A circuit's straights are the full-throttle zones of its reference lap that are at least 200 m long. A zone that runs through the start/finish line is one straight,
+      measured from the end of the previous lap. Straights are timed over their first 90%, which keeps the comparison clear of braking points. Corners are classed by
+      reference apex speed: slow below 120 km/h, medium 120–200 km/h, fast above that. The gap <math><mi>g</mi></math> to the car ahead is the time since any other car
+      crossed the line. A lap is <em>clean</em> when <math><mi>g</mi><mo>&gt;</mo><mn>2</mn></math> s, and laps with no measurable gap are left out.</p>
     <h3>Race-pace model</h3>
     <p>For each race, green-flag laps on slick tyres, excluding the first lap, in- and out-laps, and laps more than 4% off the median, are fitted by ordinary least squares:</p>
     <div class="eq">
@@ -145,20 +165,20 @@
           <msub><mi>α</mi><mi>d</mi></msub><mo>+</mo><msub><mi>γ</mi><mi>c</mi></msub><mo>+</mo><msub><mi>β</mi><mi>c</mi></msub><mspace width=".1em"/><msub><mi>a</mi><mrow><mi>d</mi><mo>,</mo><mi>ℓ</mi></mrow></msub>
           <mo>+</mo><mi>φ</mi><mspace width=".1em"/><msub><mi>n</mi><mi>ℓ</mi></msub>
           <mo>+</mo><msub><mi>δ</mi><mn>1</mn></msub><mspace width=".1em"/><mi>𝟙</mi><mo stretchy="false">[</mo><mi>g</mi><mo>&lt;</mo><mn>1</mn><mo stretchy="false">]</mo>
-          <mo>+</mo><msub><mi>δ</mi><mn>2</mn></msub><mspace width=".1em"/><mi>𝟙</mi><mo stretchy="false">[</mo><mn>1</mn><mo>≤</mo><mi>g</mi><mo>&lt;</mo><mn>2</mn><mo stretchy="false">]</mo>
+          <mo>+</mo><msub><mi>δ</mi><mn>2</mn></msub><mspace width=".1em"/><mi>𝟙</mi><mo stretchy="false">[</mo><mn>1</mn><mo>≤</mo><mi>g</mi><mo>≤</mo><mn>2</mn><mo stretchy="false">]</mo>
           <mo>+</mo><msub><mi>ε</mi><mrow><mi>d</mi><mo>,</mo><mi>ℓ</mi></mrow></msub>
         </mrow>
       </math>
       <span class="eqno">(3)</span>
     </div>
-    <p class="noindent">where <math><mi>d</mi></math> is the driver, <math><mi>c</mi></math> the compound, <math><mi>a</mi></math> tyre age and <math><mi>n</mi></math> the lap number. The lap term
-      <math><mi>φ</mi></math> absorbs fuel burn and track evolution together; the two are collinear in <math><mi>n</mi></math>, and only their sum is identified. Tyre age and
-      lap number are separable because age resets at each stop. A team's pace is its better driver's prediction at common conditions. In a typical race,
-      <math><mo>−</mo><mi>φ</mi></math> was <span class="num" data-source="numbers" data-field="value" data-where="key=fuel_slope">—</span> and a lap within a second of the car ahead cost
+    <p class="noindent">where <math><mi>d</mi></math> is the driver, <math><mi>c</mi></math> the compound, <math><mi>a</mi></math> tyre age and <math><mi>n</mi></math> the lap number.
+      The lap term <math><mi>φ</mi></math> absorbs fuel burn and track evolution together; only their sum is identified. A team's pace is its better driver's
+      prediction at common conditions. The model is descriptive: it assumes the same compound effects for every team, and the driver term mixes car and driver.
+      In a typical race, <math><mo>−</mo><mi>φ</mi></math> was <span class="num" data-source="numbers" data-field="value" data-where="key=fuel_slope">—</span>, and a lap within a second of the car ahead cost
       <math><msub><mi>δ</mi><mn>1</mn></msub></math> = <span class="num" data-source="numbers" data-field="value" data-where="key=close_air_cost">—</span>.</p>
-    <h3>Comparing against the field</h3>
-    <p>Gains measured against Mercedes mix Red Bull's progress with Mercedes'. To separate them, each team's straight-line measure <math><msub><mi>y</mi><mi>T</mi></msub></math>
-      is taken relative to the field median <math><mover><mi>y</mi><mo>~</mo></mover></math> in each round, and averaged before and after round 5:</p>
+    <h3>Comparing against the field, with uncertainty</h3>
+    <p>Each team's measure <math><msub><mi>y</mi><mi>T</mi></msub></math> is taken relative to the field median <math><mover><mi>y</mi><mo>~</mo></mover></math> in
+      each round and averaged over rounds 1–5 and rounds 6–17:</p>
     <div class="eq">
       <math display="block">
         <mrow>
@@ -170,19 +190,21 @@
       </math>
       <span class="eqno">(4)</span>
     </div>
-    <p class="noindent">so that a negative <math><msub><mi mathvariant="normal">Δ</mi><mi>T</mi></msub></math> means team <math><mi>T</mi></math> became quicker relative to everyone else.</p>
+    <p class="noindent">A negative <math><msub><mi mathvariant="normal">Δ</mi><mi>T</mi></msub></math> means team <math><mi>T</mi></math> became quicker relative to everyone else.
+      The boundary follows the FIA's first engine-review period (rounds 1–5); it was not chosen from the data, and it is not pre-registered. Intervals are 95% percentile
+      bootstraps that resample whole rounds; with five or six rounds per phase they are wide, and many include zero.</p>
   </section>
 
   <section id="results">
     <h2>Results</h2>
     <h3>Pace through the season</h3>
     <p>Table 1 summarises the season in three phases. Mercedes took the first ten poles. Red Bull's biggest single step came at Miami: its qualifying gap was
-      <span class="num" data-source="numbers" data-field="value" data-where="key=jpn_q_gap">—</span> at Suzuka and
-      <span class="num" data-source="numbers" data-field="value" data-where="key=mia_q_gap">—</span> at Miami (Figure 3). Corrected race pace tells the same story with less noise.
-      Red Bull had the best race pace in Austria, Baku and Sepang, while Mercedes went from the reference to a quarter of a per cent off.</p>
+      <span class="num" data-source="numbers" data-field="value" data-where="key=jpn_q_gap">—</span> at Suzuka and <span class="num" data-source="numbers" data-field="value" data-where="key=mia_q_gap">—</span> at Miami (Figure 3). Red Bull had the best corrected race pace in Austria, Baku and Sepang. The Baku qualifying dip is
+      Mercedes at its most dominant; Red Bull's best lap there was Hadjar's, not Verstappen's, whose engine had a fault.</p>
     <div class="tablewrap">
       <table class="booktabs" id="tab-phase" data-source="phase_summary" data-row-key="metric">
-        <caption><span class="lab">Table 1.</span> Headline measures by phase of the season. Percentages are of lap time; seconds are Red Bull minus Mercedes, positive when Red Bull is slower.</caption>
+        <caption><span class="lab">Table 1.</span> Headline measures by phase, with 95% bootstrap intervals over rounds. Percentages are of lap time; seconds are Red Bull minus
+          Mercedes, positive when Red Bull is slower. Monaco is excluded from the race and straight-line rows.</caption>
         <thead><tr><th data-field="metric">Measure</th><th data-field="r1_5">R1–5</th><th data-field="r6_11">R6–11</th><th data-field="r12_17">R12–17</th></tr></thead>
         <tbody></tbody>
       </table>
@@ -194,52 +216,49 @@
       </div>
       <div class="chart dash-skeleton" id="c-pace" data-source="pace"></div>
       <figcaption><span class="lab">Figure 3.</span> (a) Gap of each team's best qualifying lap to pole and (b) race pace from Eq. (3) relative to the fastest team, by round.
-        Lower is better. Dashed lines mark (a) the Miami package and energy-rule change, (b) the compression-ratio test from 1 June and (c) Red Bull's last major package.
+        Lower is better. Dashed lines mark (a) the Miami package and energy-rule change, (b) the compression-ratio test and (c) Red Bull's last major package.
         SEP is the Bahrain Grand Prix held at Sepang.</figcaption>
     </figure>
 
     <h3>Where the lap time came from</h3>
-    <p>Splitting each qualifying lap against Mercedes by segment (Figure 4) shows that straights were the largest deficit early and closed the most:
-      <span class="num" data-source="numbers" data-field="value" data-where="key=rb_str_p1">—</span> per lap in rounds 1–5 against
-      <span class="num" data-source="numbers" data-field="value" data-where="key=rb_str_p3">—</span> in rounds 12–17. Medium-speed corner losses halved. Racing Bulls uses the
-      same Red Bull-Ford power unit with a different chassis, and so serves as a control. It closed <span class="num" data-source="numbers" data-field="value" data-where="key=rbs_str_closed">—</span>
-      on straights over the same period. Roughly two-thirds of Red Bull's straight-line gain is therefore shared with the other Red Bull-Ford car.</p>
+    <p>Splitting each qualifying lap against Mercedes by segment (Figure 4) shows that straights were Red Bull's largest deficit early and closed the most:
+      <span class="num" data-source="numbers" data-field="value" data-where="key=rb_str_p1">—</span> per lap in rounds 1–5 against <span class="num" data-source="numbers" data-field="value" data-where="key=rb_str_p3">—</span> in rounds 12–17 (CI <span class="num" data-source="numbers" data-field="value" data-where="key=rb_str_p3_lo">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=rb_str_p3_hi">—</span>). Segment times now reconcile to official lap
+      times: the <span class="num" data-source="numbers" data-field="value" data-where="key=lap_closed">—</span> closed by the segments compares with <span class="num" data-source="numbers" data-field="value" data-where="key=off_lap_closed">—</span> from official times. Racing Bulls, with the same engine and a different chassis,
+      is a weak control. Measured against the field, its qualifying-straight change was <span class="num" data-source="numbers" data-field="value" data-where="key=rbs_qs_chg">—</span>, about <span class="num" data-source="numbers" data-field="value" data-where="key=rbs_share">—</span> of Red Bull's, and in races it moved the other
+      way (<span class="num" data-source="numbers" data-field="value" data-where="key=rbs_ls_chg">—</span>). The shared engine therefore explains less of Red Bull's straight-line gain than the first version claimed.</p>
     <figure id="fig-seg">
       <div class="chart dash-skeleton" id="c-seg" data-source="segments_phase"></div>
-      <figcaption><span class="lab">Figure 4.</span> Qualifying lap time relative to Mercedes by segment type, averaged per phase: (a) Red Bull, (b) Racing Bulls.
+      <figcaption><span class="lab">Figure 4.</span> Qualifying lap time relative to Mercedes by segment type, phase means with 95% intervals: (a) Red Bull, (b) Racing Bulls.
         Positive values are time lost.</figcaption>
     </figure>
 
     <h3>Losing speed at full throttle</h3>
-    <p>Figure 5 shows why speed traps mislead in 2026. On Albert Park's back straight both cars are at full throttle from corner exit to the braking point.
-      Both peak about halfway down and then lose around 50 km/h. With harvest power <math><msub><mi>P</mi><mi>h</mi></msub></math> and mass <math><mi>m</mi></math>, the added deceleration is</p>
+    <p>Figure 5 shows why speed traps mislead in 2026. On Albert Park's back straight both cars stay at or above 97% throttle from corner exit to the braking point.
+      Both peak about halfway down and then lose around 50 km/h. With harvest power <math><msub><mi>P</mi><mi>h</mi></msub></math> and mass <math><mi>m</mi></math>,
+      the added deceleration is</p>
     <div class="eq">
       <math display="block">
         <mrow><mi mathvariant="normal">Δ</mi><mi>a</mi><mo>≈</mo><mfrac><msub><mi>P</mi><mi>h</mi></msub><mrow><mi>m</mi><mspace width=".1em"/><mi>v</mi></mrow></mfrac></mrow>
       </math>
       <span class="eqno">(5)</span>
     </div>
-    <p class="noindent">For example, 350 kW at 300 km/h on an 800 kg car gives about 5 m/s², or 19 km/h per second, which is the order of the slopes observed.
-      Every car does this on every long straight, so a single trap reading says little about straight-line performance.</p>
+    <p class="noindent">so 350 kW at 300 km/h on an 800 kg car gives about 5 m/s², or 19 km/h per second, the order of the slopes observed. The feed cannot distinguish
+      harvesting from simply reduced deployment, so Figure 5 shows a signature consistent with either.</p>
     <figure id="fig-clip">
       <div class="chart dash-skeleton" id="c-clip" data-source="clip_example"></div>
-      <figcaption><span class="lab">Figure 5.</span> Speed along the Turn 8 to Turn 11 straight at Albert Park, fastest qualifying laps of Russell (pole) and Hadjar (P3).
-        The shaded interval is at 100% throttle throughout.</figcaption>
+      <figcaption><span class="lab">Figure 5.</span> Speed along Albert Park's back straight, fastest qualifying laps of Russell (pole) and Hadjar (P3). Shaded: throttle at or above 97%.</figcaption>
     </figure>
 
     <h3>The straight-line turnaround</h3>
-    <p>In races, in clean air, Red Bull's time per pass on each circuit's longest straight, relative to Mercedes, averaged
-      <span class="num" data-source="numbers" data-field="value" data-where="key=rb_ls_p1">—</span> in rounds 1–5 and
-      <span class="num" data-source="numbers" data-field="value" data-where="key=rb_ls_p3">—</span> in rounds 12–17 (Figure 6). It was quicker in Austria,
-      Spa, Monza and Baku, and still slower at Silverstone, Zandvoort and Madrid. Eq. (4) separates the two teams (Figure 7). On the race longest straight Red Bull
-      changed by <span class="num" data-source="numbers" data-field="value" data-where="key=rb_ls_chg">—</span> per pass, more than any team. Mercedes changed by
-      <span class="num" data-source="numbers" data-field="value" data-where="key=mer_ls_chg">—</span>, more than any team in the other direction. In qualifying every
-      Mercedes-powered team lost straight-line time relative to the field. The split at round 5 also falls just before the FIA began checking ICE compression
-      ratio at 130 °C, from 1 June <a class="cite" href="#ref-7">[7]</a>. The timing fits, but the data cannot establish the cause.</p>
+    <p>In races, in clean air, Red Bull's time over each circuit's longest straight relative to Mercedes averaged <span class="num" data-source="numbers" data-field="value" data-where="key=rb_ls_p1">—</span> per pass in rounds 1–5 and <span class="num" data-source="numbers" data-field="value" data-where="key=rb_ls_p3">—</span> in
+      rounds 12–17 (CI <span class="num" data-source="numbers" data-field="value" data-where="key=rb_ls_p3_lo">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=rb_ls_p3_hi">—</span>; Figure 6). Red Bull reached parity rather than overtaking. Against the field (Figure 7), Red Bull changed by
+      <span class="num" data-source="numbers" data-field="value" data-where="key=rb_ls_chg">—</span> per pass (CI <span class="num" data-source="numbers" data-field="value" data-where="key=rb_ls_chg_lo">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=rb_ls_chg_hi">—</span>) and Mercedes by <span class="num" data-source="numbers" data-field="value" data-where="key=mer_ls_chg">—</span> (CI <span class="num" data-source="numbers" data-field="value" data-where="key=mer_ls_chg_lo">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=mer_ls_chg_hi">—</span>). Both intervals
+      just include zero. In qualifying, <span class="num" data-source="numbers" data-field="value" data-where="key=n_lost_q">—</span> of <span class="num" data-source="numbers" data-field="value" data-where="key=n_teams_q">—</span> teams lost straight-line time relative to the field after round 5, so the slide of the
+      Mercedes-powered teams there is not unusual.</p>
     <figure id="fig-rst">
       <div class="chart dash-skeleton" id="c-rst" data-source="race_straight"></div>
-      <figcaption><span class="lab">Figure 6.</span> Median time over each circuit's longest straight on clean-air race laps, relative to Mercedes. Positive is slower.
-        Monaco and Hungary are omitted because their race position feeds are incomplete.</figcaption>
+      <figcaption><span class="lab">Figure 6.</span> Median time over the first 90% of each circuit's longest straight on clean-air race laps, relative to Mercedes. Positive is slower.
+        Straights through the start/finish line are measured whole. Monaco and Hungary are omitted.</figcaption>
     </figure>
     <figure id="fig-chg">
       <div class="subfig" role="group" aria-label="Measure">
@@ -248,16 +267,16 @@
         <button type="button" id="chg-trap" aria-pressed="false">(c) qualifying speed trap</button>
       </div>
       <div class="chart dash-skeleton" id="c-chg" data-source="straight_change"></div>
-      <figcaption><span class="lab">Figure 7.</span> Change relative to the field, Eq. (4), for (a) race time on the longest straight, (b) qualifying time on all straights and
-        (c) the qualifying speed trap. Negative time is a gain; for (c), positive is more top speed.</figcaption>
+      <figcaption><span class="lab">Figure 7.</span> Change relative to the field, Eq. (4), with 95% intervals, for (a) race time on the longest straight, (b) qualifying time on all
+        straights and (c) the qualifying speed trap. Negative time is a gain; for (c), positive is more top speed.</figcaption>
     </figure>
 
     <h3>Speed along the straight</h3>
-    <p>Panel (c) of Figure 7 contradicts the paddock story. Red Bull's trap speed moved <span class="num" data-source="numbers" data-field="value" data-where="key=rb_trap_chg">—</span>
-      relative to the field. In Australia it read <span class="num" data-source="numbers" data-field="value" data-where="key=aus_trap_vs_mer">—</span> against Mercedes, yet Red Bull's
-      time on the straights was <span class="num" data-source="numbers" data-field="value" data-where="key=aus_str_vs_mer">—</span> against Mercedes. Figure 8 resolves this. In late-season races
-      Red Bull is <span class="num" data-source="numbers" data-field="value" data-where="key=prof_race_p3_early">—</span> up on Mercedes over the first 40% of the longest straight,
-      and <span class="num" data-source="numbers" data-field="value" data-where="key=prof_race_p3_end">—</span> over the last 10%. The time over a straight is</p>
+    <p>Panel (c) of Figure 7 contradicts the paddock story. Red Bull's trap speed changed by <span class="num" data-source="numbers" data-field="value" data-where="key=rb_trap_chg">—</span> relative to the field (CI <span class="num" data-source="numbers" data-field="value" data-where="key=rb_trap_chg_lo">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=rb_trap_chg_hi">—</span>), one of the
+      few changes whose interval excludes zero. In Australia its trap read <span class="num" data-source="numbers" data-field="value" data-where="key=aus_trap_vs_mer">—</span> against Mercedes, yet its time on the straights was <span class="num" data-source="numbers" data-field="value" data-where="key=aus_str_vs_mer">—</span> against
+      Mercedes. Figure 8 shows where the difference sits. With each circuit weighted equally, late-season Red Bull is <span class="num" data-source="numbers" data-field="value" data-where="key=prof_early">—</span> faster than Mercedes over the first 40%
+      of the longest straight (CI <span class="num" data-source="numbers" data-field="value" data-where="key=prof_early_lo">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=prof_early_hi">—</span>; slower in <span class="num" data-source="numbers" data-field="value" data-where="key=prof_early_neg">—</span> of <span class="num" data-source="numbers" data-field="value" data-where="key=prof_early_n">—</span> races) and <span class="num" data-source="numbers" data-field="value" data-where="key=prof_end">—</span> over the last 10%.
+      The time over a straight is</p>
     <div class="eq">
       <math display="block">
         <mrow>
@@ -269,65 +288,145 @@
       <span class="eqno">(6)</span>
     </div>
     <p class="noindent">so a gain of 1 km/h at 200 km/h is worth <math><msup><mrow><mo stretchy="false">(</mo><mn>300</mn><mo>/</mo><mn>200</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo>≈</mo><mn>2.25</mn></math>
-      times one at 300 km/h. Red Bull trades top speed for corner-exit speed, which is the better trade. In qualifying, where Overtake keeps electric power high almost to the
-      braking point, Red Bull still loses speed over most of the straight. That is where the battery weakness shows, and Verstappen described it at Monza:
-      "we just didn't have the same kind of deployment as Mercedes" <a class="cite" href="#ref-8">[8]</a>.</p>
+      times one at 300 km/h. The early advantage is carried in from the preceding corner: Red Bull now starts the straight <span class="num" data-source="numbers" data-field="value" data-where="key=entry_p3">—</span> relative to Mercedes, against
+      <span class="num" data-source="numbers" data-field="value" data-where="key=entry_p1">—</span> early in the season. Panel (b) removes that by measuring speed gained since the start of the straight. On that basis late-season Red Bull is
+      <span class="num" data-source="numbers" data-field="value" data-where="key=prof_early_adj">—</span> over the first 40% (CI <span class="num" data-source="numbers" data-field="value" data-where="key=prof_early_adj_lo">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=prof_early_adj_hi">—</span>) and gains less than Mercedes thereafter. A car that enters faster
+      gains less on any power-limited straight, because drag rises with speed, so panel (b) is conservative. But it gives no sign that Red Bull accelerates harder once on
+      the straight. The thesis that Red Bull found its time by deploying electric energy early, and letting a strong ICE carry the top end, predicts the opposite pattern
+      and is not supported here. In qualifying the late-straight difference is <span class="num" data-source="numbers" data-field="value" data-where="key=q_late">—</span> (CI <span class="num" data-source="numbers" data-field="value" data-where="key=q_late_lo">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=q_late_hi">—</span>), within noise.</p>
     <figure id="fig-prof">
-      <div class="chart dash-skeleton" id="c-prof" data-source="straight_profile"></div>
-      <figcaption><span class="lab">Figure 8.</span> Red Bull minus Mercedes speed along each circuit's longest straight, in 10% bins, averaged per phase: races in rounds 1–5, races in rounds 12–17, and
-        qualifying in rounds 12–17.</figcaption>
+      <div class="subfig" role="group" aria-label="Measure">
+        <button type="button" id="prof-raw" aria-pressed="true">(a) speed difference</button>
+        <button type="button" id="prof-adj" aria-pressed="false">(b) speed gained since the straight began</button>
+      </div>
+      <div class="chart dash-skeleton" id="c-prof" data-source="straight_profile profile_circuits"></div>
+      <figcaption><span class="lab">Figure 8.</span> Red Bull minus Mercedes along each circuit's longest straight in 10% bins, each circuit weighted equally. The band is the 95% interval over circuits
+        for late-season races; faint lines are the individual late-season races.</figcaption>
     </figure>
 
+    <h3>Did the compression-ratio test matter?</h3>
+    <p>If the hot compression-ratio test took power away from Mercedes engines, Mercedes-powered cars should have lost straight-line speed against cars whose engines it
+      did not target, and the loss should be largest late on race straights, where the electric contribution has faded. Ferrari-powered cars (Ferrari, Haas, Cadillac)
+      are the natural control. Red Bull-Ford is estimated separately, because it was reported to use a similar idea. The model has team and round fixed effects:</p>
+    <div class="eq">
+      <math display="block">
+        <mrow>
+          <msub><mi>y</mi><mrow><mi>T</mi><mo>,</mo><mi>r</mi></mrow></msub><mo>=</mo><msub><mi>α</mi><mi>T</mi></msub><mo>+</mo><msub><mi>λ</mi><mi>r</mi></msub>
+          <mo>+</mo><munder><mo>∑</mo><mrow><mi>w</mi></mrow></munder>
+          <mrow><mo>(</mo><msub><mi>β</mi><mrow><mi>w</mi></mrow></msub><mspace width=".1em"/><msubsup><mi>M</mi><mi>T</mi><mi>w</mi></msubsup><mo>+</mo><msub><mi>ρ</mi><mrow><mi>w</mi></mrow></msub><mspace width=".1em"/><msubsup><mi>R</mi><mi>T</mi><mi>w</mi></msubsup><mo>)</mo></mrow>
+          <mo>+</mo><msub><mi>ε</mi><mrow><mi>T</mi><mo>,</mo><mi>r</mi></mrow></msub>
+        </mrow>
+      </math>
+      <span class="eqno">(7)</span>
+    </div>
+    <p class="noindent">where <math><msubsup><mi>M</mi><mi>T</mi><mi>w</mi></msubsup></math> and <math><msubsup><mi>R</mi><mi>T</mi><mi>w</mi></msubsup></math> mark Mercedes- and Red Bull-Ford-powered
+      teams in window <math><mi>w</mi></math>: rounds 7–12, right after the test, and rounds 13–17, from Monza. Confidence is the share of 1,000 round-resampled estimates
+      pointing the way a power loss predicts; 50% means no information.</p>
+    <p>In the six races right after the test, Mercedes-powered cars moved <span class="num" data-source="numbers" data-field="value" data-where="key=cr_peak_m_e">—</span> in race peak speed against Ferrari-powered cars (CI <span class="num" data-source="numbers" data-field="value" data-where="key=cr_peak_m_e_lo">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=cr_peak_m_e_hi">—</span>;
+      <span class="num" data-source="numbers" data-field="value" data-where="key=cr_peak_m_e_conf">—</span> confidence of a loss). Late-straight speed gives <span class="num" data-source="numbers" data-field="value" data-where="key=cr_late_m_e_conf">—</span>, race time on straights <span class="num" data-source="numbers" data-field="value" data-where="key=cr_rst_m_e">—</span> (<span class="num" data-source="numbers" data-field="value" data-where="key=cr_rst_m_e_conf">—</span>), and qualifying
+      straights <span class="num" data-source="numbers" data-field="value" data-where="key=cr_qst_m_e_conf">—</span>. Converted with <math><mi>P</mi><mo>∝</mo><msup><mi>v</mi><mn>3</mn></msup></math> near top speed, the data rule out an immediate loss larger
+      than about <span class="num" data-source="numbers" data-field="value" data-where="key=cr_hp_bound">—</span>, so they cannot confirm or exclude the 10–15 hp press estimates. From Monza onward Mercedes-powered cars are at <span class="num" data-source="numbers" data-field="value" data-where="key=cr_peak_m_l">—</span>
+      (CI <span class="num" data-source="numbers" data-field="value" data-where="key=cr_peak_m_l_lo">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=cr_peak_m_l_hi">—</span>), but Red Bull-Ford drops too (<span class="num" data-source="numbers" data-field="value" data-where="key=cr_peak_r_l">—</span>, <span class="num" data-source="numbers" data-field="value" data-where="key=cr_peak_r_l_conf">—</span> confidence). That timing matches Ferrari's second engine
+      upgrade at Monza, which made the control faster, not a June change to Mercedes engines. Red Bull-Ford cars got quicker on straights against Ferrari after the test
+      (<span class="num" data-source="numbers" data-field="value" data-where="key=cr_rst_r_e">—</span> in races; <span class="num" data-source="numbers" data-field="value" data-where="key=cr_rst_r_e_conf">—</span> confidence of a loss), so whatever version of the idea Red Bull used, losing it left no visible mark.</p>
+    <p><em>The strongest case.</em> To guard against a test designed only to find nothing, an independent analysis by OpenAI Codex (gpt-6-astra) was briefed to build the
+      strongest possible case for an effect and to report every specification it tried. It estimated <span class="num" data-source="numbers" data-field="value" data-where="key=astra_n_specs">—</span>. The best supporting pattern is acceleration at
+      matched speed: between 290 and 340 km/h, Mercedes-powered cars' acceleration changed by <span class="num" data-source="numbers" data-field="value" data-where="key=astra_acc">—</span> relative to Ferrari-powered cars (interval <span class="num" data-source="numbers" data-field="value" data-where="key=astra_acc_lo">—</span>
+      to <span class="num" data-source="numbers" data-field="value" data-where="key=astra_acc_hi">—</span>). That is the largest change of all 35 possible four-team groupings, and all four Mercedes teams point the same way. Against it, the loss sits
+      between 290 and 310 km/h, where electric power still contributes, and vanishes above 310 km/h (<span class="num" data-source="numbers" data-field="value" data-where="key=astra_acc_310">—</span>), where an ICE-only loss should be clearest.
+      A model with separate steps for Miami, the test, Austria and Monza places the peak-speed drop at Ferrari's Austria upgrade (<span class="num" data-source="numbers" data-field="value" data-where="key=astra_r8">—</span>; interval <span class="num" data-source="numbers" data-field="value" data-where="key=astra_r8_lo">—</span>
+      to <span class="num" data-source="numbers" data-field="value" data-where="key=astra_r8_hi">—</span>) and gives the test step the opposite sign (<span class="num" data-source="numbers" data-field="value" data-where="key=astra_hot">—</span>). RPM and gear at peak speed do not shift. <span class="num" data-source="numbers" data-field="value" data-where="key=astra_n_rank05">—</span> of the
+      <span class="num" data-source="numbers" data-field="value" data-where="key=astra_n_specs">—</span> specifications pass a nominal 5% randomisation threshold and <span class="num" data-source="numbers" data-field="value" data-where="key=astra_n_ci">—</span> have intervals excluding zero; none survives correction for
+      multiple testing. Its verdict is suggestive evidence of a Mercedes-group change and weak evidence that the test caused it, which agrees with the analysis above.</p>
+    <figure id="fig-cr">
+      <div class="subfig" role="group" aria-label="Measure">
+        <button type="button" id="cr-peak" aria-pressed="true">(a) race peak speed</button>
+        <button type="button" id="cr-time" aria-pressed="false">(b) race time on straights</button>
+        <button type="button" id="cr-trap" aria-pressed="false">(c) qualifying trap</button>
+      </div>
+      <div class="chart dash-skeleton" id="c-cr" data-source="cr_ferrari_event"></div>
+      <figcaption><span class="lab">Figure 9.</span> Mercedes-powered and Red Bull-Ford teams minus Ferrari-powered teams by round, relative to Canada (R5). The dashed line is the
+        compression-ratio test; dotted lines are Ferrari's engine upgrades at Austria and Monza.</figcaption>
+    </figure>
+    <div class="tablewrap">
+      <table class="booktabs" id="tab-cr" data-source="cr_windows" data-row-key="metric,window,group">
+        <caption><span class="lab">Table 2.</span> Eq. (7) estimates against Ferrari-powered cars, with 95% intervals and the confidence that each effect points the way a power loss predicts.
+          Times are percent of the round median (positive = slower); speeds are km/h (negative = slower).</caption>
+        <thead><tr><th data-field="metric">Measure</th><th data-field="window">Window</th><th data-field="group">Engine</th><th data-field="beta">Estimate</th>
+          <th data-field="lo">95% interval</th><th data-field="confidence_pct">Confidence of a loss</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
     <h3>Upgrades and rule changes</h3>
-    <p>Red Bull declared <span class="num" data-source="numbers" data-field="value" data-where="key=n_parts">—</span> parts in the FIA car-presentation submissions after its launch
-      specification <a class="cite" href="#ref-5">[5]</a> (Figure 9). The Miami package was the largest: floor, sidepods, front wing, engine cover, rear corners and a rotating Straight-Mode rear
-      wing, along with about 6 kg of weight saving. It coincided with the FIA's revised energy rules. The rotating wing was withdrawn after failures in Austria qualifying and at Silverstone. Spa,
-      run without it, produced Red Bull's worst qualifying trap deficit of the season,
-      <span class="num" data-source="numbers" data-field="value" data-where="key=spa_trap_vs_mer">—</span>. The wing returned in Hungary. At Sepang Red Bull was
-      <span class="num" data-source="numbers" data-field="value" data-where="key=sep_str_vs_mer">—</span> per qualifying lap against Mercedes on the straights. That weekend McLaren's
-      team principal judged Red Bull best in a straight line "by a decent margin" <a class="cite" href="#ref-9">[9]</a>, and Mercedes' own new package was "very draggy" <a class="cite" href="#ref-10">[10]</a>.</p>
+    <p>Red Bull declared <span class="num" data-source="numbers" data-field="value" data-where="key=n_parts">—</span> parts in the FIA car-presentation submissions after its launch specification <a class="cite" href="#ref-5">[5]</a> (Figure 10).
+      The Miami package was the largest: floor, sidepods, front wing, engine cover, rear corners and a rotating Straight-Mode rear wing. Press reports also describe
+      about 6 kg of weight saving, which was not part of the FIA declaration. The rotating wing was withdrawn after failures in Austria qualifying and at Silverstone. Spa, run
+      without it, produced Red Bull's worst qualifying trap deficit of the season, <span class="num" data-source="numbers" data-field="value" data-where="key=spa_trap_vs_mer">—</span>. The wing returned in Hungary. At Sepang Red Bull was
+      <span class="num" data-source="numbers" data-field="value" data-where="key=sep_str_vs_mer">—</span> per qualifying lap against Mercedes on the straights. That weekend McLaren's team principal judged Red Bull best in a straight line "by a decent margin"
+      <a class="cite" href="#ref-9">[9]</a>, and Mercedes' own new package was "very draggy" <a class="cite" href="#ref-10">[10]</a>.</p>
     <figure id="fig-tl">
       <div class="chart short dash-skeleton" id="c-tl" data-source="timeline"></div>
-      <figcaption><span class="lab">Figure 9.</span> Red Bull parts declared per event (circle area proportional to the count; filled for major packages) and rule or engine changes relevant to straight-line speed.</figcaption>
+      <figcaption><span class="lab">Figure 10.</span> Red Bull parts declared per event (circle area proportional to the count; filled for major packages) and rule or engine changes.</figcaption>
     </figure>
 
     <h3>Tyres</h3>
-    <p>Red Bull's tyre degradation, the lap-time cost per lap of tyre age given by the slope <math><msub><mi>β</mi><mi>c</mi></msub></math> of Eq. (3) estimated by team, was among the highest of the top four early in the season. In
-      rounds 12–17 it was <span class="num" data-source="numbers" data-field="value" data-where="key=deg_rb_p3">—</span> against Mercedes'
-      <span class="num" data-source="numbers" data-field="value" data-where="key=deg_mer_p3">—</span> (Figure 10). The 2026 tyres degrade little, so these slopes are small and noisy.</p>
+    <p>Red Bull's median tyre-degradation slope in rounds 12–17 was <span class="num" data-source="numbers" data-field="value" data-where="key=deg_rb_p3">—</span> against Mercedes' <span class="num" data-source="numbers" data-field="value" data-where="key=deg_mer_p3">—</span> (Figure 11), but the intervals overlap widely. The 2026 tyres
+      degrade little, and these slopes cannot separate the teams.</p>
     <figure id="fig-deg">
       <div class="chart short dash-skeleton" id="c-deg" data-source="deg_phase"></div>
-      <figcaption><span class="lab">Figure 10.</span> Median per-race degradation slope, in milliseconds of corrected lap time per lap of tyre age, by team and phase.</figcaption>
+      <figcaption><span class="lab">Figure 11.</span> Median per-race degradation slope with 95% intervals, in milliseconds of corrected lap time per lap of tyre age.</figcaption>
     </figure>
   </section>
 
   <section id="discussion">
     <h2>Discussion</h2>
-    <p>The explanations are ordered by how much of the effect each appears to account for.</p>
+    <p>Each explanation below is stated as a hypothesis with what the data predict and what they show.</p>
     <ol>
-      <li><b>Mercedes lost its straight-line advantage.</b> Every Mercedes-powered team lost straight-line time relative to the field after round 5. That it happened is well supported.
-        The cause is not established: the compression-ratio test and a draggier aerodynamic package both fit.</li>
-      <li><b>Red Bull-Ford learned where to spend its energy.</b> The gain sits at corner exit while trap speed fell, and Racing Bulls shares about two-thirds of it. This points to
-        the shared power unit and its energy strategy, and the post-Miami super-clip rules favour a strong ICE. Confidence: medium-high.</li>
-      <li><b>The rotating rear wing and aerodynamic packages.</b> Red Bull gained more than Racing Bulls, and its weakest straight-line weekend came without the wing. Confidence: medium.</li>
-      <li><b>A lighter, more driveable car.</b> Weight came off in Miami and Austria, and medium-speed corner losses halved. Confidence: medium.</li>
-      <li><b>Better tyre use late in the season.</b> Confidence: low to medium.</li>
+      <li><b>Red Bull leaves corners faster.</b> Red Bull's straight-line gain is carried in from the preceding corner, and its medium-speed corner losses halved. This fits the
+        Miami and Austria packages and a more driveable car. <em>Supported.</em></li>
+      <li><b>Red Bull-Ford spends its energy better.</b> If so, Red Bull should accelerate harder along straights at matched entry speed. It does not, and its trap speed fell.
+        The data cannot observe deployment directly, so the hypothesis is <em>not supported but not excluded</em>.</li>
+      <li><b>Mercedes lost its straight-line edge.</b> Its race straight-line change against the field is the largest of any team, with an interval that just includes zero.
+        <em>Probable; cause unclear.</em></li>
+      <li><b>The compression-ratio test cost Mercedes power.</b> No measurable effect in the races right after it; the later drop matches Ferrari's engine upgrade and hits
+        Red Bull-Ford too; the strongest-case analysis finds a consistent but statistically fragile acceleration loss. <em>Not established; an effect below about
+        13 hp cannot be excluded.</em></li>
+      <li><b>The rotating rear wing helped on the straights.</b> Spa, without it, was Red Bull's worst trap deficit; a single event is weak evidence. <em>Plausible.</em></li>
     </ol>
-    <p class="noindent">Two things did not happen. Red Bull did not gain top speed, and it did not receive ADUO help.</p>
   </section>
 
   <section id="limits">
     <h2>Limitations</h2>
-    <p>Energy use is inferred from speed traces, because the public feed carries no state of charge, Overtake state or wing position. Monaco's race position feed stops halfway
-      and Hungary's is degraded, so both races are excluded from race straight-line measures. Qualifying gaps include driver effects, including Verstappen's Q1 crash in
-      Australia and his engine fault in Baku qualifying. Singapore sprint qualifying is excluded because of the FIA's Overtake-mode error. "Medium confidence" means the data fit an explanation
-      and nothing contradicts it, not that the explanation is proven.</p>
+    <p>Energy use is inferred from speed traces, because the public feed carries no state of charge, Overtake state or wing position. The phases contain five or six rounds on
+      different circuits, so track mix is controlled only through comparisons with the field or a control group in the same round. Qualifying uses each team's best lap, which
+      mixes in driver effects and changes of driver (Lawson replaced Hadjar at three events). The race-pace model is descriptive and assumes common compound effects.
+      The compression-ratio test has one change date and several overlapping confounders: the Miami energy rules, three other manufacturers' engine upgrades and Mercedes'
+      own aerodynamic changes. A "supported" verdict means the data fit and nothing contradicts them, not proof.</p>
+  </section>
+
+  <section id="appendix-a">
+    <h2 class="unnumbered">Appendix A. Independent review and corrections</h2>
+    <p class="noindent">The first version (10 October) was reviewed independently by OpenAI Codex (gpt-5.6-sol, reasoning effort xhigh, read-only) and Anthropic Claude
+      Fable 5.1. Both reproduced every published number and recommended major revision. The changes:</p>
+    <ul>
+      <li>Straights that cross the start/finish line (Barcelona, Zandvoort, Monza, Baku) were split in two; they are now measured whole. This removed the claim that Red Bull
+        was marginally faster than Mercedes on the longest straight late in the season.</li>
+      <li>Segment times are reconciled to official lap times, and laps with residual timing errors are rejected.</li>
+      <li>Every phase figure and change carries a bootstrap interval; the race-straight measure excludes braking points; deleted laps no longer feed speed traps.</li>
+      <li>The along-straight profile weights circuits equally, uses one real lap per team in qualifying, and adds an entry-speed control.</li>
+      <li>Racing Bulls is compared against the field, not against Mercedes; its share of Red Bull's gain fell from two-thirds to under half in qualifying and reversed in races.</li>
+      <li>Rule wording corrected: full-throttle harvesting was always allowed, and Miami raised its cap; race 250 kW sectors are now stated.</li>
+      <li>Monaco excluded from straight-line and race measures; the Baku qualifying attribution corrected.</li>
+      <li>New: a difference-in-differences test of the compression-ratio hypothesis against Ferrari-powered cars, and an independent strongest-case analysis of the
+        same question by OpenAI Codex (gpt-6-astra, read-only), which reported all <span class="num" data-source="numbers" data-field="value" data-where="key=astra_n_specs">—</span> specifications it estimated.</li>
+    </ul>
   </section>
 
   <section id="refs">
     <h2 class="unnumbered">References</h2>
     <ol class="refs">
-      <li id="ref-1">FIA. <em>2026 Formula 1 Technical Regulations</em>, Section C, Issue 20, 5 August 2026. Articles C5.2.7–C5.2.10, C5.12.
+      <li id="ref-1">FIA. <em>2026 Formula 1 Technical Regulations</em>, Section C, Issue 20, 5 August 2026. Articles C5.2.7–C5.2.10, C5.4.3, C5.12.
         <a href="https://www.fia.com/system/files/documents/fia_2026_f1_regulations_-_section_c_technical_-_iss_20_-_2026-08-05.pdf">fia.com</a></li>
       <li id="ref-2">FIA. <em>2026 Formula 1 Sporting Regulations</em>, Section B, Issue 09, 1 October 2026. Article B7.2.
         <a href="https://www.fia.com/system/files/documents/fia_2026_f1_regulations_-_section_b_sporting_-_iss_09_-_2026-10-01.pdf">fia.com</a></li>
@@ -337,8 +436,7 @@
         <a href="https://www.fia.com/news/fia-announces-aduo-results-following-first-and-second-review-periods-2026">fia.com</a></li>
       <li id="ref-5">FIA. Car presentation submissions, every 2026 Grand Prix (decision documents).
         <a href="https://www.fia.com/documents/championships/fia-formula-one-world-championship-14">fia.com</a></li>
-      <li id="ref-6">P. Schaefer et al. <em>FastF1</em>, version 3.8.
-        <a href="https://docs.fastf1.dev">docs.fastf1.dev</a></li>
+      <li id="ref-6">P. Schaefer et al. <em>FastF1</em>, version 3.8. <a href="https://docs.fastf1.dev">docs.fastf1.dev</a></li>
       <li id="ref-7">GPblog. Mercedes compression ratio saga over as Monaco GP change comes into force, 2026.
         <a href="https://www.gpblog.com/en/features/mercedes-compression-ratio-track-saga-over-as-monaco-gp-change-comes-into-force">gpblog.com</a></li>
       <li id="ref-8">Crash.net. Max Verstappen details Red Bull's true F1 engine reality after FIA ADUO verdict, September 2026.
@@ -347,8 +445,15 @@
         <a href="https://www.planetf1.com/f1-data/max-verstappen-bahrain-gp-malaysia-pole-red-bull-advantage">planetf1.com</a></li>
       <li id="ref-10">F1-Fansite. Mercedes' Sepang upgrade backfires as W17 loses straight-line speed, October 2026.
         <a href="https://www.f1-fansite.com/f1-news/mercedes-sepang-upgrade-backfires-as-w17-loses-straight-line-speed/">f1-fansite.com</a></li>
+      <li id="ref-11">PlanetF1. Christian Horner: Mercedes and Red Bull pushing F1 2026 limits, not cheating, 2026.
+        <a href="https://www.planetf1.com/news/christian-horner-f1-2026-power-units-compression-ratio-mercedes-red-bull">planetf1.com</a></li>
+      <li id="ref-12">Motorsport.com. Red Bull confident new F1 power unit is legal, albeit "on the very limit" of the rules, 2026.
+        <a href="https://www.motorsport.com/f1/news/red-bull-on-noise-over-f1-engine-trick-confident-its-legal/10790337/">motorsport.com</a></li>
+      <li id="ref-13">Autosport. Explained: F1 2026's compression ratio furore, 2026.
+        <a href="https://www.autosport.com/f1/news/explained-f1-2026s-compression-ratio-furore/10786356/">autosport.com</a></li>
     </ol>
-    <p class="ack noindent">Data from Formula 1 live timing via FastF1. Upgrade lists from FIA car-presentation submissions. This is an independent analysis, not affiliated with any team or with Formula 1.</p>
+    <p class="ack noindent">Data from Formula 1 live timing via FastF1. Upgrade lists from FIA car-presentation submissions. This is an independent analysis, not affiliated
+      with any team or with Formula 1.</p>
   </section>
 </article>
 
@@ -356,7 +461,7 @@
 <script src="story.js"></script>
 <script>
 (function () {
-  var ids = ["pace", "segments_phase", "race_straight", "straight_change", "straight_profile", "taper", "clip_example", "timeline", "deg_phase", "numbers", "phase_summary"], store = {}, subs = [];
+  var ids = ["pace", "segments_phase", "race_straight", "straight_change", "straight_profile", "profile_circuits", "taper", "clip_example", "timeline", "deg_phase", "numbers", "phase_summary", "cr_windows", "cr_ferrari_event"], store = {}, subs = [];
   ids.forEach(function (i) { store[i] = { status: 'loading', rows: null }; });
   var api = { get: function (id) { return store[id] || { status: 'missing', rows: null }; },
               onData: function (fn) { subs.push(fn); fn(); } };

@@ -1,8 +1,8 @@
-metric,indent,unit,r1_5,r6_11,r12_17
-"Qualifying gap to pole, Red Bull",0,%,0.803,0.46,0.348
-"Qualifying gap to pole, Mercedes",0,%,0.0,0.059,0.16
-"Corrected race-pace gap, Red Bull",0,%,0.978,0.655,0.516
-"Corrected race-pace gap, Mercedes",0,%,0.002,0.105,0.257
-"Qualifying lap, Red Bull minus Mercedes",0,s,0.725,0.381,0.153
-of which on straights,1,s,0.353,0.186,0.065
-"Longest straight in races, Red Bull minus Mercedes",0,s,0.168,-0.01,-0.015
+metric,indent,unit,r1_5,r1_5_lo,r1_5_hi,r1_5_n,r6_11,r6_11_lo,r6_11_hi,r6_11_n,r12_17,r12_17_lo,r12_17_hi,r12_17_n
+"Qualifying gap to pole, Red Bull",0,%,0.8025,0.4079,1.1482,5,0.4601,0.2738,0.6315,6,0.3482,0.0833,0.6394,6
+"Qualifying gap to pole, Mercedes",0,%,0.0,0.0,0.0,5,0.0587,0.0,0.1761,6,0.1604,0.0407,0.3223,6
+"Corrected race-pace gap, Red Bull",0,%,0.9747,0.6253,1.2187,5,0.3385,0.1364,0.5094,5,0.5135,0.0725,1.0791,5
+"Corrected race-pace gap, Mercedes",0,%,0.0021,0.0,0.0064,5,0.1263,0.0155,0.2624,5,0.2518,0.1004,0.3937,5
+"Qualifying lap, Red Bull minus Mercedes",0,s,0.686,0.3574,1.0138,5,0.3343,0.2007,0.5004,5,0.151,-0.201,0.5206,6
+of which on straights,1,s,0.339,0.0644,0.6137,5,0.1375,-0.0276,0.3309,5,0.0501,-0.3086,0.4088,6
+"Longest straight in races, Red Bull minus Mercedes",0,s,0.1715,0.108,0.2351,5,-0.0065,-0.0699,0.0568,4,0.0074,-0.1339,0.0959,5

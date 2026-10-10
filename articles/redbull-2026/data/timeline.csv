@@ -1,25 +1,24 @@
 round,abbr,lane,n_parts,title,major
-1,AUS,Red Bull parts,3,3 parts declared,0
 2,CHN,Red Bull parts,0,No new parts,0
 3,JPN,Red Bull parts,4,"Sidepod inlet, floor, engine cover",1
-4,MIA,Red Bull parts,7,"Biggest package: floor, sidepods, front wing, rotating Straight-Mode rear wing, ~6 kg lighter",1
+4,MIA,Red Bull parts,7,"Biggest package: floor, sidepods, front wing, rotating Straight-Mode rear wing",1
 5,CAN,Red Bull parts,4,4 parts declared,0
 6,MON,Red Bull parts,4,4 parts declared,0
 7,BAR,Red Bull parts,2,2 parts declared,0
-8,AUT,Red Bull parts,8,"Austria package: sidepod inlet, floor, rear wing, more weight off",1
+8,AUT,Red Bull parts,8,"Sidepod inlet, floor, rear wing",1
 9,GBR,Red Bull parts,1,1 parts declared,0
 10,BEL,Red Bull parts,2,Rotating rear wing withdrawn after failures,1
 11,HUN,Red Bull parts,3,Rotating rear wing returns; diffuser and beam wing,1
 12,NED,Red Bull parts,1,1 parts declared,0
 13,ITA,Red Bull parts,4,4 parts declared,0
-14,MAD,Red Bull parts,2,Energy-management and degradation fixes,1
+14,MAD,Red Bull parts,2,2 parts declared,0
 15,AZE,Red Bull parts,5,Last major package: floor and diffuser,1
 16,SEP*,Red Bull parts,1,1 parts declared,0
 17,SIN,Red Bull parts,2,2 parts declared,0
-4,MIA,Rules and engines,0,"FIA energy package: super-clip 250 to 350 kW, race 250 kW sectors, Boost capped",1
+4,MIA,Rules and engines,0,FIA energy package: full-throttle harvest cap 250 to 350 kW; race 250 kW sectors; Boost capped,1
 5,CAN,Rules and engines,0,ADUO period 1 ends: Red Bull-Ford is the ICE benchmark,1
-6,MON,Rules and engines,0,Compression-ratio test at 130 C in force (aimed at Mercedes ICE),1
+6,MON,Rules and engines,0,Compression-ratio test at 130 C in force from 1 June (aimed at Mercedes; Red Bull-Ford reportedly used a similar idea),1
 7,BAR,Rules and engines,0,Audi first ADUO engine upgrade,1
 8,AUT,Rules and engines,0,Ferrari first ADUO engine upgrade,1
 12,NED,Rules and engines,0,Honda ADUO engine upgrade,1
-13,ITA,Rules and engines,0,Monza: season-low 5 MJ qualifying recharge,1
+13,ITA,Rules and engines,0,Ferrari second ADUO upgrade (revised turbo); Monza 5 MJ qualifying,1

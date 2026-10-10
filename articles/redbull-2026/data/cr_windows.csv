@@ -1,0 +1,21 @@
+metric,group,window,beta,lo,hi,confidence_pct
+race_peak_speed,Mercedes-powered,R7-12 (right after the test),-0.126,-1.227,1.062,56.3
+race_peak_speed,Red Bull-Ford,R7-12 (right after the test),0.483,-0.836,1.897,24.1
+race_peak_speed,Mercedes-powered,R13-17 (from Monza),-2.143,-3.156,-1.024,100.0
+race_peak_speed,Red Bull-Ford,R13-17 (from Monza),-1.479,-2.739,-0.184,98.6
+race_late_speed,Mercedes-powered,R7-12 (right after the test),-0.001,-1.3,1.175,43.5
+race_late_speed,Red Bull-Ford,R7-12 (right after the test),0.808,-0.304,1.901,8.3
+race_late_speed,Mercedes-powered,R13-17 (from Monza),-2.162,-2.887,-1.315,100.0
+race_late_speed,Red Bull-Ford,R13-17 (from Monza),-1.141,-2.354,-0.184,99.3
+race_straight_time,Mercedes-powered,R7-12 (right after the test),0.079,-0.287,0.428,68.1
+race_straight_time,Red Bull-Ford,R7-12 (right after the test),-0.493,-0.981,-0.071,1.2
+race_straight_time,Mercedes-powered,R13-17 (from Monza),0.264,-0.404,0.883,78.6
+race_straight_time,Red Bull-Ford,R13-17 (from Monza),-0.277,-0.863,0.182,15.1
+quali_straight_time,Mercedes-powered,R7-12 (right after the test),0.134,-0.123,0.414,82.6
+quali_straight_time,Red Bull-Ford,R7-12 (right after the test),-0.433,-0.856,-0.112,0.1
+quali_straight_time,Mercedes-powered,R13-17 (from Monza),0.093,-0.217,0.421,68.8
+quali_straight_time,Red Bull-Ford,R13-17 (from Monza),-0.288,-0.855,0.26,16.0
+quali_trap,Mercedes-powered,R7-12 (right after the test),2.942,-1.293,7.42,8.5
+quali_trap,Red Bull-Ford,R7-12 (right after the test),-3.933,-8.586,0.062,97.1
+quali_trap,Mercedes-powered,R13-17 (from Monza),0.183,-4.917,4.253,47.1
+quali_trap,Red Bull-Ford,R13-17 (from Monza),-5.367,-10.968,-0.465,98.7

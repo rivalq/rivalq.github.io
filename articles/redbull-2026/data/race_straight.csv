@@ -1,56 +1,56 @@
-round,team,t_vs_mer,abbr
-1,Ferrari,-0.003,AUS
-1,McLaren,0.028,AUS
-1,Racing Bulls,-0.006,AUS
-1,Red Bull,0.125,AUS
-2,Ferrari,0.288,CHN
-2,Racing Bulls,0.246,CHN
-2,Red Bull,0.154,CHN
-3,Ferrari,0.125,JPN
-3,McLaren,0.178,JPN
-3,Racing Bulls,0.068,JPN
-3,Red Bull,0.205,JPN
-4,Ferrari,0.472,MIA
-4,McLaren,0.43,MIA
-4,Racing Bulls,0.277,MIA
-4,Red Bull,0.274,MIA
-5,Ferrari,0.136,CAN
-5,McLaren,0.183,CAN
-5,Racing Bulls,0.125,CAN
-5,Red Bull,0.082,CAN
-7,Ferrari,0.096,BAR
-7,McLaren,0.036,BAR
-7,Racing Bulls,0.062,BAR
-7,Red Bull,0.005,BAR
-8,Ferrari,-0.049,AUT
-8,McLaren,-0.04,AUT
-8,Racing Bulls,-0.029,AUT
-8,Red Bull,-0.094,AUT
-9,Ferrari,0.293,GBR
-9,McLaren,0.17,GBR
-9,Racing Bulls,0.437,GBR
-9,Red Bull,0.147,GBR
-10,Ferrari,-0.045,BEL
-10,McLaren,-0.08,BEL
-10,Racing Bulls,-0.119,BEL
-10,Red Bull,-0.098,BEL
-12,Ferrari,0.063,NED
-12,McLaren,0.062,NED
-12,Racing Bulls,0.048,NED
-12,Red Bull,0.117,NED
-13,Ferrari,-0.102,ITA
-13,McLaren,0.14,ITA
-13,Racing Bulls,0.015,ITA
-13,Red Bull,-0.057,ITA
-14,Ferrari,0.104,MAD
-14,McLaren,0.084,MAD
-14,Racing Bulls,0.111,MAD
-14,Red Bull,0.11,MAD
-15,Ferrari,0.016,AZE
-15,McLaren,0.356,AZE
-15,Racing Bulls,-0.155,AZE
-15,Red Bull,-0.265,AZE
-16,Ferrari,0.008,SEP*
-16,McLaren,-0.041,SEP*
-16,Racing Bulls,0.122,SEP*
-16,Red Bull,0.018,SEP*
+round,team,t_vs_mer,n_clean,abbr
+1,Ferrari,-0.0241,57,AUS
+1,McLaren,0.052,32,AUS
+1,Racing Bulls,-0.0028,63,AUS
+1,Red Bull,0.1065,29,AUS
+2,Ferrari,0.1694,39,CHN
+2,Racing Bulls,0.2244,40,CHN
+2,Red Bull,0.2498,28,CHN
+3,Ferrari,0.1145,26,JPN
+3,McLaren,0.1601,46,JPN
+3,Racing Bulls,0.0801,30,JPN
+3,Red Bull,0.1661,30,JPN
+4,Ferrari,0.4119,54,MIA
+4,McLaren,0.4026,36,MIA
+4,Racing Bulls,0.222,34,MIA
+4,Red Bull,0.2548,31,MIA
+5,Ferrari,0.1201,61,CAN
+5,McLaren,0.1718,25,CAN
+5,Racing Bulls,0.107,34,CAN
+5,Red Bull,0.0804,53,CAN
+7,Ferrari,0.0827,63,BAR
+7,McLaren,0.1129,58,BAR
+7,Racing Bulls,0.1275,78,BAR
+7,Red Bull,0.0328,72,BAR
+8,Ferrari,0.0195,55,AUT
+8,McLaren,-0.025,60,AUT
+8,Racing Bulls,-0.0584,57,AUT
+8,Red Bull,-0.0776,61,AUT
+9,Ferrari,0.2845,48,GBR
+9,McLaren,0.1161,43,GBR
+9,Racing Bulls,0.4129,43,GBR
+9,Red Bull,0.0809,46,GBR
+10,Ferrari,0.0106,31,BEL
+10,McLaren,-0.0674,38,BEL
+10,Racing Bulls,-0.14,40,BEL
+10,Red Bull,-0.0622,50,BEL
+12,Ferrari,0.0527,56,NED
+12,McLaren,0.0816,53,NED
+12,Racing Bulls,0.0495,76,NED
+12,Red Bull,0.1093,46,NED
+13,Ferrari,0.1234,15,ITA
+13,McLaren,-0.0234,26,ITA
+13,Racing Bulls,0.1048,74,ITA
+13,Red Bull,0.0905,45,ITA
+14,Ferrari,0.0674,41,MAD
+14,McLaren,0.0751,53,MAD
+14,Racing Bulls,0.0747,47,MAD
+14,Red Bull,0.08,80,MAD
+15,Ferrari,0.0684,39,AZE
+15,McLaren,0.3862,36,AZE
+15,Racing Bulls,-0.1433,40,AZE
+15,Red Bull,-0.2681,9,AZE
+16,Ferrari,0.0716,22,SEP*
+16,McLaren,-0.0197,22,SEP*
+16,Racing Bulls,0.0871,37,SEP*
+16,Red Bull,0.0253,47,SEP*

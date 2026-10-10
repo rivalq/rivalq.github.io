@@ -136,3 +136,9 @@
 }
 
 .paper .notice { border: .7px solid var(--rule); padding: .6rem .8rem; margin: 0 0 1.8rem; font-size: .92rem; line-height: 1.45; text-align: left; }
+
+.paper .tldr { border-top: 1.4px solid var(--rule); border-bottom: .7px solid var(--rule); padding: .8rem 0 .6rem; margin: 0 0 2rem; }
+.paper .tldr h2 { font-size: 1.05rem; margin: 0 0 .4rem; }
+.paper .tldr ol { margin: 0; padding-left: 1.4rem; }
+.paper .tldr li { font-size: .97rem; line-height: 1.48; margin: .35rem 0; }
+.paper table.booktabs .ci { color: var(--muted); font-size: .82em; }

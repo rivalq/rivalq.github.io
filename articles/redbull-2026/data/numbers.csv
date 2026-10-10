@@ -1,46 +1,112 @@
 key,value,unit,label
-rb_q_p1,0.803,%,"Red Bull qualifying gap to pole, R1-5"
-rb_q_p3,0.348,%,"Red Bull qualifying gap to pole, R12-17"
-mer_q_p3,0.16,%,"Mercedes qualifying gap to pole, R12-17"
-rb_r_p1,0.978,%,"Red Bull corrected race-pace gap, R1-5"
-rb_r_p3,0.516,%,"Red Bull corrected race-pace gap, R12-17"
-mer_r_p3,0.257,%,"Mercedes corrected race-pace gap, R12-17"
-rb_lap_p1,0.725,s,"Red Bull minus Mercedes, qualifying lap, R1-5"
-rb_lap_p3,0.153,s,"Red Bull minus Mercedes, qualifying lap, R12-17"
-rb_str_p1,0.353,s,"Red Bull minus Mercedes on straights, R1-5"
-rb_str_p3,0.065,s,"Red Bull minus Mercedes on straights, R12-17"
-rb_ls_p1,0.168,s,"Race longest straight, Red Bull minus Mercedes, R1-5"
-rb_ls_p3,-0.015,s,"Race longest straight, Red Bull minus Mercedes, R12-17"
-rb_ls_chg,-0.055,s,Red Bull change vs field
-mer_ls_chg,0.126,s,Mercedes change vs field
-rb_trap_chg,-2.767,km/h,Red Bull trap change vs field
-rb_qs_chg,-0.152,s/lap,Red Bull quali straights change
-rbs_qs_chg,-0.092,s/lap,Racing Bulls quali straights change
-n_sessions,84.0,,Sessions analysed
-n_laps,40905.0,,Timed laps analysed
-n_straight_passes,169377.0,,Straight passes measured
-lap_closed,0.572,s,"Lap time Red Bull closed on Mercedes, R1-5 to R12-17"
-str_closed,0.288,s,Of which on straights
-rbs_str_closed,0.189,s,"Racing Bulls, same measure"
-close_air_cost,0.314,s,Median race cost of a lap within 1 s of the car ahead
-fuel_slope,0.052,s/lap,Median lap-time gain per lap from fuel burn and track evolution
+n_sessions,84.0,,Sessions downloaded
+n_laps,40905.0,,Timed laps
+n_straight_passes,150321.0,,Straight passes measured
+rb_q_p1,0.8025,%,"Red Bull qualifying gap to pole, R1-5"
+rb_q_p1_lo,0.4079,%,95% CI low
+rb_q_p1_hi,1.1482,%,95% CI high
+rb_q_p3,0.3482,%,"Red Bull qualifying gap to pole, R12-17"
+rb_q_p3_lo,0.0833,%,95% CI low
+rb_q_p3_hi,0.6394,%,95% CI high
+mer_q_p3,0.1604,%,"Mercedes qualifying gap to pole, R12-17"
+rb_r_p1,0.9747,%,"Red Bull corrected race-pace gap, R1-5"
+rb_r_p1_lo,0.6253,%,95% CI low
+rb_r_p1_hi,1.2187,%,95% CI high
+rb_r_p3,0.5135,%,"Red Bull corrected race-pace gap, R12-17"
+rb_r_p3_lo,0.0725,%,95% CI low
+rb_r_p3_hi,1.0791,%,95% CI high
+mer_r_p3,0.2518,%,"Mercedes corrected race-pace gap, R12-17"
+lap_closed,0.535,s,Qualifying lap time closed on Mercedes (reconciled grids)
+off_lap_closed,0.5186,s,Same from official lap times
+str_closed,0.289,s,Of which on straights
+rb_str_p1,0.339,s,"Red Bull minus Mercedes on straights, R1-5"
+rb_str_p3,0.0501,s,"Red Bull minus Mercedes on straights, R12-17"
+rb_str_p3_lo,-0.3086,s,95% CI low
+rb_str_p3_hi,0.4088,s,95% CI high
+rb_ls_p1,0.1715,s,"Race longest straight, RB minus MER, R1-5"
+rb_ls_p3,0.0074,s,"Race longest straight, RB minus MER, R12-17"
+rb_ls_p3_lo,-0.1339,s,95% CI low
+rb_ls_p3_hi,0.0959,s,95% CI high
+rb_ls_chg,-0.0804,s,"Red Bull change vs field, race longest straight"
+rb_ls_chg_lo,-0.1777,s,95% CI low
+rb_ls_chg_hi,0.016,s,95% CI high
+mer_ls_chg,0.0899,s,"Mercedes change vs field, race longest straight"
+mer_ls_chg_lo,-0.0192,s,95% CI low
+mer_ls_chg_hi,0.2036,s,95% CI high
+rb_qs_chg,-0.0978,s/lap,"Red Bull change vs field, qualifying straights"
+rb_qs_chg_lo,-0.2889,s/lap,95% CI low
+rb_qs_chg_hi,0.0901,s/lap,95% CI high
+rbs_qs_chg,-0.0443,s/lap,"Racing Bulls change vs field, qualifying straights"
+rbs_ls_chg,0.021,s,"Racing Bulls change vs field, race longest straight"
+rbs_share,45.3083,%,"Racing Bulls' qualifying-straights change as a share of Red Bull's, vs field"
+n_lost_q,8.0,,Teams whose qualifying straights got slower vs the field after R5
+n_teams_q,11.0,,Teams in that comparison
+rb_trap_chg,-3.6,km/h,Red Bull trap change vs field
+rb_trap_chg_lo,-7.4914,km/h,95% CI low
+rb_trap_chg_hi,-0.1818,km/h,95% CI high
+prof_early,0.8545,km/h,"RB minus MER, first 40% of longest straight, races R12-17, equal weight per circuit"
+prof_early_lo,-0.9541,km/h,95% CI low
+prof_early_hi,3.1185,km/h,95% CI high
+prof_early_neg,3.0,,Late-season races where Red Bull was slower in the first 40%
+prof_early_n,5.0,,Late-season races in the profile
+prof_early_adj,0.3542,km/h,"Same, entry-speed controlled"
+prof_early_adj_lo,-0.8825,km/h,95% CI low
+prof_early_adj_hi,1.8547,km/h,95% CI high
+prof_end,-3.1761,km/h,"RB minus MER, last 10%, races R12-17"
+prof_early_p1,-1.9849,km/h,"RB minus MER, first 40%, races R1-5"
+q_late,-0.3668,km/h,"RB minus MER, last 40%, qualifying R12-17"
+q_late_lo,-4.2711,km/h,95% CI low
+q_late_hi,2.2375,km/h,95% CI high
+entry_p1,-1.8505,km/h,"RB minus MER speed in the first 10% (entry), races R1-5"
+entry_p3,1.8114,km/h,"Same, races R12-17"
+cr_peak_m_e,-0.1261,km/h,"Mercedes-powered vs Ferrari-powered, race peak speed, R7-12"
+cr_peak_m_e_lo,-1.2274,km/h,95% CI low
+cr_peak_m_e_hi,1.062,km/h,95% CI high
+cr_peak_m_e_conf,56.3,%,Confidence of a loss
+cr_late_m_e_conf,43.5,%,"Confidence of a loss, late-straight speed"
+cr_rst_m_e,0.0795,%,"Mercedes-powered vs Ferrari-powered, race straight time, R7-12"
+cr_rst_m_e_conf,68.1,%,Confidence of a loss
+cr_qst_m_e_conf,82.6,%,"Confidence of a loss, qualifying straights"
+cr_hp_bound,13.182,hp,Largest immediate loss consistent with the data (95%)
+cr_peak_m_l,-2.1432,km/h,"Mercedes-powered vs Ferrari-powered, race peak speed, R13-17"
+cr_peak_m_l_lo,-3.1558,km/h,95% CI low
+cr_peak_m_l_hi,-1.0236,km/h,95% CI high
+cr_peak_r_l,-1.4788,km/h,"Red Bull-Ford vs Ferrari-powered, race peak speed, R13-17"
+cr_peak_r_l_conf,98.6,%,Confidence of a loss
+cr_rst_r_e,-0.4932,%,"Red Bull-Ford vs Ferrari-powered, race straight time, R7-12"
+cr_rst_r_e_conf,1.2,%,Confidence of a loss
+cr_qst_r_e,-0.4329,%,"Red Bull-Ford vs Ferrari-powered, qualifying straights, R7-12"
+close_air_cost,0.2615,s,Median race cost of a lap within 1 s of the car ahead
+fuel_slope,0.0572,s/lap,Median lap-time gain per lap from fuel burn and track evolution
 spa_trap_vs_mer,-14.0,km/h,"Spa qualifying speed trap, Red Bull minus Mercedes"
 aus_trap_vs_mer,9.0,km/h,"Australia qualifying speed trap, Red Bull minus Mercedes"
-aus_str_vs_mer,0.422,s,"Australia qualifying time on straights, Red Bull minus Mercedes"
-sep_str_vs_mer,-0.586,s,"Sepang qualifying time on straights, Red Bull minus Mercedes"
-jpn_q_gap,1.352,%,"Red Bull qualifying gap to pole, Japan"
-mia_q_gap,0.189,%,"Red Bull qualifying gap to pole, Miami"
-deg_rb_p3,16.5,ms/lap,"Red Bull tyre degradation, R12-17"
-deg_mer_p3,23.9,ms/lap,"Mercedes tyre degradation, R12-17"
-prof_race_p3_early,1.94,km/h,"Red Bull minus Mercedes, first 40% of longest straight, races R12-17"
-prof_race_p3_end,-2.32,km/h,"Same, last 10%"
+aus_str_vs_mer,0.4303,s,"Australia qualifying straights, Red Bull minus Mercedes"
+sep_str_vs_mer,-0.6395,s,"Sepang qualifying straights, Red Bull minus Mercedes"
+jpn_q_gap,1.3517,%,"Red Bull qualifying gap to pole, Japan"
+mia_q_gap,0.1891,%,"Red Bull qualifying gap to pole, Miami"
+deg_rb_p3,16.6421,ms/lap,"Red Bull tyre degradation, R12-17"
+deg_mer_p3,24.2283,ms/lap,"Mercedes tyre degradation, R12-17"
 n_parts,50.0,,Red Bull parts declared to the FIA after the launch spec
+grid_reject,28.6466,%,Timed qualifying and race laps rejected by the alignment checks
+dur_p50,0.0393,s,Median absolute lap-duration error before reconciliation
+dur_p99,0.2076,s,99th percentile of the same
 mguk_kw,350.0,kW,MGU-K power limit (FIA C5.2.7)
-taper_start,290.0,km/h,"Speed where electric power starts to fade, normal mode (FIA C5.2.8)"
-taper_zero,345.0,km/h,"Speed where electric power reaches zero, normal mode (FIA C5.2.8)"
+taper_start,290.0,km/h,"Electric power starts to fade, normal mode (FIA C5.2.8)"
+taper_zero,345.0,km/h,"Electric power reaches zero, normal mode (FIA C5.2.8)"
 ot_full,337.5,km/h,Full electric power holds to this speed with Overtake on (FIA C5.2.8)
 soc_mj,4.0,MJ,Battery state-of-charge window on track (FIA C5.2.9)
 recharge_mj,8.5,MJ,Base energy recharge limit per lap (FIA C5.2.10)
 monza_q_mj,5.0,MJ,Monza qualifying recharge limit (FIA event document)
-superclip_old,250.0,kW,"Super-clip harvest cap before Miami (FIA C5.12.6, Issue 16)"
-superclip_new,350.0,kW,Super-clip harvest cap from Miami (FIA Issue 17)
+superclip_old,250.0,kW,"Full-throttle harvest cap before Miami (FIA C5.12.6, Issue 16)"
+superclip_new,350.0,kW,Full-throttle harvest cap from Miami (FIA Issue 17)
+astra_acc,-0.658,m/s²,"Codex gpt-6-astra: Mercedes-powered vs Ferrari-powered matched-speed acceleration change, 290-340 km/h (spec A*)"
+astra_acc_lo,-1.681,m/s²,95% interval low
+astra_acc_hi,0.365,m/s²,95% interval high
+astra_acc_310,-0.033,m/s²,"Same, 310-330 km/h band (spec 48)"
+astra_r8,-7.056,km/h,Joint model: peak-speed step at Ferrari's Austria upgrade (spec 24)
+astra_r8_lo,-10.943,km/h,95% interval low
+astra_r8_hi,-3.169,km/h,95% interval high
+astra_hot,1.493,km/h,Joint model: peak-speed step at the hot test (spec 22)
+astra_n_specs,90.0,,Specifications estimated
+astra_n_rank05,14.0,,Specifications with randomisation rank below 0.05
+astra_n_ci,3.0,,Specifications whose 95% interval excludes zero
