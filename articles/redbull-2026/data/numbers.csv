@@ -1,0 +1,46 @@
+key,value,unit,label
+rb_q_p1,0.803,%,"Red Bull qualifying gap to pole, R1-5"
+rb_q_p3,0.348,%,"Red Bull qualifying gap to pole, R12-17"
+mer_q_p3,0.16,%,"Mercedes qualifying gap to pole, R12-17"
+rb_r_p1,0.978,%,"Red Bull corrected race-pace gap, R1-5"
+rb_r_p3,0.516,%,"Red Bull corrected race-pace gap, R12-17"
+mer_r_p3,0.257,%,"Mercedes corrected race-pace gap, R12-17"
+rb_lap_p1,0.725,s,"Red Bull minus Mercedes, qualifying lap, R1-5"
+rb_lap_p3,0.153,s,"Red Bull minus Mercedes, qualifying lap, R12-17"
+rb_str_p1,0.353,s,"Red Bull minus Mercedes on straights, R1-5"
+rb_str_p3,0.065,s,"Red Bull minus Mercedes on straights, R12-17"
+rb_ls_p1,0.168,s,"Race longest straight, Red Bull minus Mercedes, R1-5"
+rb_ls_p3,-0.015,s,"Race longest straight, Red Bull minus Mercedes, R12-17"
+rb_ls_chg,-0.055,s,Red Bull change vs field
+mer_ls_chg,0.126,s,Mercedes change vs field
+rb_trap_chg,-2.767,km/h,Red Bull trap change vs field
+rb_qs_chg,-0.152,s/lap,Red Bull quali straights change
+rbs_qs_chg,-0.092,s/lap,Racing Bulls quali straights change
+n_sessions,84.0,,Sessions analysed
+n_laps,40905.0,,Timed laps analysed
+n_straight_passes,169377.0,,Straight passes measured
+lap_closed,0.572,s,"Lap time Red Bull closed on Mercedes, R1-5 to R12-17"
+str_closed,0.288,s,Of which on straights
+rbs_str_closed,0.189,s,"Racing Bulls, same measure"
+close_air_cost,0.314,s,Median race cost of a lap within 1 s of the car ahead
+fuel_slope,0.052,s/lap,Median lap-time gain per lap from fuel burn and track evolution
+spa_trap_vs_mer,-14.0,km/h,"Spa qualifying speed trap, Red Bull minus Mercedes"
+aus_trap_vs_mer,9.0,km/h,"Australia qualifying speed trap, Red Bull minus Mercedes"
+aus_str_vs_mer,0.422,s,"Australia qualifying time on straights, Red Bull minus Mercedes"
+sep_str_vs_mer,-0.586,s,"Sepang qualifying time on straights, Red Bull minus Mercedes"
+jpn_q_gap,1.352,%,"Red Bull qualifying gap to pole, Japan"
+mia_q_gap,0.189,%,"Red Bull qualifying gap to pole, Miami"
+deg_rb_p3,16.5,ms/lap,"Red Bull tyre degradation, R12-17"
+deg_mer_p3,23.9,ms/lap,"Mercedes tyre degradation, R12-17"
+prof_race_p3_early,1.94,km/h,"Red Bull minus Mercedes, first 40% of longest straight, races R12-17"
+prof_race_p3_end,-2.32,km/h,"Same, last 10%"
+n_parts,50.0,,Red Bull parts declared to the FIA after the launch spec
+mguk_kw,350.0,kW,MGU-K power limit (FIA C5.2.7)
+taper_start,290.0,km/h,"Speed where electric power starts to fade, normal mode (FIA C5.2.8)"
+taper_zero,345.0,km/h,"Speed where electric power reaches zero, normal mode (FIA C5.2.8)"
+ot_full,337.5,km/h,Full electric power holds to this speed with Overtake on (FIA C5.2.8)
+soc_mj,4.0,MJ,Battery state-of-charge window on track (FIA C5.2.9)
+recharge_mj,8.5,MJ,Base energy recharge limit per lap (FIA C5.2.10)
+monza_q_mj,5.0,MJ,Monza qualifying recharge limit (FIA event document)
+superclip_old,250.0,kW,"Super-clip harvest cap before Miami (FIA C5.12.6, Issue 16)"
+superclip_new,350.0,kW,Super-clip harvest cap from Miami (FIA Issue 17)

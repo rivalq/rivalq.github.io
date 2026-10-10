@@ -1,0 +1,8 @@
+metric,indent,unit,r1_5,r6_11,r12_17
+"Qualifying gap to pole, Red Bull",0,%,0.803,0.46,0.348
+"Qualifying gap to pole, Mercedes",0,%,0.0,0.059,0.16
+"Corrected race-pace gap, Red Bull",0,%,0.978,0.655,0.516
+"Corrected race-pace gap, Mercedes",0,%,0.002,0.105,0.257
+"Qualifying lap, Red Bull minus Mercedes",0,s,0.725,0.381,0.153
+of which on straights,1,s,0.353,0.186,0.065
+"Longest straight in races, Red Bull minus Mercedes",0,s,0.168,-0.01,-0.015

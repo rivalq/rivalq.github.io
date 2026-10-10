@@ -1,0 +1,34 @@
+kind,team,before,after,change,unit,key
+race_longest_straight,Alpine,-0.067,-0.032,0.035,s,race_longest_straight|Alpine
+race_longest_straight,Aston Martin,0.466,0.455,-0.011,s,race_longest_straight|Aston Martin
+race_longest_straight,Audi,0.077,0.083,0.006,s,race_longest_straight|Audi
+race_longest_straight,Cadillac,0.138,0.229,0.091,s,race_longest_straight|Cadillac
+race_longest_straight,Ferrari,-0.031,-0.066,-0.035,s,race_longest_straight|Ferrari
+race_longest_straight,Haas,0.025,0.088,0.063,s,race_longest_straight|Haas
+race_longest_straight,McLaren,-0.022,-0.033,-0.01,s,race_longest_straight|McLaren
+race_longest_straight,Mercedes,-0.235,-0.109,0.126,s,race_longest_straight|Mercedes
+race_longest_straight,Racing Bulls,-0.093,-0.054,0.039,s,race_longest_straight|Racing Bulls
+race_longest_straight,Red Bull,-0.067,-0.122,-0.055,s,race_longest_straight|Red Bull
+race_longest_straight,Williams,-0.032,0.057,0.088,s,race_longest_straight|Williams
+quali_all_straights,Alpine,-0.119,-0.081,0.037,s/lap,quali_all_straights|Alpine
+quali_all_straights,Aston Martin,1.028,1.126,0.098,s/lap,quali_all_straights|Aston Martin
+quali_all_straights,Audi,0.185,0.201,0.016,s/lap,quali_all_straights|Audi
+quali_all_straights,Cadillac,0.715,0.554,-0.161,s/lap,quali_all_straights|Cadillac
+quali_all_straights,Ferrari,-0.104,-0.039,0.066,s/lap,quali_all_straights|Ferrari
+quali_all_straights,Haas,0.074,0.263,0.189,s/lap,quali_all_straights|Haas
+quali_all_straights,McLaren,-0.358,-0.209,0.149,s/lap,quali_all_straights|McLaren
+quali_all_straights,Mercedes,-0.468,-0.392,0.075,s/lap,quali_all_straights|Mercedes
+quali_all_straights,Racing Bulls,-0.167,-0.259,-0.092,s/lap,quali_all_straights|Racing Bulls
+quali_all_straights,Red Bull,-0.115,-0.267,-0.152,s/lap,quali_all_straights|Red Bull
+quali_all_straights,Williams,0.224,0.342,0.118,s/lap,quali_all_straights|Williams
+quali_speed_trap,Alpine,1.2,4.25,3.05,km/h,quali_speed_trap|Alpine
+quali_speed_trap,Aston Martin,-8.6,-8.833,-0.233,km/h,quali_speed_trap|Aston Martin
+quali_speed_trap,Audi,5.0,-1.333,-6.333,km/h,quali_speed_trap|Audi
+quali_speed_trap,Cadillac,-1.2,-1.167,0.033,km/h,quali_speed_trap|Cadillac
+quali_speed_trap,Ferrari,0.6,0.583,-0.017,km/h,quali_speed_trap|Ferrari
+quali_speed_trap,Haas,-3.6,0.5,4.1,km/h,quali_speed_trap|Haas
+quali_speed_trap,McLaren,-4.0,0.417,4.417,km/h,quali_speed_trap|McLaren
+quali_speed_trap,Mercedes,-1.2,2.417,3.617,km/h,quali_speed_trap|Mercedes
+quali_speed_trap,Racing Bulls,4.6,1.25,-3.35,km/h,quali_speed_trap|Racing Bulls
+quali_speed_trap,Red Bull,1.6,-1.167,-2.767,km/h,quali_speed_trap|Red Bull
+quali_speed_trap,Williams,-1.8,1.333,3.133,km/h,quali_speed_trap|Williams

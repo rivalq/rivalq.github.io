@@ -1,0 +1,136 @@
+/* Paper layout: one justified column in Latin Modern, LaTeX article conventions
+   (indented paragraphs, numbered sections, booktabs tables, captions under figures). */
+.paper {
+  --paper: #ffffff; --ink: #141414; --ink-2: #444444; --muted: #6b6b6b; --rule: #1a1a1a; --hair: #d9d9d9;
+  --link: #1d3f8f; --hl: #f3f5fa;
+  --rb: #1f4e9e; --mer: #0e8c7f; --mcl: #d9731a; --fer: #c22b3b; --rbs: #7fa3d9; --grey: #9a9a9a; --ot: #7b3294;
+  --serif: "LM Roman", "Latin Modern Roman", "CMU Serif", "Computer Modern Serif", Georgia, "Times New Roman", serif;
+  --caps: "LM Roman Caps", "LM Roman", "Latin Modern Roman", Georgia, serif;
+  --mono: "LM Mono", "Latin Modern Mono", "CMU Typewriter Text", ui-monospace, Menlo, monospace;
+  --measure: 39rem;
+  background: var(--paper); color: var(--ink);
+  font-family: var(--serif); font-size: 1.14rem; line-height: 1.52;
+  font-kerning: normal; font-variant-ligatures: common-ligatures;
+  max-width: var(--measure); margin-inline: auto; padding-block: 2.5rem 4rem;
+  counter-reset: sec;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .paper {
+    --paper: #15171b; --ink: #e9e7e2; --ink-2: #c4c2bd; --muted: #9a9894; --rule: #d6d4cf; --hair: #3a3c40;
+    --link: #9db8f2; --hl: #1d2026;
+    --rb: #82a6ee; --mer: #4cc3b4; --mcl: #f0a35c; --fer: #ef7c87; --rbs: #b2c7ef; --grey: #8a8a8a; --ot: #c597de;
+  }
+}
+:root[data-theme="dark"] .paper {
+  --paper: #15171b; --ink: #e9e7e2; --ink-2: #c4c2bd; --muted: #9a9894; --rule: #d6d4cf; --hair: #3a3c40;
+  --link: #9db8f2; --hl: #1d2026;
+  --rb: #82a6ee; --mer: #4cc3b4; --mcl: #f0a35c; --fer: #ef7c87; --rbs: #b2c7ef; --grey: #8a8a8a; --ot: #c597de;
+}
+.paper.in-dash { background: transparent; }
+
+.paper a { color: var(--link); text-decoration: none; }
+.paper a:hover { text-decoration: underline; }
+.paper :focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
+/* title block */
+.paper .titleblock { text-align: center; margin-bottom: 2.2rem; }
+.paper .titleblock h1 { font-weight: 400; font-size: 1.78rem; line-height: 1.22; margin: 0 0 1.1rem; text-wrap: balance; letter-spacing: -.005em; }
+.paper .titleblock p { text-indent: 0; text-align: center; hyphens: manual; }
+.paper .titleblock .author { font-size: 1.08rem; margin: 0; }
+.paper .titleblock .affil { font-size: .95rem; color: var(--ink-2); font-style: italic; margin: .15rem 0 0; }
+.paper .titleblock .date { font-size: 1rem; margin: .7rem 0 0; }
+
+.paper .abstract { margin: 0 2.4rem 2.2rem; font-size: .93rem; line-height: 1.5; text-align: justify; hyphens: auto; }
+.paper .abstract h2 { text-align: center; font-size: .95rem; font-weight: 700; margin: 0 0 .35rem; counter-increment: none; }
+.paper .abstract h2::before { content: none; }
+.paper .abstract p { text-indent: 0; }
+.paper .keywords { margin-top: .6rem; font-size: .88rem; }
+.paper .keywords b { font-weight: 700; }
+
+/* body text */
+.paper p { margin: 0; text-indent: 1.5em; text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
+.paper h2 + p, .paper h3 + p, .paper figure + p, .paper .eq + p, .paper table + p, .paper .tablewrap + p,
+.paper ol + p, .paper ul + p, .paper .noindent, .paper dl + p { text-indent: 0; }
+.paper .eq + p.cont { text-indent: 0; }
+.paper b, .paper strong { font-weight: 700; }
+.paper em { font-style: italic; }
+.paper .sc { font-family: var(--caps); letter-spacing: .02em; }
+.paper .num { font-variant-numeric: tabular-nums lining-nums; white-space: nowrap; }
+.paper code, .paper .tt { font-family: var(--mono); font-size: .92em; }
+
+/* sectioning */
+.paper section { margin-top: 2rem; }
+.paper h2 { font-size: 1.32rem; font-weight: 700; line-height: 1.3; margin: 0 0 .7rem; text-align: left; counter-increment: sec; counter-reset: sub; }
+.paper h2::before { content: counter(sec) "\2003"; }
+.paper h2.unnumbered { counter-increment: none; }
+.paper h2.unnumbered::before { content: none; }
+.paper h3 { font-size: 1.1rem; font-weight: 700; margin: 1.4rem 0 .5rem; counter-increment: sub; }
+.paper h3::before { content: counter(sec) "." counter(sub) "\2003"; }
+
+.paper ol, .paper ul { margin: .5rem 0 .6rem; padding-left: 1.6rem; }
+.paper li { margin: .25rem 0; text-align: justify; hyphens: auto; }
+
+/* definition list (glossary) */
+.paper dl.glossary { margin: .6rem 0 .8rem; display: grid; grid-template-columns: minmax(7.5rem, max-content) 1fr; column-gap: 1.1rem; row-gap: .45rem; }
+.paper dl.glossary dt { font-weight: 700; }
+.paper dl.glossary dd { margin: 0; text-align: justify; hyphens: auto; }
+@media (max-width: 34rem) { .paper dl.glossary { grid-template-columns: 1fr; row-gap: .15rem; } .paper dl.glossary dd { margin-bottom: .4rem; } }
+
+/* display equations */
+.paper .eq { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 1rem; margin: .9rem 0; }
+.paper .eq math { font-size: 1.12em; overflow-x: auto; max-width: 100%; }
+.paper .eq .eqno { font-variant-numeric: tabular-nums; }
+.paper math { font-family: "LM Math", "Latin Modern Math", "STIX Two Math", "Cambria Math", math; }
+
+/* figures */
+.paper figure { margin: 1.6rem 0 1.4rem; position: relative; }
+.paper figure .chart { width: 100%; min-height: 280px; }
+.paper figure .chart.short { min-height: 210px; }
+.paper figure .chart svg { display: block; overflow: visible; }
+.paper figcaption { font-size: .9rem; line-height: 1.45; margin-top: .6rem; text-align: justify; hyphens: auto; }
+.paper figcaption .lab { font-weight: 700; }
+.paper .subfig { display: flex; flex-wrap: wrap; gap: .2rem 1.1rem; justify-content: center; margin-bottom: .4rem; font-size: .92rem; }
+.paper .subfig button { font: inherit; background: none; border: 0; padding: .1rem 0; color: var(--ink-2); cursor: pointer;
+  border-bottom: 1px solid transparent; }
+.paper .subfig button[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+
+.paper .chart text { font-family: var(--serif); font-size: 12px; fill: var(--ink); }
+.paper .chart .tick text { font-size: 11.5px; }
+.paper .chart .ann { font-size: 11px; fill: var(--ink-2); font-style: italic; }
+.paper .chart .axlab { font-size: 12px; fill: var(--ink); }
+
+/* tables (booktabs) */
+.paper .tablewrap { overflow-x: auto; margin: 1.3rem 0 1.4rem; }
+.paper table.booktabs { border-collapse: collapse; margin-inline: auto; font-size: .93rem; font-variant-numeric: tabular-nums lining-nums; }
+.paper table.booktabs caption { caption-side: top; text-align: justify; font-size: .9rem; line-height: 1.45; margin-bottom: .55rem; }
+.paper table.booktabs caption .lab { font-weight: 700; }
+.paper table.booktabs thead tr:first-child th { border-top: 1.4px solid var(--rule); }
+.paper table.booktabs thead tr:last-child th { border-bottom: .7px solid var(--rule); }
+.paper table.booktabs tbody tr:last-child td { border-bottom: 1.4px solid var(--rule); }
+.paper table.booktabs th, .paper table.booktabs td { padding: .28rem .7rem; text-align: right; }
+.paper table.booktabs th:first-child, .paper table.booktabs td:first-child { text-align: left; padding-left: 0; }
+.paper table.booktabs th:last-child, .paper table.booktabs td:last-child { padding-right: 0; }
+.paper table.booktabs th { font-weight: 400; font-style: italic; }
+.paper table.booktabs td.ind { padding-left: 1.2rem; }
+.paper table.booktabs td:not(:first-child) { white-space: nowrap; }
+@media (max-width: 34rem) { .paper table.booktabs { font-size: .84rem; } .paper table.booktabs th, .paper table.booktabs td { padding-inline: .4rem; } }
+
+/* tooltip */
+.paper .tt-pop { position: absolute; pointer-events: none; background: var(--paper); border: .7px solid var(--rule);
+  padding: .3rem .5rem; font-size: .82rem; line-height: 1.35; min-width: 9rem; z-index: 5; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.paper .tt-pop .h { font-style: italic; color: var(--ink-2); margin-bottom: .15rem; }
+.paper .tt-pop .r { display: flex; gap: .45rem; align-items: center; font-variant-numeric: tabular-nums; }
+.paper .tt-pop .sw { width: .7rem; height: .18rem; flex: none; }
+.paper .tt-pop .v { margin-left: auto; padding-left: .7rem; }
+
+/* references */
+.paper ol.refs { font-size: .88rem; line-height: 1.45; padding-left: 2.1rem; }
+.paper ol.refs li { text-align: left; margin: .3rem 0; }
+.paper .cite { white-space: nowrap; }
+.paper .ack { font-size: .9rem; }
+.paper hr.fn { border: 0; border-top: .7px solid var(--rule); width: 30%; margin: 2rem 0 .8rem; }
+
+@media (max-width: 34rem) {
+  .paper { font-size: 1.05rem; }
+  .paper .abstract { margin-inline: .6rem; }
+}

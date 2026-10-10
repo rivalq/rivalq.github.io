@@ -1,0 +1,25 @@
+team,phase,class,dt_vs_mer,key
+Racing Bulls,R1-5,high,0.224,Racing Bulls|R1-5|high
+Racing Bulls,R1-5,low,0.381,Racing Bulls|R1-5|low
+Racing Bulls,R1-5,medium,0.448,Racing Bulls|R1-5|medium
+Racing Bulls,R1-5,straight,0.3,Racing Bulls|R1-5|straight
+Racing Bulls,R12-17,high,0.071,Racing Bulls|R12-17|high
+Racing Bulls,R12-17,low,0.69,Racing Bulls|R12-17|low
+Racing Bulls,R12-17,medium,0.324,Racing Bulls|R12-17|medium
+Racing Bulls,R12-17,straight,0.111,Racing Bulls|R12-17|straight
+Racing Bulls,R6-11,high,0.077,Racing Bulls|R6-11|high
+Racing Bulls,R6-11,low,0.307,Racing Bulls|R6-11|low
+Racing Bulls,R6-11,medium,0.481,Racing Bulls|R6-11|medium
+Racing Bulls,R6-11,straight,0.156,Racing Bulls|R6-11|straight
+Red Bull,R1-5,high,0.097,Red Bull|R1-5|high
+Red Bull,R1-5,low,0.073,Red Bull|R1-5|low
+Red Bull,R1-5,medium,0.201,Red Bull|R1-5|medium
+Red Bull,R1-5,straight,0.353,Red Bull|R1-5|straight
+Red Bull,R12-17,high,0.001,Red Bull|R12-17|high
+Red Bull,R12-17,low,-0.01,Red Bull|R12-17|low
+Red Bull,R12-17,medium,0.096,Red Bull|R12-17|medium
+Red Bull,R12-17,straight,0.065,Red Bull|R12-17|straight
+Red Bull,R6-11,high,-0.052,Red Bull|R6-11|high
+Red Bull,R6-11,low,0.141,Red Bull|R6-11|low
+Red Bull,R6-11,medium,0.105,Red Bull|R6-11|medium
+Red Bull,R6-11,straight,0.186,Red Bull|R6-11|straight

@@ -1,0 +1,188 @@
+round,team,quali_gap_pct,race_gap_pct,abbr
+1,Alpine,2.526,2.445,AUS
+1,Aston Martin,4.395,4.144,AUS
+1,Audi,2.169,2.382,AUS
+1,Cadillac,5.205,5.162,AUS
+1,Ferrari,1.03,0.625,AUS
+1,Haas,2.284,2.035,AUS
+1,McLaren,1.098,1.241,AUS
+1,Mercedes,0.0,0.0,AUS
+1,Racing Bulls,1.851,2.489,AUS
+1,Red Bull,1.0,1.183,AUS
+1,Williams,3.086,3.28,AUS
+2,Alpine,0.879,1.291,CHN
+2,Aston Martin,3.41,3.418,CHN
+2,Audi,1.401,1.737,CHN
+2,Cadillac,3.663,3.586,CHN
+2,Ferrari,0.381,0.557,CHN
+2,Haas,1.231,1.409,CHN
+2,McLaren,0.528,,CHN
+2,Mercedes,0.0,0.0,CHN
+2,Racing Bulls,1.848,1.83,CHN
+2,Red Bull,1.019,1.349,CHN
+2,Williams,2.447,2.477,CHN
+3,Alpine,1.028,1.078,JPN
+3,Aston Martin,4.357,3.785,JPN
+3,Audi,1.365,1.843,JPN
+3,Cadillac,3.861,3.405,JPN
+3,Ferrari,0.591,0.365,JPN
+3,Haas,1.725,1.688,JPN
+3,McLaren,0.399,0.296,JPN
+3,Mercedes,0.0,0.0,JPN
+3,Racing Bulls,1.499,1.922,JPN
+3,Red Bull,1.352,1.063,JPN
+3,Williams,2.421,2.355,JPN
+4,Alpine,1.098,1.392,MIA
+4,Aston Martin,3.759,3.613,MIA
+4,Audi,1.869,2.345,MIA
+4,Cadillac,4.363,3.958,MIA
+4,Ferrari,0.393,0.611,MIA
+4,Haas,1.756,2.228,MIA
+4,McLaren,0.439,0.0,MIA
+4,Mercedes,0.0,0.012,MIA
+4,Racing Bulls,1.937,2.912,MIA
+4,Red Bull,0.189,0.964,MIA
+4,Williams,1.984,1.876,MIA
+5,Alpine,1.542,1.827,CAN
+5,Aston Martin,3.607,4.896,CAN
+5,Audi,1.802,2.293,CAN
+5,Cadillac,3.928,2.751,CAN
+5,Ferrari,0.4,0.189,CAN
+5,Haas,2.532,2.299,CAN
+5,McLaren,0.208,1.129,CAN
+5,Mercedes,0.0,0.0,CAN
+5,Racing Bulls,0.967,2.133,CAN
+5,Red Bull,0.453,0.33,CAN
+5,Williams,2.335,2.111,CAN
+6,Alpine,1.631,2.554,MON
+6,Aston Martin,4.577,4.327,MON
+6,Audi,2.569,2.36,MON
+6,Cadillac,3.742,3.994,MON
+6,Ferrari,0.316,0.672,MON
+6,Haas,3.707,2.82,MON
+6,McLaren,0.795,0.981,MON
+6,Mercedes,0.0,0.0,MON
+6,Racing Bulls,1.889,2.745,MON
+6,Red Bull,0.06,2.236,MON
+6,Williams,2.409,3.395,MON
+7,Alpine,2.025,2.703,BAR
+7,Aston Martin,5.462,4.869,BAR
+7,Audi,1.458,2.683,BAR
+7,Cadillac,3.838,4.499,BAR
+7,Ferrari,0.086,0.0,BAR
+7,Haas,2.29,3.547,BAR
+7,McLaren,0.431,0.195,BAR
+7,Mercedes,0.0,0.171,BAR
+7,Racing Bulls,1.213,2.718,BAR
+7,Red Bull,0.458,0.459,BAR
+7,Williams,2.949,3.436,BAR
+8,Alpine,1.679,2.247,AUT
+8,Aston Martin,5.792,4.105,AUT
+8,Audi,1.785,2.081,AUT
+8,Cadillac,4.284,,AUT
+8,Ferrari,0.357,0.511,AUT
+8,Haas,2.133,2.904,AUT
+8,McLaren,0.588,0.434,AUT
+8,Mercedes,0.0,0.078,AUT
+8,Racing Bulls,1.274,1.747,AUT
+8,Red Bull,0.548,0.0,AUT
+8,Williams,3.235,3.118,AUT
+9,Alpine,2.215,2.054,GBR
+9,Aston Martin,5.393,4.842,GBR
+9,Audi,1.532,1.775,GBR
+9,Cadillac,3.536,3.518,GBR
+9,Ferrari,0.199,0.203,GBR
+9,Haas,2.712,2.792,GBR
+9,McLaren,0.869,0.794,GBR
+9,Mercedes,0.0,0.0,GBR
+9,Racing Bulls,1.349,1.617,GBR
+9,Red Bull,0.721,0.621,GBR
+9,Williams,2.782,2.859,GBR
+10,Alpine,1.888,1.566,BEL
+10,Aston Martin,5.405,4.209,BEL
+10,Audi,1.214,1.313,BEL
+10,Cadillac,3.317,3.577,BEL
+10,Ferrari,0.51,0.215,BEL
+10,Haas,2.317,1.967,BEL
+10,McLaren,0.422,0.311,BEL
+10,Mercedes,0.0,0.0,BEL
+10,Racing Bulls,0.749,1.067,BEL
+10,Red Bull,0.304,0.225,BEL
+10,Williams,2.315,1.941,BEL
+11,Alpine,2.12,2.538,HUN
+11,Aston Martin,3.369,2.608,HUN
+11,Audi,1.855,2.021,HUN
+11,Cadillac,4.765,4.183,HUN
+11,Ferrari,0.016,0.368,HUN
+11,Haas,3.273,3.124,HUN
+11,McLaren,0.0,0.0,HUN
+11,Mercedes,0.352,0.379,HUN
+11,Racing Bulls,1.391,2.161,HUN
+11,Red Bull,0.671,0.389,HUN
+11,Williams,4.422,3.864,HUN
+12,Alpine,2.042,2.385,NED
+12,Aston Martin,3.495,2.72,NED
+12,Audi,1.287,2.496,NED
+12,Cadillac,4.508,4.198,NED
+12,Ferrari,0.465,0.255,NED
+12,Haas,2.774,3.257,NED
+12,McLaren,0.0,0.0,NED
+12,Mercedes,0.143,0.339,NED
+12,Racing Bulls,1.436,2.723,NED
+12,Red Bull,0.639,1.595,NED
+12,Williams,2.837,3.57,NED
+13,Alpine,0.0,0.811,ITA
+13,Aston Martin,4.113,2.994,ITA
+13,Audi,0.894,1.498,ITA
+13,Cadillac,3.152,3.381,ITA
+13,Ferrari,0.267,0.779,ITA
+13,Haas,1.186,1.966,ITA
+13,McLaren,0.22,0.513,ITA
+13,Mercedes,0.073,0.0,ITA
+13,Racing Bulls,0.611,1.119,ITA
+13,Red Bull,0.347,0.374,ITA
+13,Williams,2.038,1.721,ITA
+14,Alpine,1.175,2.009,MAD
+14,Aston Martin,3.881,3.22,MAD
+14,Audi,1.524,2.156,MAD
+14,Cadillac,4.453,3.649,MAD
+14,Ferrari,0.206,0.72,MAD
+14,Haas,2.007,2.343,MAD
+14,McLaren,0.0,0.0,MAD
+14,Mercedes,0.012,0.418,MAD
+14,Racing Bulls,1.325,1.872,MAD
+14,Red Bull,0.152,0.61,MAD
+14,Williams,3.793,3.833,MAD
+15,Alpine,1.484,1.007,AZE
+15,Aston Martin,3.967,3.93,AZE
+15,Audi,3.192,1.793,AZE
+15,Cadillac,4.03,2.314,AZE
+15,Ferrari,0.816,0.839,AZE
+15,Haas,2.194,1.773,AZE
+15,McLaren,0.817,0.928,AZE
+15,Mercedes,0.0,0.132,AZE
+15,Racing Bulls,2.276,1.864,AZE
+15,Red Bull,0.95,0.0,AZE
+15,Williams,1.99,1.875,AZE
+16,Alpine,1.346,1.925,SEP*
+16,Aston Martin,2.197,1.28,SEP*
+16,Audi,1.77,2.303,SEP*
+16,Cadillac,3.659,3.785,SEP*
+16,Ferrari,0.313,0.279,SEP*
+16,Haas,2.996,2.097,SEP*
+16,McLaren,0.659,1.011,SEP*
+16,Mercedes,0.527,0.397,SEP*
+16,Racing Bulls,1.99,1.829,SEP*
+16,Red Bull,0.0,0.0,SEP*
+16,Williams,2.52,2.553,SEP*
+17,Alpine,0.932,,SIN
+17,Aston Martin,3.119,,SIN
+17,Audi,1.544,,SIN
+17,Cadillac,4.104,,SIN
+17,Ferrari,0.059,,SIN
+17,Haas,1.68,,SIN
+17,McLaren,0.371,,SIN
+17,Mercedes,0.207,,SIN
+17,Racing Bulls,1.035,,SIN
+17,Red Bull,0.0,,SIN
+17,Williams,2.356,,SIN

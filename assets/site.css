@@ -1,0 +1,9 @@
+
+:root { --site-bg: #ffffff; --site-fg: #141414; --site-muted: #6b6b6b; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --site-bg: #15171b; --site-fg: #e9e7e2; --site-muted: #9a9894; color-scheme: dark; } }
+:root[data-theme="dark"] { --site-bg: #15171b; --site-fg: #e9e7e2; --site-muted: #9a9894; color-scheme: dark; }
+html, body { margin: 0; background: var(--site-bg); color: var(--site-fg); }
+body { padding-inline: 18px; }
+.sitebar { max-width: 39rem; margin: 0 auto; padding-top: 1.1rem; font-family: "LM Roman", Georgia, serif; font-size: .95rem; color: var(--site-muted);
+  display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.sitebar a { color: inherit; text-decoration: none; } .sitebar a:hover { text-decoration: underline; }
