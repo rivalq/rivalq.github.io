@@ -134,3 +134,5 @@
   .paper { font-size: 1.05rem; }
   .paper .abstract { margin-inline: .6rem; }
 }
+
+.paper .notice { border: .7px solid var(--rule); padding: .6rem .8rem; margin: 0 0 1.8rem; font-size: .92rem; line-height: 1.45; text-align: left; }
