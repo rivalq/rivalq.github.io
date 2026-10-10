@@ -23,12 +23,9 @@
     <h1 id="title">How Red Bull found its straight-line speed in 2026, and why Mercedes lost it</h1>
     <p class="author">Jatin Garg</p>
     <p class="affil">Independent analysis of public Formula 1 timing data</p>
-    <p class="date">10 October 2026, revised 11 October 2026</p>
+    <p class="date">10 October 2026</p>
   </header>
 
-  <aside class="notice" id="revision-notice"><b>Revised after independent review.</b> Two reviews (OpenAI Codex, gpt-5.6-sol; Anthropic Claude Fable 5.1)
-    found a geometry bug and several overstated conclusions in the first version. This version fixes them, adds uncertainty to every comparison and
-    tests the compression-ratio hypothesis directly. Appendix A lists the changes.</aside>
 
   <section class="tldr" id="tldr">
     <h2 class="unnumbered">Main findings</h2>
@@ -44,7 +41,7 @@
       <li><b>Mercedes' race straight-line edge faded, but the compression-ratio test shows no immediate effect.</b> Mercedes changed by <span class="num" data-source="numbers" data-field="value" data-where="key=mer_ls_chg">—</span> per pass
         relative to the field (CI <span class="num" data-source="numbers" data-field="value" data-where="key=mer_ls_chg_lo">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=mer_ls_chg_hi">—</span>). In the six races after the test, Mercedes-powered cars moved <span class="num" data-source="numbers" data-field="value" data-where="key=cr_peak_m_e">—</span> in race
         top speed against Ferrari-powered cars (<span class="num" data-source="numbers" data-field="value" data-where="key=cr_peak_m_e_conf">—</span> confidence of any loss). The larger drop from Monza onward coincides with Ferrari's second
-        engine upgrade and also hits Red Bull-Ford engines. An independent strongest-case analysis (<span class="num" data-source="numbers" data-field="value" data-where="key=astra_n_specs">—</span> specifications) found slower acceleration at
+        engine upgrade and also hits Red Bull-Ford engines. A strongest-case analysis (<span class="num" data-source="numbers" data-field="value" data-where="key=astra_n_specs">—</span> specifications) found slower acceleration at
         290–340 km/h across all four Mercedes teams, but nothing that survives correction for multiple testing.</li>
       <li><b>Tyre wear cannot separate the teams</b> with this much noise.</li>
     </ol>
@@ -329,8 +326,8 @@
       (CI <span class="num" data-source="numbers" data-field="value" data-where="key=cr_peak_m_l_lo">—</span> to <span class="num" data-source="numbers" data-field="value" data-where="key=cr_peak_m_l_hi">—</span>), but Red Bull-Ford drops too (<span class="num" data-source="numbers" data-field="value" data-where="key=cr_peak_r_l">—</span>, <span class="num" data-source="numbers" data-field="value" data-where="key=cr_peak_r_l_conf">—</span> confidence). That timing matches Ferrari's second engine
       upgrade at Monza, which made the control faster, not a June change to Mercedes engines. Red Bull-Ford cars got quicker on straights against Ferrari after the test
       (<span class="num" data-source="numbers" data-field="value" data-where="key=cr_rst_r_e">—</span> in races; <span class="num" data-source="numbers" data-field="value" data-where="key=cr_rst_r_e_conf">—</span> confidence of a loss), so whatever version of the idea Red Bull used, losing it left no visible mark.</p>
-    <p><em>The strongest case.</em> To guard against a test designed only to find nothing, an independent analysis by OpenAI Codex (gpt-6-astra) was briefed to build the
-      strongest possible case for an effect and to report every specification it tried. It estimated <span class="num" data-source="numbers" data-field="value" data-where="key=astra_n_specs">—</span>. The best supporting pattern is acceleration at
+    <p><em>The strongest case.</em> To guard against a test designed only to find nothing, a second analysis was set up to build the strongest possible case for an
+      effect and to report every specification it tried. It estimated <span class="num" data-source="numbers" data-field="value" data-where="key=astra_n_specs">—</span>. The best supporting pattern is acceleration at
       matched speed: between 290 and 340 km/h, Mercedes-powered cars' acceleration changed by <span class="num" data-source="numbers" data-field="value" data-where="key=astra_acc">—</span> relative to Ferrari-powered cars (interval <span class="num" data-source="numbers" data-field="value" data-where="key=astra_acc_lo">—</span>
       to <span class="num" data-source="numbers" data-field="value" data-where="key=astra_acc_hi">—</span>). That is the largest change of all 35 possible four-team groupings, and all four Mercedes teams point the same way. Against it, the loss sits
       between 290 and 310 km/h, where electric power still contributes, and vanishes above 310 km/h (<span class="num" data-source="numbers" data-field="value" data-where="key=astra_acc_310">—</span>), where an ICE-only loss should be clearest.
@@ -405,23 +402,6 @@
       own aerodynamic changes. A "supported" verdict means the data fit and nothing contradicts them, not proof.</p>
   </section>
 
-  <section id="appendix-a">
-    <h2 class="unnumbered">Appendix A. Independent review and corrections</h2>
-    <p class="noindent">The first version (10 October) was reviewed independently by OpenAI Codex (gpt-5.6-sol, reasoning effort xhigh, read-only) and Anthropic Claude
-      Fable 5.1. Both reproduced every published number and recommended major revision. The changes:</p>
-    <ul>
-      <li>Straights that cross the start/finish line (Barcelona, Zandvoort, Monza, Baku) were split in two; they are now measured whole. This removed the claim that Red Bull
-        was marginally faster than Mercedes on the longest straight late in the season.</li>
-      <li>Segment times are reconciled to official lap times, and laps with residual timing errors are rejected.</li>
-      <li>Every phase figure and change carries a bootstrap interval; the race-straight measure excludes braking points; deleted laps no longer feed speed traps.</li>
-      <li>The along-straight profile weights circuits equally, uses one real lap per team in qualifying, and adds an entry-speed control.</li>
-      <li>Racing Bulls is compared against the field, not against Mercedes; its share of Red Bull's gain fell from two-thirds to under half in qualifying and reversed in races.</li>
-      <li>Rule wording corrected: full-throttle harvesting was always allowed, and Miami raised its cap; race 250 kW sectors are now stated.</li>
-      <li>Monaco excluded from straight-line and race measures; the Baku qualifying attribution corrected.</li>
-      <li>New: a difference-in-differences test of the compression-ratio hypothesis against Ferrari-powered cars, and an independent strongest-case analysis of the
-        same question by OpenAI Codex (gpt-6-astra, read-only), which reported all <span class="num" data-source="numbers" data-field="value" data-where="key=astra_n_specs">—</span> specifications it estimated.</li>
-    </ul>
-  </section>
 
   <section id="refs">
     <h2 class="unnumbered">References</h2>

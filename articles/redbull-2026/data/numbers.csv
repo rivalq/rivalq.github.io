@@ -99,7 +99,7 @@ recharge_mj,8.5,MJ,Base energy recharge limit per lap (FIA C5.2.10)
 monza_q_mj,5.0,MJ,Monza qualifying recharge limit (FIA event document)
 superclip_old,250.0,kW,"Full-throttle harvest cap before Miami (FIA C5.12.6, Issue 16)"
 superclip_new,350.0,kW,Full-throttle harvest cap from Miami (FIA Issue 17)
-astra_acc,-0.658,m/s²,"Codex gpt-6-astra: Mercedes-powered vs Ferrari-powered matched-speed acceleration change, 290-340 km/h (spec A*)"
+astra_acc,-0.658,m/s²,"Strongest-case analysis: Mercedes-powered vs Ferrari-powered matched-speed acceleration change, 290-340 km/h (spec A*)"
 astra_acc_lo,-1.681,m/s²,95% interval low
 astra_acc_hi,0.365,m/s²,95% interval high
 astra_acc_310,-0.033,m/s²,"Same, 310-330 km/h band (spec 48)"
