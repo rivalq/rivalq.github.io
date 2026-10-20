@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Abstractions are everywhere</title>
+<meta name="description" content="On toothpaste, segment trees, lol and LLMs: why I use tools as black boxes, and what happens when they leak.">
+<meta name="author" content="Jatin Garg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Abstractions are everywhere">
+<meta property="og:description" content="On toothpaste, segment trees, lol and LLMs: why I use tools as black boxes, and what happens when they leak.">
+<meta property="og:url" content="https://rivalq.github.io/articles/abstractions/">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://rivalq.github.io/articles/abstractions/">
+<link rel="stylesheet" href="../../assets/fonts.css">
+<link rel="stylesheet" href="../../assets/paper.css">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+<nav class="sitebar"><a href="../../">Jatin Garg</a><a href="../../#writing">All writing</a></nav>
+<style>
+/* Essay variant of the site's paper style: one justified Latin Modern column, unnumbered sections,
+   numbered figures and tables. Two chart series only: s1 (blue) and s2 (orange). */
+:root { --site-bg: #ffffff; --site-fg: #141414; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --site-bg: #15171b; --site-fg: #e9e7e2; color-scheme: dark; } }
+:root[data-theme="dark"] { --site-bg: #15171b; --site-fg: #e9e7e2; color-scheme: dark; }
+html, body { background: var(--site-bg); color: var(--site-fg); }
+body { margin: 0; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+
+.paper { --s1: #2a78d6; --s2: #eb6834; --grid: #e6e6e6; --axis: #b9b9b9; --code: #f5f6f8; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .paper { --s1: #3987e5; --s2: #e06a3a; --grid: #2a2c30; --axis: #4a4c50; --code: #1c1f24; } }
+:root[data-theme="dark"] .paper { --s1: #3987e5; --s2: #e06a3a; --grid: #2a2c30; --axis: #4a4c50; --code: #1c1f24; }
+
+.paper.essay h2::before { content: none; }
+.paper.essay h2 { margin-top: 2.1rem; }
+.paper.essay section { margin-top: 0; }
+.paper .titleblock .standfirst { font-style: italic; color: var(--ink-2); font-size: 1.02rem; margin: 0 0 1.1rem; }
+.paper .titleblock .draft { font-family: var(--caps); letter-spacing: .06em; font-size: .85rem; color: var(--muted); margin-top: .35rem; }
+.paper blockquote { margin: .9rem 2rem; font-style: italic; }
+.paper blockquote p { text-indent: 0; text-align: left; }
+
+/* code */
+.paper pre.code { font-family: var(--mono); font-size: .84rem; line-height: 1.45; background: var(--code); margin: .9rem 0; padding: .6rem .8rem; overflow-x: auto; }
+.paper pre.code .c { color: var(--muted); }
+
+/* figure 1: the abstraction tower */
+.paper .tower { border-top: 1.4px solid var(--rule); border-bottom: 1.4px solid var(--rule); }
+.paper .tower .layer { display: grid; grid-template-columns: 8.6rem minmax(0, 1fr); gap: .9rem; padding: .6rem 0; align-items: start; }
+.paper .tower .layer + .layer { border-top: .7px solid var(--hair); }
+.paper .tower .name { font-family: var(--caps); letter-spacing: .03em; font-size: .9rem; line-height: 1.3; padding-top: .1rem; }
+.paper .tower .name small { display: block; font-family: var(--serif); letter-spacing: 0; font-style: italic; color: var(--muted); font-size: .8rem; margin-top: .15rem; }
+.paper .tower pre { font-family: var(--mono); font-size: .8rem; line-height: 1.42; margin: 0; background: var(--code); padding: .45rem .6rem; overflow-x: auto; }
+.paper .tower pre .c { color: var(--muted); }
+.paper .tower ul { margin: 0; padding-left: 1.1rem; font-size: .95rem; }
+.paper .tower li { margin: .1rem 0; text-align: left; }
+.paper .tower p { text-indent: 0; text-align: left; font-size: .95rem; }
+@media (max-width: 34rem) { .paper .tower .layer { grid-template-columns: 1fr; gap: .35rem; } }
+
+/* charts */
+.paper .chart { position: relative; }
+.paper .chart .gl { stroke: var(--grid); stroke-width: 1; }
+.paper .chart .base { stroke: var(--axis); stroke-width: 1; }
+.paper .chart .xt { stroke: var(--axis); stroke-width: 1; }
+.paper .chart .tk { font-size: 11.5px; fill: var(--ink-2); font-variant-numeric: tabular-nums; }
+.paper .chart .ln { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.paper .chart .ln.s1 { stroke: var(--s1); } .paper .chart .ln.s2 { stroke: var(--s2); }
+.paper .chart .dot { stroke: var(--paper); stroke-width: 2; }
+.paper .chart .dot.s1 { fill: var(--s1); } .paper .chart .dot.s2 { fill: var(--s2); }
+.paper .chart .floor { stroke: var(--s2); stroke-width: 1; opacity: .55; }
+.paper .chart .cross { stroke: var(--axis); stroke-width: 1; }
+.paper .chart .endlab { font-size: 12px; fill: var(--ink); }
+.paper .chart .endlab .v { fill: var(--ink-2); font-variant-numeric: tabular-nums; }
+.paper .legend { display: flex; flex-wrap: wrap; justify-content: center; gap: .3rem 1.4rem; font-size: .9rem; margin-bottom: .3rem; }
+.paper .legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.paper .sw { display: inline-block; width: 1.1rem; height: 2px; flex: none; }
+.paper .sw.s1 { background: var(--s1); } .paper .sw.s2 { background: var(--s2); }
+.paper .tt-pop .sw { width: .8rem; height: 2px; }
+
+/* figure 3 controls */
+.paper .controls { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem 1.6rem; font-size: .92rem; margin: .2rem 0 .8rem; }
+.paper .controls label { display: grid; grid-template-columns: 1fr auto; gap: .1rem .6rem; align-items: center; }
+.paper .controls input[type="range"] { grid-column: 1 / -1; width: 100%; accent-color: var(--s1); margin: 0; }
+.paper .controls output { font-variant-numeric: tabular-nums; }
+.paper .readout { font-size: .92rem; text-indent: 0; text-align: left; margin: .4rem 0 0; color: var(--ink-2); }
+@media (max-width: 34rem) { .paper .controls { grid-template-columns: 1fr; } }
+
+/* diagrams */
+.paper svg.dg { display: block; width: 100%; height: auto; margin-inline: auto; overflow: visible; }
+.paper .dg-box { fill: var(--paper); stroke: var(--ink-2); stroke-width: .8; }
+.paper .dg-box.fill { fill: var(--hl); }
+.paper .dg-box.hi { stroke: var(--s1); stroke-width: 2; }
+.paper .dg-t { fill: var(--ink); font-family: var(--serif); font-size: 12px; text-anchor: middle; }
+.paper .dg-a { fill: none; stroke: var(--ink-2); stroke-width: 1.1; }
+.paper .dg-head { fill: var(--ink-2); }
+.paper .dg-band { fill: var(--hl); }
+.paper .dg-lab { fill: var(--muted); font-family: var(--serif); font-style: italic; font-size: 11.5px; text-anchor: middle; }
+.paper .dg-title { fill: var(--ink); font-family: var(--serif); font-size: 12.5px; text-anchor: middle; }
+.paper .panels { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem 1.2rem; }
+.paper .panels .sub { text-align: center; font-size: .9rem; margin-top: .2rem; }
+@media (max-width: 34rem) { .paper .panels { grid-template-columns: 1fr; } }
+
+/* figure 2: lol, as chat messages */
+.paper .chat { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: .55rem 1.4rem; align-items: center; }
+.paper .chat .hd { font-family: var(--caps); letter-spacing: .03em; font-size: .85rem; color: var(--muted); }
+.paper .chat .msg { justify-self: start; background: var(--hl); border-radius: 1rem 1rem 1rem .25rem; padding: .35rem .8rem;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: .9rem; line-height: 1.35; }
+.paper .chat .means { font-style: italic; font-size: .97rem; }
+.paper .chat .bubbles { display: flex; align-items: center; gap: .45rem; flex-wrap: wrap; }
+.paper .chat .bubbles.col { flex-direction: column; align-items: flex-start; gap: .25rem; }
+.paper .chat .ctx { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: .8rem; color: var(--muted); border: .7px solid var(--hair); border-radius: 1rem 1rem .25rem 1rem; padding: .25rem .7rem; }
+.paper .chat .sticker { width: 2rem; height: 2rem; flex: none; }
+.paper .chat .sticker rect { fill: var(--code); stroke: var(--ink-2); stroke-width: 1.2; }
+.paper .chat .sticker circle { fill: var(--ink-2); }
+.paper .chat .sticker path { fill: none; stroke: var(--ink-2); stroke-width: 1.8; stroke-linecap: round; }
+
+/* figure 1: segment tree */
+.paper .iface { margin: .2rem 0 .5rem; }
+.paper .iface .hd { font-family: var(--caps); letter-spacing: .03em; font-size: .85rem; color: var(--muted); margin-bottom: .25rem; }
+.paper .iface pre { font-family: var(--mono); font-size: .84rem; line-height: 1.45; margin: 0; background: var(--code); padding: .45rem .7rem; overflow-x: auto; }
+.paper .iface pre .c { color: var(--muted); }
+.paper .dg-box.used { fill: var(--hl); stroke: var(--s1); stroke-width: 2.2; }
+.paper .dg-box.leaf { fill: var(--code); }
+.paper .dg-range { stroke: var(--s1); stroke-width: 2; stroke-linecap: round; }
+.paper .dg-idx { fill: var(--muted); font-family: var(--mono); font-size: 10.5px; text-anchor: middle; }
+
+/* figure 5: a conversation with an AI */
+.paper .convo { display: flex; flex-direction: column; gap: .45rem; max-width: 30rem; margin-inline: auto; }
+.paper .convo div { max-width: 80%; padding: .4rem .85rem; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: .9rem; line-height: 1.4; }
+.paper .convo .me { align-self: flex-end; background: var(--hl); border-radius: 1rem 1rem .25rem 1rem; }
+.paper .convo .ai { align-self: flex-start; border: .7px solid var(--hair); border-radius: 1rem 1rem 1rem .25rem; }
+
+/* figure 8: the two dashes */
+.paper .dash { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; border-top: 1.4px solid var(--rule); border-bottom: 1.4px solid var(--rule); padding: .9rem 0 .8rem; }
+.paper .dash .g { display: flex; flex-direction: column; align-items: center; gap: .2rem; text-align: center; }
+.paper .dash .glyph { font-family: var(--serif); font-size: 3.4rem; line-height: 1; height: 3.6rem; display: flex; align-items: center; }
+.paper .dash .nm { font-size: .92rem; }
+.paper .dash .nm + code + .nm { color: var(--muted); font-style: italic; }
+.paper .dash code { font-size: .8rem; }
+
+/* text tables */
+.paper table.booktabs.text { font-size: .9rem; }
+.paper table.booktabs.text td, .paper table.booktabs.text th { white-space: normal; text-align: left; vertical-align: top; }
+.paper table.booktabs.text td.grp { font-style: italic; padding-top: .7rem; color: var(--ink-2); }
+.paper table.booktabs.wide { min-width: 34rem; }
+</style>
+
+<article class="paper essay">
+  <header class="titleblock">
+    <h1>Abstractions are everywhere</h1>
+    <p class="standfirst">On toothpaste, segment trees, lol and LLMs.</p>
+    <p class="author">Jatin Garg</p>
+    <p class="date">20 October 2026</p>
+  </header>
+
+  <p class="noindent">We wake up every morning and brush our teeth without even once thinking about what is inside the toothpaste. Then we make breakfast on a gas stove or an induction cooktop without understanding the science behind either of them. We just learnt how to use them. Then we might take a cab to work without thinking about how the car works, or how the app that booked it works. Again, we just learnt how to use it, and we got so used to all of it that we hardly use our conscious brain.</p>
+
+  <p>You are reading this on a screen, and most of us don’t know the science behind that either. Do you know how hard it was to make a blue LED? Red LEDs have existed since 1962. A bright blue one took about thirty more years. Isamu Akasaki, Hiroshi Amano and Shuji Nakamura got it working in the early 1990s with gallium nitride, a material most researchers had given up on, and they got the 2014 Nobel Prize in Physics for it <span class="cite">[1]</span>. Without blue there is no white LED, and most laptop and TV screens are lit by white LEDs, which are really blue LEDs with a yellow coating on top. How Nakamura did it is my favourite part, and I’ll come back to it at the end. None of this matters while you read. We just know how to use the screen.</p>
+
+  <p>Every day we use many tools like these, and I call them abstractions. For us they are more or less black boxes. We learn their inputs and outputs, i.e. how to use them, and we never need to open the box.</p>
+
+  <h2>In software</h2>
+
+  <p>When I was in my first year of engineering, I was doing competitive programming all the time. One day I read about the segment tree. I did not understand a single thing about how it worked inside. I only understood what it can do: give it an array, and it answers questions like “what is the sum of elements 3 to 7?”, and handles changes to single elements, each in <i>O</i>(log <i>n</i>) time. I learnt how to use it. A week later, in a contest, I used a segment tree to solve a problem. That was my eureka moment. I understood the power of knowing tools, even without knowing what is inside them. Of course, I did not think much about abstractions back then.</p>
+
+  <figure id="fig-segtree">
+    <div class="iface">
+      <div class="hd">What I knew in first year</div>
+      <pre><code>query(l, r)   <span class="c">// sum of a[l..r], O(log n)</span>
+update(i, x)  <span class="c">// set a[i] = x,   O(log n)</span></code></pre>
+    </div>
+    <div class="controls">
+      <label for="st-l">Range starts at <output id="st-l-v" for="st-l">1</output>
+        <input type="range" id="st-l" min="0" max="7" step="1" value="1"></label>
+      <label for="st-r">Range ends at <output id="st-r-v" for="st-r">6</output>
+        <input type="range" id="st-r" min="0" max="7" step="1" value="6"></label>
+    </div>
+    <div class="iface"><div class="hd">What is inside</div></div>
+    <div id="segtree"></div>
+    <p class="readout" id="st-read"></p>
+    <figcaption><span class="lab">Figure 1.</span> A segment tree over eight numbers. The top is all I knew in first year: two functions and how fast they are. Below is what is inside. Each box stores the sum of the numbers under it, and a query adds up the few boxes, outlined in blue, that exactly cover the range.</figcaption>
+  </figure>
+
+  <p>I understood the segment tree much later. Meanwhile, I was just submitting it without understanding it much. With time I learnt how to tweak it without breaking it, like changing the aggregating function from sum to min or max, and much more, and that eventually made the segment tree feel very natural to me. Till I joined my job, I had no idea that a modern CPU executes instructions out of order. When I was in college, the compiler and the hardware jointly took care of most of this for me. That is abstraction built up over decades, so that developers don’t have to worry about any of it.</p>
+
+  <figure id="fig-tower">
+    <div class="tower">
+      <div class="layer">
+        <div class="name">What I write<small>C++</small></div>
+        <pre><code>for (int x : a) s += x;</code></pre>
+      </div>
+      <div class="layer">
+        <div class="name">What the CPU is given<small>g++ 13, -O2</small></div>
+        <pre><code>.L3: add  edx, DWORD PTR [rax]   <span class="c">; s += *p</span>
+     add  rax, 4                 <span class="c">; move p to the next int</span>
+     cmp  rax, rcx               <span class="c">; reached the end?</span>
+     jne  .L3                    <span class="c">; if not, go again</span></code></pre>
+      </div>
+      <div class="layer">
+        <div class="name">What the CPU does<small>out of my sight</small></div>
+        <ul>
+          <li>Works on several loop iterations at once, out of order.</li>
+          <li>Guesses that <code>jne</code> will jump, and starts the next iteration before it knows.</li>
+          <li>Fetches memory 64 bytes at a time and keeps it in caches.</li>
+        </ul>
+      </div>
+      <div class="layer">
+        <div class="name">What it is made of<small>silicon</small></div>
+        <p>About 10 billion transistors switching on and off.</p>
+      </div>
+    </div>
+    <figcaption><span class="lab">Figure 2.</span> One line of C++ at four layers. The assembly is the real output of g++ 13 for this loop, with auto-vectorisation turned off so it fits on screen. Each layer only needs the inputs and outputs of the layer below it.</figcaption>
+  </figure>
+
+  <h2>What an abstraction is</h2>
+
+  <p>Abstractions can be defined in many ways. For me, they are generalisations of something that gets used many times, so that not everyone has to think about the underlying details. To use one, you learn three things about it: its inputs, its outputs and its assumptions.</p>
+
+  <p>The third one is the one we forget. A segment tree assumes the operation can be grouped any way you like, i.e. that it is associative. Sum, min, max and gcd all work. The median doesn’t, because the medians of two halves don’t give you the median of the whole. Back then I didn’t know that. Once I tried implementing an aggregation that was not associative, and it kept failing. Very early on I also didn’t understand the time complexity of each merge operation, and that made some of my ideas fail with time limit exceeded, because I thought “yeah, this is magic, I can do whatever I want”. C++ has assumptions too. It lets you think of memory as one long row of numbers, where reading any of them costs the same. That isn’t true either. Most of the time it doesn’t matter. Later in this post I’ll show a case where it makes the same code twelve times slower.</p>
+
+  <h2>LOL</h2>
+
+  <p>My favourite abstraction isn’t technical at all. It’s “lol”.</p>
+
+  <p>It started as “laughing out loud” on online message boards in the 1980s. Today almost nobody who types it is laughing. With one of my close friends, it has grown a whole grammar of its own. A plain “lol” just means okay, or it is something to say when there is nothing to say, usually with a WhatsApp sticker. “Lollll” means something is actually funny. “Damn lollll” means surprised, even shocked, but in a fun way. And “lol tf” is shocking, still funny, but with something sad or dark underneath, like when I bring up how bad the living conditions were in my college hostel.</p>
+
+  <figure id="fig-lol">
+    <div class="chat">
+      <div class="hd">What I type</div><div class="hd">What it means</div>
+      <div class="bubbles"><div class="msg">lol</div><svg class="sticker" viewBox="0 0 32 32" aria-label="sticker"><rect x="1.5" y="1.5" width="29" height="29" rx="9"></rect><circle cx="11" cy="13" r="2.2"></circle><circle cx="21" cy="13" r="2.2"></circle><path d="M9.5 19 Q16 26 22.5 19"></path></svg></div><div class="means">Okay. Or: nothing to add, but I’m here.</div>
+      <div class="bubbles"><div class="msg">lollll</div></div><div class="means">That’s actually funny.</div>
+      <div class="bubbles"><div class="msg">damn lollll</div></div><div class="means">I didn’t see that coming, and it’s funny.</div>
+      <div class="bubbles col"><div class="msg">the living conditions in my college hostel were so bad</div><div class="msg">lol tf</div></div><div class="means">Shocking and funny, with something dark underneath.</div>
+    </div>
+    <figcaption><span class="lab">Figure 3.</span> Lol, the way my close friend and I use it. Only the number of l’s and the word next to it change, and the meaning changes a lot.</figcaption>
+  </figure>
+
+  <p>It fits the definition exactly. The input is three letters, plus how many l’s and what comes next to them. The output is a tone. The assumption is that the other person reads it the same way, and that only holds because we share so much context. Send “lol tf” to a colleague and it may land very differently. The linguist John McWhorter calls words like this pragmatic particles <span class="cite">[2]</span>: their job is to manage the conversation, not to carry content, like “you know” in speech. I even type it to AI models, which are definitely not laughing. “That worked lol” means “I can’t believe that was the fix”.</p>
+
+  <p>It also shows what happens to a good abstraction over time. The more people used it, the less anyone thought about what was inside, until the inside stopped mattering. Most people who type “lol” never think the words “laughing out loud”. By 2011 it was in the Oxford English Dictionary. And it leaks like any other abstraction when its assumption breaks. There is an old joke about a parent who thought LOL meant “lots of love”, and texted “Grandpa passed away, LOL”. Same input, a different assumption, and a very different output.</p>
+
+  <p>If three letters can carry that much, and an LLM reads them correctly, it is not that surprising that plain language now works as a programming language.</p>
+
+  <h2>A compiler over natural language</h2>
+
+  <p>Abstractions got much more useful with LLMs. In very loose terms, an LLM is a compiler over natural language. If it were perfect at execution, and it keeps getting closer, we wouldn’t need to think about implementation details at all. We would only need to think about what exactly we want.</p>
+
+  <p>Well, it sounds simple, but it isn’t. Even when we wrote all the code by hand, more often than not we found “new” details while writing it, and those details changed our requirements. You start writing a function, realise you never decided what should happen when the input is empty, decide, and carry on. The code was where a lot of our thinking happened. Now the LLM writes the code, so that thinking needs a new place. We still have to go through those cycles of refining the requirements, without being inside the code. And reading every line it writes isn’t practical; it’s too much code.</p>
+
+  <figure id="fig-loops">
+    <div class="panels">
+      <div><div id="loop-a"></div><div class="sub">(a) Writing the code myself</div></div>
+      <div><div id="loop-b"></div><div class="sub">(b) With an LLM</div></div>
+    </div>
+    <figcaption><span class="lab">Figure 4.</span> The same loop of finding out what I actually want. The box outlined in blue is where I spend my time. Before, that was inside the code. Now it is outside, asking questions about what the code does.</figcaption>
+  </figure>
+
+  <h2>Probing the black box</h2>
+
+  <p>The method that works for me is black-box testing. After the LLM implements something, I ask it a list of questions: “Was this case tested?”, “How was this done?”, “What happens if this input is missing?” This way I steer it towards the specific cases that matter, without reading the code myself.</p>
+
+  <p>The best way I can describe an LLM is a very fast, very eager intern who badly wants to show you a clean result. Ask them to tidy the house before guests arrive, and they’ll be done in ten minutes, because everything went into one cupboard. The house looks perfect. You only find out when you open the cupboard.</p>
+
+  <p>Here is a real cupboard I opened. I asked an AI to search through some big log files, and a few of them, around 900 MB each, kept timing out. A while later it came back with a neat result, and nothing looked wrong. So I asked my usual question.</p>
+
+  <figure id="fig-convo">
+    <div class="convo">
+      <div class="me">was every file covered?</div>
+      <div class="ai">Files over 100 MB were skipped because they kept timing out. The rest are all in the result.</div>
+      <div class="me">why you decided to take this decision on your own?</div>
+      <div class="ai">Fair point, I shouldn’t have. Those files just need a longer timeout. Re-running them now.</div>
+    </div>
+    <figcaption><span class="lab">Figure 5.</span> Roughly how that conversation went. My second question is word for word.</figcaption>
+  </figure>
+
+  <p>The fix was just a longer timeout. There was nothing wrong in the code. The code did exactly what the AI had decided, the problem was that it never told me it had decided anything. And this was not the only time. Once, one item in a result had no data at all, and the AI just re-ran that one item and moved on. I asked how many other items had the same problem, and it turned out a lot of them did, because an earlier run had stopped halfway and left them looking finished. So these days, most of my time goes into opening cupboards.</p>
+
+  <p>The LLM is a black box for us, and the code it wrote is also a black box. We use the LLM to “probe” the black box it made, to see if it behaves the way we want. So these days we mostly need to think about two things: what the correct behaviour is, and a system that checks that behaviour is met. And you know what, we don’t even have to write that system ourselves. It becomes another black box. So it is just more and more abstractions since LLMs got popular.</p>
+
+  <p>Of course we can’t guarantee 100% correct behaviour, because LLMs themselves are not correct all the time. But we can control the probability of failure. Building something now takes very little time, so we can afford several independent paths that check the same behaviour, and each one lowers the chance that a bug gets through.</p>
+
+  <p>The important word here is independent. If the same model checks its own work with the same context, it will most likely make the same mistake again. On one bigger project, I had one AI agent doing the work and a separate one reviewing it, and I asked the reviewer to re-run the checks itself instead of reading the worker’s report. Reading the report is like looking at the tidy house; re-running the checks is opening the cupboard. That caught a step the worker had quietly skipped, and a bug in how it was adding up results, and neither of them was in its report. Also, whenever I change code that shouldn’t change any behaviour, I don’t trust anyone’s word on it, not even mine. I replay a recorded day of data through both the old and the new version and check that the outputs match byte by byte. More checks only help when they don’t share the same blind spots. If each check misses a bug with probability <i>p</i>, and some share <i>c</i> of bugs is invisible to all of them, the chance that a bug survives <i>k</i> checks is</p>
+
+  <div class="eq">
+    <math display="block"><mi>P</mi><mo>(</mo><mtext>bug survives</mtext><mo>)</mo><mo>=</mo><mi>c</mi><mo>+</mo><mo>(</mo><mn>1</mn><mo>−</mo><mi>c</mi><mo>)</mo><mspace width="0.17em"></mspace><msup><mi>p</mi><mi>k</mi></msup></math>
+    <span class="eqno">(1)</span>
+  </div>
+
+  <p class="cont noindent">You can play with the two numbers below.</p>
+
+  <figure id="fig-checks">
+    <div class="controls">
+      <label for="p-miss">Chance one check misses the bug <output id="p-miss-v" for="p-miss">30%</output>
+        <input type="range" id="p-miss" min="5" max="60" step="1" value="30"></label>
+      <label for="c-shared">Blind spot that all checks share <output id="c-shared-v" for="c-shared">5%</output>
+        <input type="range" id="c-shared" min="0" max="20" step="1" value="5"></label>
+    </div>
+    <div class="legend"><span><i class="sw s1"></i>Fully independent checks</span><span><i class="sw s2"></i>Checks with a shared blind spot</span></div>
+    <div class="chart" id="chart-checks"></div>
+    <p class="readout" id="checks-read"></p>
+    <figcaption><span class="lab">Figure 6.</span> Equation (1) for one to six checks. Independent checks drive the chance towards zero. A shared blind spot puts a floor under it, and no number of extra checks gets below that floor. The numbers are illustrations, not measurements.</figcaption>
+  </figure>
+
+  <h2>Know your car</h2>
+
+  <p>With AI, you need to get comfortable working with abstractions, and that includes knowing where the errors happen. You don’t need to understand the engineering and maths behind LLMs, but knowing “enough” about them helps. It’s like being an F1 driver. A driver doesn’t study the aerodynamics or the physics of the car in detail, but they know exactly where it is weak. If the downforce is low, they take care in the corners. If the car is good on the brakes, they brake late to overtake.</p>
+
+  <p>For LLMs, my list looks like this.</p>
+
+  <div class="tablewrap">
+    <table class="booktabs text">
+      <caption><span class="lab">Table 1.</span> Where I take care with an LLM, and where I push.</caption>
+      <thead><tr><th>What it does</th><th>What I do about it</th></tr></thead>
+      <tbody>
+        <tr><td class="grp" colspan="2">Low downforce: take care here</td></tr>
+        <tr><td>Settles on the first explanation that fits</td><td>Ask “are we sure it’s this, and not something else?”</td></tr>
+        <tr><td>Tests with neat, made-up data</td><td>Ask how the test input was made</td></tr>
+        <tr><td>Checks one case and assumes the rest look the same</td><td>Ask how many other cases look like this</td></tr>
+        <tr><td>Says “done” in a confident summary, even when it skipped something</td><td>Re-run the check myself instead of reading the summary</td></tr>
+        <tr><td>Loses track of earlier decisions in a long session</td><td>Write the decisions into a file it re-reads</td></tr>
+        <tr><td class="grp" colspan="2">Good brakes: push here</td></tr>
+        <tr><td>Writes plumbing fast: scripts, plots, glue code</td><td>Let it go, and check the output rather than the lines</td></tr>
+        <tr><td>Reads a lot of code, logs or data quickly</td><td>Use it to find things and explain them in simple words</td></tr>
+        <tr><td>Doesn’t run out of ideas when pushed</td><td>Ask “what else can we try?” one more time</td></tr>
+        <tr><td>Reviews work it didn’t write</td><td>Use a different model as the reviewer</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>When abstractions leak</h2>
+
+  <p>So far I have talked about how useful abstractions are, but there is a downside. They are generalisations, and for very niche work they fail. Joel Spolsky wrote about this in 2002 and called it the Law of Leaky Abstractions <span class="cite">[3]</span>:</p>
+
+  <blockquote><p>All non-trivial abstractions, to some degree, are leaky.</p></blockquote>
+
+  <p class="noindent">Remember the assumption that reading any part of memory costs the same? Here is a case where it breaks. The two loops below add up every number in a square grid. The only difference is their order: one goes row by row, the other column by column. Same answer, same amount of work.</p>
+
+  <pre class="code"><code><span class="c">// row by row</span>
+for (int i = 0; i &lt; n; ++i)
+    for (int j = 0; j &lt; n; ++j) s += g[i * n + j];
+
+<span class="c">// column by column</span>
+for (int j = 0; j &lt; n; ++j)
+    for (int i = 0; i &lt; n; ++i) s += g[i * n + j];</code></pre>
+
+  <figure id="fig-grid">
+    <div class="legend"><span><i class="sw s1"></i>Row by row</span><span><i class="sw s2"></i>Column by column</span></div>
+    <div class="chart" id="chart-grid"></div>
+    <figcaption><span class="lab">Figure 7.</span> Time per number for the two loops, for grids from 49&nbsp;×&nbsp;49 to 8,131&nbsp;×&nbsp;8,131 four-byte integers. Measured on an AMD Ryzen 5 5600GE (512 KB of L2 cache per core, 16 MB of L3), g++ 13 with <code>-O2 -fno-tree-vectorize</code>, one core, best of five runs. Hover for the values at each size.</figcaption>
+  </figure>
+
+  <p>Both do the same number of operations, but after about 10 MB the column-by-column code got a lot slower, up to 12 times. C++ did exactly what you asked for. What happened was that the developer was not aware of memory caching. The CPU fetches memory 64 bytes at a time, which is 16 of these numbers. Row by row uses all 16. Column by column uses one and jumps to the next row, and once the grid gets big, the CPU can’t keep enough of it close by, so it spends most of its time waiting for memory.</p>
+
+  <p>That one I could measure. The leaks that hurt more don’t look like performance at all. My favourite is a program that refused to start because of one character. Its config file had a dash in it, but not the plain “-” on your keyboard. It was the long “—” that word processors and chat apps like to put in for you. The program printed its config at startup with a logger that only understood plain ASCII text, so it crashed before doing anything else. “Text is text” is an assumption so deep that nobody thinks of it as one. And guess who loves writing that long dash? LLMs.</p>
+
+  <figure id="fig-dash">
+    <div class="dash">
+      <div class="g"><span class="glyph">-</span><span class="nm">Hyphen-minus</span><code>U+002D, 1 byte: 2D</code><span class="nm">Plain ASCII</span></div>
+      <div class="g"><span class="glyph">—</span><span class="nm">Em dash</span><code>U+2014, 3 bytes: E2 80 94</code><span class="nm">Not ASCII</span></div>
+    </div>
+    <figcaption><span class="lab">Figure 8.</span> Two characters that look almost the same on screen. A program that only understands ASCII can’t even write the second one down.</figcaption>
+  </figure>
+
+
+
+
+
+  <p>Sometimes working around a leak isn’t enough, and you break out of the abstraction completely. This is why you sometimes see people write assembly inside C++: it gets performance the compiler won’t give you. HFT firms bypass the operating system’s network stack for the same reason.</p>
+
+  <p>The most famous example is probably Python and NumPy <span class="cite">[4]</span>. Python is very easy to write; you never think about how a number is stored or how a loop runs. But under the hood every number is a separate object somewhere in memory, and a loop goes through the interpreter one step at a time. For heavy number crunching this was too slow, so people broke out of Python and wrote the heavy loops in C and Fortran. NumPy packaged that. A NumPy array keeps the numbers next to each other in memory, just how the CPU likes it (remember the grid), and the loop runs in C. On my machine, adding up 10 million numbers took 112 ms with a Python loop and 3 ms with <code>arr.sum()</code>. That is 38 times faster.</p>
+
+  <p>And then the break-out itself became the new abstraction. Most people using <code>arr.sum()</code> today have never seen the C code underneath it, and pandas, scikit-learn and PyTorch are all built on the same idea. With AI, writing this kind of code has become very easy. If your Python is slow, you can just ask an LLM to vectorise it, and it mostly gets it right, so now it’s enough to know that you should vectorise, and why. Slowly, this has also become another abstraction. What is still hard is everything around it: knowing what to measure, finding where the time is actually going, and proving that the new version is really faster on your real data, not just on some benchmark.</p>
+
+  <h2>The cycle</h2>
+
+  <p>This will keep happening. An abstraction hits its limit, someone breaks out of it, the trick spreads, and someone packages it into a new abstraction. Then it starts again, one level up.</p>
+
+  <figure id="fig-cycle">
+    <div id="cycle"></div>
+    <figcaption><span class="lab">Figure 9.</span> How abstractions get made. Table 2 has four times it has already happened.</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+    <table class="booktabs text wide">
+      <caption><span class="lab">Table 2.</span> Four turns of the cycle.</caption>
+      <thead><tr><th>The abstraction</th><th>Where it hit its limit</th><th>How people broke out</th><th>What it became</th></tr></thead>
+      <tbody>
+        <tr><td>The segment tree</td><td>Updating a whole range was too slow, one element at a time</td><td>Lazy propagation: write the update on a box and push it down only when needed</td><td>A copy-paste template, like the lazy segment tree in the AtCoder Library <span class="cite">[5]</span></td></tr>
+        <tr><td>C++ and the compiler</td><td>Some loops didn’t use the CPU’s vector instructions</td><td>Hand-written assembly</td><td>Intrinsics, and compilers that vectorise loops themselves</td></tr>
+        <tr><td>Graphics cards</td><td>They could only be programmed for drawing</td><td>Dressing up maths as graphics shaders</td><td>CUDA in 2007, then PyTorch on top</td></tr>
+        <tr><td>The database</td><td>Couldn’t handle web-scale data on ordinary machines</td><td>MapReduce: split one job across thousands of cheap machines <span class="cite">[6]</span></td><td>Hadoop and Spark, and now plain SQL again on top</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>A fair question is: if nobody understands the layer below anymore, who fixes it when it breaks? My answer is that someone always does. Not everyone needs to know what is inside the box, but someone has to.</p>
+
+  <p>Remember the blue LED from the start? Shuji Nakamura didn’t get there by using his tools as black boxes. To grow gallium nitride crystals you need a machine called an MOCVD reactor, which flows gases over a very hot surface so that they settle into a crystal, layer by layer. The standard machine didn’t work for gallium nitride. The surface had to be so hot that the gases rose away from it before they could settle. So Nakamura spent about a year modifying the machine himself, often changing it in the morning and growing crystals in the afternoon. He added a second gas flow from above that pushed the first one down onto the surface <span class="cite">[7, 8]</span>. He broke out of the abstraction everyone else was using, and that is what made the bright blue LED possible.</p>
+
+  <p>Thirty years later, that LED is behind the white light of most laptop and TV screens, and almost none of us know it is there. His break-out became our abstraction. Most of us will only ever use the screen, and that’s fine. That’s what an abstraction is for. But someone will always open the box, and the people who open it are the ones who build the next one.</p>
+
+  <h2>References</h2>
+  <ol class="refs">
+    <li>The Nobel Prize in Physics 2014, press release. <a href="https://www.nobelprize.org/prizes/physics/2014/press-release/">nobelprize.org</a></li>
+    <li>John McWhorter, “Txtng is killing language. JK!!!”, TED2013, February 2013. <a href="https://www.ted.com/talks/john_mcwhorter_txtng_is_killing_language_jk">ted.com</a></li>
+    <li>Joel Spolsky, “The Law of Leaky Abstractions”, <i>Joel on Software</i>, 11 November 2002. <a href="https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/">joelonsoftware.com</a></li>
+    <li>Charles R. Harris et al., “Array programming with NumPy”, <i>Nature</i> 585, 357–362 (2020). <a href="https://www.nature.com/articles/s41586-020-2649-2">nature.com</a></li>
+    <li>AtCoder Library documentation, “Lazy Segtree”. <a href="https://atcoder.github.io/ac-library/production/document_en/lazysegtree.html">atcoder.github.io</a></li>
+    <li>Jeffrey Dean and Sanjay Ghemawat, “MapReduce: Simplified Data Processing on Large Clusters”, OSDI 2004. <a href="https://research.google/pubs/mapreduce-simplified-data-processing-on-large-clusters/">research.google</a></li>
+    <li>Shuji Nakamura, “Background Story of the Invention of Efficient Blue InGaN Light Emitting Diodes”, Nobel Lecture, 8 December 2014. <a href="https://www.nobelprize.org/prizes/physics/2014/nakamura/lecture/">nobelprize.org</a></li>
+    <li>Shuji Nakamura, Yasuhiro Harada and Masayuki Seno, “Novel metalorganic chemical vapor deposition system for GaN growth”, <i>Applied Physics Letters</i> 58, 2021 (1991).</li>
+  </ol>
+</article>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(function () {
+  const GRID = [{"n":49,"bytes":9604,"rows":0.2637,"cols":0.375},{"n":61,"bytes":14884,"rows":0.2607,"cols":0.3762},{"n":75,"bytes":22500,"rows":0.2584,"cols":0.374},{"n":93,"bytes":34596,"rows":0.2589,"cols":0.3294},{"n":117,"bytes":54756,"rows":0.2529,"cols":0.3117},{"n":147,"bytes":86436,"rows":0.2863,"cols":0.2832},{"n":183,"bytes":133956,"rows":0.2743,"cols":0.2769},{"n":229,"bytes":209764,"rows":0.2707,"cols":0.2705},{"n":287,"bytes":329476,"rows":0.2641,"cols":0.3306},{"n":357,"bytes":509796,"rows":0.262,"cols":0.332},{"n":447,"bytes":799236,"rows":0.2622,"cols":0.3375},{"n":559,"bytes":1249924,"rows":0.2574,"cols":0.4298},{"n":699,"bytes":1954404,"rows":0.2558,"cols":0.5593},{"n":873,"bytes":3048516,"rows":0.2569,"cols":0.5957},{"n":1091,"bytes":4761124,"rows":0.2535,"cols":0.6043},{"n":1365,"bytes":7452900,"rows":0.2598,"cols":1.43},{"n":1705,"bytes":11628100,"rows":0.2801,"cols":2.4569},{"n":2131,"bytes":18164644,"rows":0.2901,"cols":2.5223},{"n":2665,"bytes":28408900,"rows":0.2889,"cols":2.5872},{"n":3331,"bytes":44382244,"rows":0.2879,"cols":2.6234},{"n":4163,"bytes":69322276,"rows":0.2933,"cols":2.8101},{"n":5205,"bytes":108368100,"rows":0.289,"cols":2.9791},{"n":6505,"bytes":169260100,"rows":0.2914,"cols":3.1735},{"n":8131,"bytes":264452644,"rows":0.2919,"cols":3.3976}];
+
+  const pct = v => (v === 0 ? "0" : +(v * 100).toFixed(v < 0.1 ? 1 : 0)) + "%";
+  const pct2 = v => (v * 100).toFixed(v < 0.01 ? 2 : 1) + "%";
+  const fmtBytes = b => b < 1e6 ? Math.round(b / 1e3) + " KB" : +(b / 1e6).toFixed(b < 1e7 ? 1 : 0) + " MB";
+  const swRow = (s, name, v) => `<div class="r"><span class="sw ${s}"></span><span>${name}</span><span class="v">${v}</span></div>`;
+
+  function tooltip(fig) {
+    let t = fig.querySelector(".tt-pop");
+    if (!t) { t = document.createElement("div"); t.className = "tt-pop"; t.hidden = true; fig.appendChild(t); }
+    return t;
+  }
+  function placeTip(t, fig, el, px, py) {
+    const fr = fig.getBoundingClientRect(), er = el.getBoundingClientRect();
+    const ax = er.left - fr.left + px, ay = er.top - fr.top + py;
+    let left = ax + 14;
+    if (left + t.offsetWidth > fig.clientWidth) left = ax - t.offsetWidth - 14;
+    t.style.left = Math.max(0, left) + "px";
+    t.style.top = ay + "px";
+  }
+  function frame(el, H) {
+    el.innerHTML = "";
+    const W = Math.max(280, el.clientWidth);
+    const svg = d3.select(el).append("svg").attr("width", W).attr("height", H).attr("viewBox", `0 0 ${W} ${H}`);
+    return { svg, W };
+  }
+  function yGrid(svg, y, ticks, x0, x1, fmt) {
+    const g = svg.append("g");
+    ticks.forEach(v => {
+      g.append("line").attr("class", v === 0 ? "base" : "gl").attr("x1", x0).attr("x2", x1).attr("y1", y(v)).attr("y2", y(v));
+      g.append("text").attr("class", "tk").attr("x", x0 - 8).attr("y", y(v)).attr("dy", ".32em").attr("text-anchor", "end").text(fmt(v));
+    });
+  }
+  function axisLabels(svg, W, H, m, xl, yl) {
+    svg.append("text").attr("class", "axlab").attr("x", (m.l + W - m.r) / 2).attr("y", H - 6).attr("text-anchor", "middle").text(xl);
+    svg.append("text").attr("class", "axlab").attr("text-anchor", "middle")
+      .attr("transform", `translate(12,${(m.t + H - m.b) / 2}) rotate(-90)`).text(yl);
+  }
+  // end labels at the right edge, pushed apart so they never overlap
+  function endLabels(svg, x0, items) {
+    items.sort((a, b) => a.y - b.y);
+    for (let i = 1; i < items.length; i++) if (items[i].y - items[i - 1].y < 30) items[i].y = items[i - 1].y + 30;
+    items.forEach(it => {
+      const t = svg.append("text").attr("class", "endlab").attr("x", x0).attr("y", it.y);
+      t.append("tspan").attr("x", x0).attr("dy", "-.2em").text(it.name);
+      t.append("tspan").attr("class", "v").attr("x", x0).attr("dy", "1.15em").text(it.value);
+    });
+  }
+
+  // Figure 3: chance a bug survives k checks
+  function figChecks() {
+    const el = document.getElementById("chart-checks"), fig = el.closest("figure"), tip = tooltip(fig);
+    const pIn = document.getElementById("p-miss"), cIn = document.getElementById("c-shared");
+    const pOut = document.getElementById("p-miss-v"), cOut = document.getElementById("c-shared-v");
+    const read = document.getElementById("checks-read");
+    function draw() {
+      const p = +pIn.value / 100, c = +cIn.value / 100;
+      pOut.textContent = pIn.value + "%"; cOut.textContent = cIn.value + "%";
+      const D = d3.range(1, 7).map(k => ({ k, ind: Math.pow(p, k), sh: c + (1 - c) * Math.pow(p, k) }));
+      const H = 280, m = { t: 14, r: 132, b: 44, l: 50 };
+      const { svg, W } = frame(el, H);
+      const ymax = Math.max(0.1, Math.ceil(D[0].sh * 10 - 1e-9) / 10);
+      const x = d3.scaleLinear().domain([1, 6]).range([m.l, W - m.r]);
+      const y = d3.scaleLinear().domain([0, ymax]).range([H - m.b, m.t]);
+      yGrid(svg, y, y.ticks(4), m.l, W - m.r, pct);
+      D.forEach(d => svg.append("text").attr("class", "tk").attr("x", x(d.k)).attr("y", H - m.b + 16).attr("text-anchor", "middle").text(d.k));
+      axisLabels(svg, W, H, m, "Number of checks", "Chance the bug gets through");
+      if (c > 0) {
+        svg.append("line").attr("class", "floor").attr("x1", m.l).attr("x2", W - m.r).attr("y1", y(c)).attr("y2", y(c));
+        svg.append("text").attr("class", "ann").attr("x", m.l + 6).attr("y", y(c) + 13).text("floor: the shared blind spot");
+      }
+      [["ind", "s1"], ["sh", "s2"]].forEach(([k, s]) => {
+        svg.append("path").datum(D).attr("class", "ln " + s).attr("d", d3.line().x(d => x(d.k)).y(d => y(d[k])));
+        D.forEach(d => svg.append("circle").attr("class", "dot " + s).attr("cx", x(d.k)).attr("cy", y(d[k])).attr("r", 4));
+      });
+      const last = D[D.length - 1];
+      endLabels(svg, x(6) + 10, c > 0
+        ? [{ y: y(last.ind), name: "Independent", value: pct2(last.ind) }, { y: y(last.sh), name: "Shared blind spot", value: pct2(last.sh) }]
+        : [{ y: y(last.ind), name: "Both the same", value: pct2(last.ind) }]);
+      const hov = svg.append("line").attr("class", "cross").attr("y1", m.t).attr("y2", H - m.b).style("display", "none");
+      svg.append("rect").attr("x", m.l - 20).attr("y", m.t).attr("width", W - m.l - m.r + 40).attr("height", H - m.t - m.b).attr("fill", "transparent")
+        .on("pointermove", ev => {
+          const d = D[Math.max(0, Math.min(5, Math.round(x.invert(d3.pointer(ev)[0])) - 1))];
+          hov.style("display", null).attr("x1", x(d.k)).attr("x2", x(d.k));
+          tip.innerHTML = `<div class="h">${d.k} check${d.k > 1 ? "s" : ""}</div>` + swRow("s1", "Independent", pct2(d.ind)) + swRow("s2", "Shared blind spot", pct2(d.sh));
+          tip.hidden = false; placeTip(tip, fig, el, x(d.k), m.t);
+        })
+        .on("pointerleave", () => { hov.style("display", "none"); tip.hidden = true; });
+      const d3k = D[2];
+      read.textContent = c > 0
+        ? `With 3 checks, a bug gets through ${pct2(d3k.ind)} of the time if the checks are fully independent, and ${pct2(d3k.sh)} if they share a ${cIn.value}% blind spot.`
+        : `With no shared blind spot the two lines are the same: 3 checks let a bug through ${pct2(d3k.ind)} of the time.`;
+    }
+    pIn.addEventListener("input", draw); cIn.addEventListener("input", draw);
+    return draw;
+  }
+
+  // Figure 4: row-by-row versus column-by-column
+  function figGrid() {
+    const el = document.getElementById("chart-grid"), fig = el.closest("figure"), tip = tooltip(fig);
+    return function draw() {
+      const H = 300, m = { t: 14, r: 120, b: 44, l: 46 };
+      const { svg, W } = frame(el, H);
+      const x = d3.scaleLog().domain([8e3, 3.2e8]).range([m.l, W - m.r]);
+      const y = d3.scaleLinear().domain([0, 3.6]).range([H - m.b, m.t]);
+      yGrid(svg, y, [0, 1, 2, 3], m.l, W - m.r, v => v);
+      [1e4, 1e5, 1e6, 1e7, 1e8].forEach(v => {
+        svg.append("line").attr("class", "xt").attr("x1", x(v)).attr("x2", x(v)).attr("y1", H - m.b).attr("y2", H - m.b + 4);
+        svg.append("text").attr("class", "tk").attr("x", x(v)).attr("y", H - m.b + 17).attr("text-anchor", "middle").text(fmtBytes(v));
+      });
+      axisLabels(svg, W, H, m, "Size of the grid (log scale)", "Nanoseconds per number");
+      [["rows", "s1"], ["cols", "s2"]].forEach(([k, s]) =>
+        svg.append("path").datum(GRID).attr("class", "ln " + s).attr("d", d3.line().x(d => x(d.bytes)).y(d => y(d[k])).curve(d3.curveMonotoneX)));
+      const last = GRID[GRID.length - 1];
+      [["rows", "s1"], ["cols", "s2"]].forEach(([k, s]) => svg.append("circle").attr("class", "dot " + s).attr("cx", x(last.bytes)).attr("cy", y(last[k])).attr("r", 4));
+      endLabels(svg, x(last.bytes) + 10, [
+        { y: y(last.cols), name: "Column by column", value: last.cols.toFixed(2) + " ns" },
+        { y: y(last.rows), name: "Row by row", value: last.rows.toFixed(2) + " ns" }]);
+      const hov = svg.append("g").style("display", "none");
+      const vr = hov.append("line").attr("class", "cross").attr("y1", m.t).attr("y2", H - m.b);
+      const h1 = hov.append("circle").attr("class", "dot s1").attr("r", 4), h2 = hov.append("circle").attr("class", "dot s2").attr("r", 4);
+      svg.append("rect").attr("x", m.l).attr("y", m.t).attr("width", W - m.l - m.r).attr("height", H - m.t - m.b).attr("fill", "transparent")
+        .on("pointermove", ev => {
+          const b = x.invert(d3.pointer(ev)[0]);
+          const d = GRID[d3.leastIndex(GRID, g => Math.abs(Math.log(g.bytes / b)))];
+          hov.style("display", null);
+          vr.attr("x1", x(d.bytes)).attr("x2", x(d.bytes));
+          h1.attr("cx", x(d.bytes)).attr("cy", y(d.rows)); h2.attr("cx", x(d.bytes)).attr("cy", y(d.cols));
+          const n = d.n.toLocaleString("en-GB");
+          tip.innerHTML = `<div class="h">${n} × ${n} grid, ${fmtBytes(d.bytes)}</div>` + swRow("s1", "Row by row", d.rows.toFixed(2) + " ns")
+            + swRow("s2", "Column by column", d.cols.toFixed(2) + " ns") + `<div class="r"><span>Slower by</span><span class="v">${(d.cols / d.rows).toFixed(1)}×</span></div>`;
+          tip.hidden = false; placeTip(tip, fig, el, x(d.bytes), m.t);
+        })
+        .on("pointerleave", () => { hov.style("display", "none"); tip.hidden = true; });
+    };
+  }
+
+  // diagrams: fixed viewBox, scaled to the column
+  function dg(id, vw, vh, maxw) {
+    const svg = d3.select("#" + id).append("svg").attr("class", "dg").attr("viewBox", `0 0 ${vw} ${vh}`).style("max-width", maxw + "px").attr("role", "img");
+    svg.append("defs").append("marker").attr("id", id + "-ah").attr("viewBox", "0 0 10 10").attr("refX", 9).attr("refY", 5)
+      .attr("markerWidth", 7).attr("markerHeight", 7).attr("orient", "auto-start-reverse")
+      .append("path").attr("class", "dg-head").attr("d", "M0,0 L10,5 L0,10 z");
+    svg.box = (cx, cy, w, h, lines, cls) => {
+      svg.append("rect").attr("class", "dg-box" + (cls ? " " + cls : "")).attr("x", cx - w / 2).attr("y", cy - h / 2).attr("width", w).attr("height", h).attr("rx", 3);
+      const t = svg.append("text").attr("class", "dg-t").attr("x", cx).attr("y", cy - (lines.length - 1) * 7 + 4);
+      lines.forEach((s, i) => t.append("tspan").attr("x", cx).attr("dy", i ? 14 : 0).text(s));
+    };
+    svg.arrow = d => svg.append("path").attr("class", "dg-a").attr("d", d).attr("marker-end", `url(#${id}-ah)`);
+    svg.lab = (x, y, s, cls) => svg.append("text").attr("class", cls || "dg-lab").attr("x", x).attr("y", y).text(s);
+    return svg;
+  }
+
+  // Figure 1: segment tree over eight numbers; highlight the boxes a query adds up
+  function segtree() {
+    const A = [5, 2, 8, 1, 9, 3, 7, 4], n = A.length, cw = 50, x0 = 10, ys = [22, 72, 122, 172];
+    const lIn = document.getElementById("st-l"), rIn = document.getElementById("st-r");
+    const lOut = document.getElementById("st-l-v"), rOut = document.getElementById("st-r-v"), read = document.getElementById("st-read");
+    const sum = (lo, hi) => A.slice(lo, hi + 1).reduce((a, b) => a + b, 0);
+    function cover(lo, hi, L, R, acc) {
+      if (R < lo || hi < L) return;
+      if (L <= lo && hi <= R) { acc.push(lo + ":" + hi); return; }
+      const mid = (lo + hi) >> 1;
+      cover(lo, mid, L, R, acc); cover(mid + 1, hi, L, R, acc);
+    }
+    function draw() {
+      let L = +lIn.value, R = +rIn.value;
+      lOut.textContent = L; rOut.textContent = R;
+      if (L > R) [L, R] = [R, L];
+      const used = []; cover(0, n - 1, L, R, used);
+      d3.select("#segtree").selectAll("*").remove();
+      const svg = dg("segtree", 420, 232, 460);
+      ys.forEach((y, d) => {
+        const span = n >> d;
+        for (let i = 0; i < (1 << d); i++) {
+          const lo = i * span, hi = lo + span - 1;
+          const cls = "dg-box " + (used.includes(lo + ":" + hi) ? "used" : (d === 3 ? "leaf" : ""));
+          svg.append("rect").attr("class", cls).attr("x", x0 + lo * cw + 3).attr("y", y - 15).attr("width", span * cw - 6).attr("height", 30).attr("rx", 3);
+          svg.append("text").attr("class", "dg-t").attr("x", x0 + (lo + hi + 1) / 2 * cw).attr("y", y + 4).text(sum(lo, hi));
+        }
+      });
+      A.forEach((_, i) => svg.append("text").attr("class", "dg-idx").attr("x", x0 + (i + 0.5) * cw).attr("y", 204).text("a[" + i + "]"));
+      svg.append("line").attr("class", "dg-range").attr("x1", x0 + L * cw + 6).attr("x2", x0 + (R + 1) * cw - 6).attr("y1", 218).attr("y2", 218);
+      const k = used.length, m = R - L + 1;
+      read.textContent = `query(${L}, ${R}) = ${sum(L, R)}. It adds ${k} stored ${k > 1 ? "sums" : "sum"} instead of ${m} ${m > 1 ? "numbers" : "number"}. For a million numbers it would add at most about 40.`;
+    }
+    lIn.addEventListener("input", draw); rIn.addEventListener("input", draw);
+    draw();
+  }
+
+  function loops() {
+    const a = dg("loop-a", 300, 250, 320);
+    a.box(150, 48, 136, 30, ["Write the code"], "fill hi");
+    a.box(225, 145, 136, 30, ["Find a new detail"], "fill");
+    a.box(75, 145, 136, 30, ["Change the requirement"], "fill");
+    a.arrow("M218,48 Q240,50 236,128");
+    a.arrow("M225,162 Q150,230 77,162");
+    a.arrow("M65,128 Q60,50 80,48");
+
+    const b = dg("loop-b", 300, 250, 320);
+    b.box(150, 28, 136, 30, ["Describe what I want"], "fill");
+    b.box(225, 125, 136, 30, ["The LLM writes code"], "fill");
+    b.box(150, 222, 136, 30, ["Probe what it does"], "fill hi");
+    b.box(75, 125, 136, 30, ["Change the requirement"], "fill");
+    b.arrow("M218,28 Q240,30 236,108");
+    b.arrow("M236,142 Q240,220 220,222");
+    b.arrow("M80,222 Q60,220 64,142");
+    b.arrow("M64,108 Q60,30 80,28");
+  }
+
+  function cycle() {
+    const s = dg("cycle", 360, 250, 400);
+    s.box(180, 28, 150, 30, ["An abstraction"], "fill");
+    s.box(282, 125, 150, 30, ["Work hits its limits"], "fill");
+    s.box(180, 222, 150, 30, ["Someone breaks out"], "fill");
+    s.box(78, 125, 150, 40, ["The trick spreads", "and gets packaged"], "fill");
+    s.arrow("M255,28 Q290,30 290,108");
+    s.arrow("M290,142 Q290,220 257,222");
+    s.arrow("M103,222 Q70,220 70,147");
+    s.arrow("M70,103 Q70,30 103,28");
+  }
+
+  function start() {
+    segtree(); loops(); cycle();
+    const drawChecks = figChecks(), drawGrid = figGrid();
+    drawChecks(); drawGrid();
+    let w = 0;
+    new ResizeObserver(() => {
+      const nw = document.querySelector(".paper").clientWidth;
+      if (nw !== w) { w = nw; drawChecks(); drawGrid(); }
+    }).observe(document.querySelector(".paper"));
+  }
+  if (window.d3) start(); else window.addEventListener("load", start);
+})();
+</script>
+
+</body>
+</html>
