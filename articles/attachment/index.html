@@ -119,19 +119,28 @@ body { margin: 0; padding-left: max(18px, env(safe-area-inset-left, 0px)); paddi
     <figcaption><span class="lab">Figure 1.</span> Someone talks to me a lot every day, except on days 6 and 45, when they barely talk. The line is what my brain predicts, and the bars are the surprise. A toy model, not data.</figcaption>
   </figure>
 
-  <p>On day 6 my brain has barely learned the pattern, so a quiet day costs a little. On day 45 the prediction is close to 1, and the same quiet day is the biggest surprise on the chart. The better my brain knows a routine, the more it hurts when it breaks.</p>
+  <p>On day 6 my brain has barely learned the pattern, so a quiet day is a small surprise. On day 45 the prediction is close to 1, and the same quiet day is the biggest surprise on the chart. But does the surprise correlate with hurt? No. Prediction alone doesn’t explain this.</p>
 
-  <p>But prediction alone doesn’t explain this. We can try to explain the pain and joy of attachment using neurotransmitters like dopamine, oxytocin and vasopressin. These chemical systems influence how much significance the brain assigns to social experiences, how it learns from them, and how it responds to the availability or loss of someone we are attached to.</p>
+  <p>We can try to explain the pain and joy of attachment using neurotransmitters like dopamine, oxytocin and vasopressin. These chemical systems influence how much significance the brain assigns to social experiences, how it learns from them, and how it responds to the availability or loss of someone we are attached to.</p>
 
   <p>The link between dopamine and prediction goes back to the 1990s. Wolfram Schultz found that dopamine neurons in monkeys fire for an unexpected reward, stay quiet for an expected one, and dip below normal when an expected reward doesn’t come <span class="cite">[1]</span>. This is exactly <i>δ</i>, measured in a brain.</p>
 
+  <p>So the hurt needs a second factor, the emotional significance <i>E</i>: how much this person matters to my brain. The surprise only hurts as much as <i>E</i> lets it:</p>
+
+  <div class="eq">
+    <math display="block"><mtext>hurt</mtext><mo>=</mo><mi>E</mi><mo>×</mo><mo fence="true" stretchy="false">|</mo><mi>δ</mi><mo fence="true" stretchy="false">|</mo></math>
+    <span class="eqno">(2)</span>
+  </div>
+
+  <p class="cont noindent">A big surprise from someone with a small <i>E</i> barely hurts. A small surprise from someone with a big <i>E</i> can hurt a lot.</p>
+
   <h2>Time is not the whole story</h2>
 
-  <p>There is probably variation between brains in the flux of chemicals released for a given social experience, and we don’t know if all brains react the same way to a given flux. But combined, the flux and the brain’s reaction to it form the key part of the feedback loop of the prediction model. You might be able to predict everything about a colleague you have been seeing daily in office for years, when they eat, when they go home, and still not be bothered much if they resign. On the other hand, you can get intensely attached to someone you met only a few months ago, based on the sensitivity of your brain and the flux of neurotransmitters released on exposure.</p>
+  <p>There is probably variation between brains in the flux of chemicals released for a given social experience, and we don’t know if all brains react the same way to a given flux. But combined, the flux and the brain’s reaction to it form the key part of the feedback loop of the prediction model. You might be able to predict everything about a colleague you have been seeing daily in office for years, when they eat, when they go home, and still not be bothered much if they resign. On the other hand, you can get intensely attached to someone you met only a few months ago, based on the sensitivity of your brain and the flux of neurotransmitters released on exposure. In other words, the colleague has a small <i>E</i>, and the new person a big one.</p>
 
   <h2>From presence to security</h2>
 
-  <p>The role of time in attachment is very interesting. Being with someone for a long time doesn’t directly correlate with how intense the attachment is. In fact, take the example of our parents. When we were children we were intensely attached to them, and their absence used to make us cry. Then we grew up, went to college, moved to a different city to work, and now we can continue our daily work without missing them a lot. Does that mean the attachment with them faded away? No. With time the attachment evolved. It became a sense of security for the brain, and it’s not just dopamine release now. We don’t predict their actions anymore, but any thought of something happening to our parents can cause a massive breakdown.</p>
+  <p>The role of time in attachment is very interesting. Being with someone for a long time doesn’t directly correlate with how intense the attachment is. In fact, take the example of our parents. When we were children we were intensely attached to them, and their absence used to make us cry. Then we grew up, went to college, moved to a different city to work, and now we can continue our daily work without missing them a lot. Does that mean the attachment with them faded away? No. The joy of seeing them every day has faded, but the attachment hasn’t, so it was never just the joy we were attached to. It was them. With time the attachment evolved. It became a sense of security for the brain, and it’s not just dopamine release now. We don’t predict their actions anymore, but any thought of something happening to our parents can cause a massive breakdown.</p>
 
   <p>Attachment can remain extremely strong even when the need for someone’s constant presence disappears. The prediction model may gradually shift from predicting someone’s behaviour to predicting their availability and reliability. With time, an intense attachment stops meaning the intense feeling of meeting them again and again, and it probably turns into a sense of security. A stronger sense of security can sometimes make physical separation easier, not harder. So the amount of distress caused by someone’s absence isn’t necessarily proportional to the strength of the attachment.</p>
 
@@ -164,7 +173,7 @@ body { margin: 0; padding-left: max(18px, env(safe-area-inset-left, 0px)); paddi
 
   <div class="eq">
     <math display="block"><mi>P</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mi>P</mi><mn>0</mn></msub><mspace width="0.1em"></mspace><msup><mi>e</mi><mrow><mo>−</mo><mi>β</mi><mi>t</mi></mrow></msup><mo>,</mo><mspace width="2em"></mspace><msub><mi>t</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub><mo>=</mo><mfrac><mrow><mi>ln</mi><mspace width="0.17em"></mspace><mn>2</mn></mrow><mi>β</mi></mfrac></math>
-    <span class="eqno">(2)</span>
+    <span class="eqno">(3)</span>
   </div>
 
   <p class="cont noindent">With a half-life of 30 days, the pain on day 100 is about a tenth of day 0. It never quite reaches zero.</p>
@@ -176,7 +185,7 @@ body { margin: 0; padding-left: max(18px, env(safe-area-inset-left, 0px)); paddi
     </div>
     <div class="chart short" id="chart-half" role="img" aria-label="Pain left on each day after a loss, for a chosen half-life"></div>
     <p class="readout" id="half-read"></p>
-    <figcaption><span class="lab">Figure 4.</span> Equation (2): the pain left on each day, as a share of day 0. Drag the half-life to see what is left on day 100.</figcaption>
+    <figcaption><span class="lab">Figure 4.</span> Equation (3): the pain left on each day, as a share of day 0. Drag the half-life to see what is left on day 100.</figcaption>
   </figure>
 
   <p>Of course, not all de-attachment is caused by a sudden change in dynamics. Sometimes life gets busy, exposure fades slowly over time, and eventually the significance of that bond fades away too.</p>
@@ -184,9 +193,6 @@ body { margin: 0; padding-left: max(18px, env(safe-area-inset-left, 0px)); paddi
   <h2>Clinging is not attachment</h2>
 
   <p>When we say attachment is not good, I think we are often referring to the hurt that comes from clinging, possessiveness, or dependence, rather than attachment itself. We tend to overlook the sense of security that attachment can provide. The same bond that makes us vulnerable to someone’s absence can also make us feel secure simply knowing they are there.</p>
-
-  <p>Our parents are the best example of this. The joy of seeing them every day faded long ago, but the bond never did, so it was never just the joy.</p>
-
   <h2>References</h2>
   <ol class="refs">
     <li>Wolfram Schultz, Peter Dayan and P. Read Montague, “A neural substrate of prediction and reward”, <i>Science</i> 275, 1593–1599 (1997). <a href="https://doi.org/10.1126/science.275.5306.1593">doi.org</a></li>
@@ -355,7 +361,7 @@ body { margin: 0; padding-left: max(18px, env(safe-area-inset-left, 0px)); paddi
     };
   }
 
-  // Figure 4: the half-life of pain, equation (2)
+  // Figure 4: the half-life of pain, equation (3)
   function figHalf() {
     const el = document.getElementById("chart-half"), fig = el.closest("figure"), tip = tooltip(fig);
     const hIn = document.getElementById("half"), hOut = document.getElementById("half-v"), read = document.getElementById("half-read");
