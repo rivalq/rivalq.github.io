@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Attachment</title>
+<meta name="description" content="On backpacks, paneer, parents and half-lives: how the brain gets attached, and why de-attachment is a different dimension.">
+<meta name="author" content="Jatin Garg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Attachment">
+<meta property="og:description" content="On backpacks, paneer, parents and half-lives: how the brain gets attached, and why de-attachment is a different dimension.">
+<meta property="og:url" content="https://rivalq.github.io/articles/attachment/">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://rivalq.github.io/articles/attachment/">
+<link rel="stylesheet" href="../../assets/fonts.css">
+<link rel="stylesheet" href="../../assets/paper.css">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+<nav class="sitebar"><a href="../../">Jatin Garg</a><a href="../../#writing">All writing</a></nav>
+<style>
+/* Essay variant of the site's paper style: one justified Latin Modern column, unnumbered sections,
+   numbered figures and equations. Two chart series only: s1 (blue) and s2 (orange). */
+:root { --site-bg: #ffffff; --site-fg: #141414; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --site-bg: #15171b; --site-fg: #e9e7e2; color-scheme: dark; } }
+:root[data-theme="dark"] { --site-bg: #15171b; --site-fg: #e9e7e2; color-scheme: dark; }
+html, body { background: var(--site-bg); color: var(--site-fg); }
+body { margin: 0; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+
+.paper { --s1: #2a78d6; --s2: #eb6834; --grid: #e6e6e6; --axis: #b9b9b9; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .paper { --s1: #3987e5; --s2: #e06a3a; --grid: #2a2c30; --axis: #4a4c50; } }
+:root[data-theme="dark"] .paper { --s1: #3987e5; --s2: #e06a3a; --grid: #2a2c30; --axis: #4a4c50; }
+
+.paper.essay h2::before { content: none; }
+.paper.essay h2 { margin-top: 2.1rem; }
+.paper .titleblock .standfirst { font-style: italic; color: var(--ink-2); font-size: 1.02rem; margin: 0 0 1.1rem; }
+.paper .titleblock .draft { font-family: var(--caps); letter-spacing: .06em; font-size: .85rem; color: var(--muted); margin-top: .35rem; }
+
+/* charts */
+.paper .chart { position: relative; }
+.paper .chart .gl { stroke: var(--grid); stroke-width: 1; }
+.paper .chart .base { stroke: var(--axis); stroke-width: 1; }
+.paper .chart .xt { stroke: var(--axis); stroke-width: 1; }
+.paper .chart .tk { font-size: 11.5px; fill: var(--ink-2); font-variant-numeric: tabular-nums; }
+.paper .chart .ln { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.paper .chart .ln.s1 { stroke: var(--s1); }
+.paper .chart .dot { fill: var(--s1); stroke: var(--paper); stroke-width: 2; }
+.paper .chart .bar { fill: var(--s2); }
+.paper .chart .skipcol { fill: var(--hl); }
+.paper .chart .mark { stroke: var(--axis); stroke-width: 1; stroke-dasharray: 2 3; }
+.paper .chart .cross { stroke: var(--axis); stroke-width: 1; }
+.paper .chart .endlab { font-size: 12px; fill: var(--ink); }
+.paper .legend { display: flex; flex-wrap: wrap; justify-content: center; gap: .3rem 1.4rem; font-size: .9rem; margin-bottom: .3rem; }
+.paper .legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.paper .sw { display: inline-block; width: 1.1rem; height: 2px; flex: none; }
+.paper .sw.s1 { background: var(--s1); }
+.paper .sw.bar { width: .5rem; height: .75rem; background: var(--s2); border-radius: 1px; }
+.paper .tt-pop .sw { width: .8rem; height: 2px; }
+.paper .tt-pop .sw.bar { width: .45rem; height: .6rem; }
+
+/* slider */
+.paper .controls { max-width: 24rem; font-size: .92rem; margin: .2rem 0 .8rem; }
+.paper .controls label { display: flex; justify-content: space-between; gap: .6rem; margin-bottom: .2rem; }
+.paper .controls input[type="range"] { width: 100%; accent-color: var(--s1); margin: 0; }
+.paper .controls input:focus-visible { outline: 2px solid var(--s1); outline-offset: 2px; }
+.paper .controls output { font-variant-numeric: tabular-nums; }
+.paper .readout { font-size: .92rem; text-indent: 0; text-align: left; margin: .4rem 0 0; color: var(--ink-2); }
+
+/* figure 2: the four quadrants */
+.paper .chart .q { position: absolute; font-size: .84rem; line-height: 1.28; }
+.paper .chart .q.tr, .paper .chart .q.br { text-align: right; }
+.paper .chart .q .t { font-family: var(--caps); letter-spacing: .03em; color: var(--ink); margin-bottom: .12rem; }
+.paper .chart .q .e { font-style: italic; color: var(--ink-2); }
+.paper .chart .mid { stroke: var(--hair); stroke-width: 1; stroke-dasharray: 3 4; }
+.paper .chart .axline { stroke: var(--ink-2); stroke-width: 1; }
+.paper .chart .arr { fill: none; stroke-width: 2; stroke-linecap: round; }
+.paper .chart .arr.s1 { stroke: var(--s1); } .paper .chart .arr.s2 { stroke: var(--s2); }
+.paper .chart .arr.exp { stroke: var(--ink-2); stroke-width: 1.4; stroke-dasharray: 5 4; }
+.paper .chart .hd.s1 { fill: var(--s1); } .paper .chart .hd.s2 { fill: var(--s2); } .paper .chart .hd.ink { fill: var(--ink-2); }
+.paper .chart .st { fill: var(--ink); stroke: var(--paper); stroke-width: 2; }
+.paper .chart .stlab { font-size: 15px; font-style: italic; }
+.paper .chart .stlab .sub { font-size: 10.5px; font-style: normal; }
+.paper .chart .qlab { font-size: 12px; font-style: italic; fill: var(--ink); }
+@media (max-width: 34rem) { .paper .chart .q { font-size: .78rem; } }
+</style>
+
+<article class="paper essay">
+  <header class="titleblock">
+    <h1>Attachment</h1>
+    <p class="standfirst">On backpacks, paneer, parents and half-lives.</p>
+    <p class="author">Jatin Garg</p>
+    <p class="date">26 October 2026</p>
+  </header>
+
+  <p class="noindent">We humans can get attached to pretty much anything and anyone. It can be a stuffed toy just lying on your bed. It can simply be clothes, or a backpack. I really don’t like changing my backpack very often. It can also be an animal. Attachment doesn’t even need to be with some “thing”. It can be with your routine, or with which side of the bed you sleep on. I haven’t changed my side of the bed for a long time, and I’m not planning to either. Some people are quite malleable about their routine, and some will have an emotional breakdown if their routine doesn’t go as planned.</p>
+
+  <p>You can also get attached to songs, to the feeling they bring to your mind, hitting those right receptors every time you listen to them. And of course we get attached to many people in our lifetime. First our parents and siblings, then the friends we make in school, college and office, and also people we meet online. Sometimes we don’t even recognise that we are attached until that person is absent. Perhaps that’s the curse of attachment, that you feel it the most when you are not with that person. It’s also difficult to tell whether we are attached to a person or to the joy we feel when we are with them. The two overlap a bit.</p>
+
+  <h2>The brain builds a model</h2>
+
+  <p>Attachment to a person is pretty different. A person is dynamic, and that’s why this attachment can affect our brain so much. It doesn’t happen in a moment. It happens over time. In some way, our brain restructures itself over time. When we are talking to someone, meeting them or seeing them daily, we get to know little little details about them. When do they wake up? When do they sleep? What do they usually eat? We process this either consciously or subconsciously. Our brain likes data a lot. It takes all this data and builds a “predictive” model, which tries to predict every little thing about the person. What will they eat today? (Oh, they ate paneer yesterday, so there’s a good chance they won’t eat paneer today.)</p>
+
+  <p>Say <i>V</i> is what my brain predicts, for example how much they will talk to me today, and <i>r</i> is what actually happens, both from 0 (not at all) to 1 (a lot). The surprise is the gap between the two:</p>
+
+  <div class="eq">
+    <math display="block"><mi>δ</mi><mo>=</mo><mi>r</mi><mo>−</mo><mi>V</mi></math>
+    <span class="eqno">(1)</span>
+  </div>
+
+  <p class="cont noindent">Every day, the brain moves its prediction a little towards what actually happened.</p>
+
+  <h2>When the prediction breaks</h2>
+
+  <p>Earlier I told you how some people have an emotional breakdown when their routine doesn’t go as planned. A bit of that can be explained by the predictive nature of their minds. Whenever things don’t go as predicted, they feel some sort of pain.</p>
+
+  <figure id="fig-pred">
+    <div class="legend"><span><i class="sw s1"></i>Prediction <i>V</i></span><span><i class="sw bar"></i>Surprise <i>δ</i></span></div>
+    <div class="chart" id="chart-pred" role="img" aria-label="Prediction and surprise over 60 days of talking to someone"></div>
+    <figcaption><span class="lab">Figure 1.</span> Someone talks to me a lot every day, except on days 6 and 45, when they barely talk. The line is what my brain predicts, and the bars are the surprise. A toy model, not data.</figcaption>
+  </figure>
+
+  <p>On day 6 my brain has barely learned the pattern, so a quiet day costs a little. On day 45 the prediction is close to 1, and the same quiet day is the biggest surprise on the chart. The better my brain knows a routine, the more it hurts when it breaks.</p>
+
+  <p>But prediction alone doesn’t explain this. We can try to explain the pain and joy of attachment using neurotransmitters like dopamine, oxytocin and vasopressin. These chemical systems influence how much significance the brain assigns to social experiences, how it learns from them, and how it responds to the availability or loss of someone we are attached to.</p>
+
+  <p>The link between dopamine and prediction goes back to the 1990s. Wolfram Schultz found that dopamine neurons in monkeys fire for an unexpected reward, stay quiet for an expected one, and dip below normal when an expected reward doesn’t come <span class="cite">[1]</span>. This is exactly <i>δ</i>, measured in a brain.</p>
+
+  <h2>Time is not the whole story</h2>
+
+  <p>There is probably variation between brains in the flux of chemicals released for a given social experience, and we don’t know if all brains react the same way to a given flux. But combined, the flux and the brain’s reaction to it form the key part of the feedback loop of the prediction model. You might be able to predict everything about a colleague you have been seeing daily in office for years, when they eat, when they go home, and still not be bothered much if they resign. On the other hand, you can get intensely attached to someone you met only a few months ago, based on the sensitivity of your brain and the flux of neurotransmitters released on exposure.</p>
+
+  <h2>From presence to security</h2>
+
+  <p>The role of time in attachment is very interesting. Being with someone for a long time doesn’t directly correlate with how intense the attachment is. In fact, take the example of our parents. When we were children we were intensely attached to them, and their absence used to make us cry. Then we grew up, went to college, moved to a different city to work, and now we can continue our daily work without missing them a lot. Does that mean the attachment with them faded away? No. With time the attachment evolved. It became a sense of security for the brain, and it’s not just dopamine release now. We don’t predict their actions anymore, but any thought of something happening to our parents can cause a massive breakdown.</p>
+
+  <p>Attachment can remain extremely strong even when the need for someone’s constant presence disappears. The prediction model may gradually shift from predicting someone’s behaviour to predicting their availability and reliability. With time, an intense attachment stops meaning the intense feeling of meeting them again and again, and it probably turns into a sense of security. A stronger sense of security can sometimes make physical separation easier, not harder. So the amount of distress caused by someone’s absence isn’t necessarily proportional to the strength of the attachment.</p>
+
+  <p>The same thing happens in a romantic relationship. Think of the surprise bars from Figure 1. As we move towards security, the surprise bar for a day of not talking actually decays. In the first few months, a day without talking is a big negative bar. A few years in, the brain doesn’t predict “they will talk to me today” anymore. It predicts “they are there if I need them”, and a quiet day doesn’t break that. So the bar shrinks towards zero, even though the bond keeps getting stronger.</p>
+
+  <figure id="fig-secure">
+    <div class="legend"><span><i class="sw s1"></i>Bond</span><span><i class="sw bar"></i>Surprise from one quiet day</span></div>
+    <div class="chart" id="chart-secure" role="img" aria-label="In a relationship, the surprise from one quiet day shrinks over the years while the bond grows"></div>
+    <figcaption><span class="lab">Figure 2.</span> The first five years of a romantic relationship: the surprise from one day of not talking, next to the bond. The bond grows and stays high, while the surprise decays towards zero as the prediction shifts from “they will talk to me today” to “they are there if I need them”. Toy numbers.</figcaption>
+  </figure>
+
+  <p>Attachment is also not just about the distress it causes in someone’s absence. Take a friend from school. You were very attached to them back then, and eventually you both took separate paths. You can still hold a significant attachment to them. You will still think about their overall well-being, but without any distress.</p>
+
+  <h2>De-attachment is a different dimension</h2>
+
+  <p>We have discussed attachment a decent amount, so now de-attachment. At first thought, we tend to think de-attachment is just the reverse of attachment. But is it?</p>
+
+  <p>I like to think that de-attachment is a separate dimension. Call the state of your mind just before you meet someone you will like in the future S<sub>0</sub>, and the state when you are deeply attached to them S<sub>1</sub>. Now suppose, for some unfortunate reason, you can no longer contact them. Will your brain go back to an S<sub>0</sub>-like state? As in, does the bond completely reverse? I think the bond may not disappear. What weakens with time is our dependence on that bond. The feedback loop fades, and so does the impact of that bond on us, but that doesn’t mean the bond is gone. This process is de-attachment. It takes you to a new state, call it S<sub>2</sub>, which is not S<sub>0</sub>. So de-attachment might be orthogonal to attachment.</p>
+
+  <figure id="fig-quad">
+    <div class="chart" id="chart-quad" role="img" aria-label="Attachment and de-attachment as two axes, with the states S0, S1 and S2"></div>
+    <figcaption><span class="lab">Figure 3.</span> Attachment moves you right, from S<sub>0</sub> to S<sub>1</sub>. We expect losing someone to take us back left, along the dashed line. Instead, de-attachment moves us up, to S<sub>2</sub>, where the bond is still there but the dependence has faded.</figcaption>
+  </figure>
+
+  <p>Psychologists who study learning have seen something similar. When an expectation stops coming true, the old learning isn’t erased. The brain learns “not anymore” on top of it, and the old learning can come back later <span class="cite">[2]</span>.</p>
+
+  <h2>Every event has a half-life</h2>
+
+  <p>I like to say this quote: “every event has a half-life”. The pain we feel on day 0 is not the same as what we feel on day 100. Its effect fades away, and who knows, it might follow the same trend as radioactive decay, with some rate <i>β</i>:</p>
+
+  <div class="eq">
+    <math display="block"><mi>P</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mi>P</mi><mn>0</mn></msub><mspace width="0.1em"></mspace><msup><mi>e</mi><mrow><mo>−</mo><mi>β</mi><mi>t</mi></mrow></msup><mo>,</mo><mspace width="2em"></mspace><msub><mi>t</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub><mo>=</mo><mfrac><mrow><mi>ln</mi><mspace width="0.17em"></mspace><mn>2</mn></mrow><mi>β</mi></mfrac></math>
+    <span class="eqno">(2)</span>
+  </div>
+
+  <p class="cont noindent">With a half-life of 30 days, the pain on day 100 is about a tenth of day 0. It never quite reaches zero.</p>
+
+  <figure id="fig-half">
+    <div class="controls">
+      <label for="half"><span>Half-life</span> <output id="half-v" for="half">30 days</output></label>
+      <input type="range" id="half" min="7" max="180" step="1" value="30">
+    </div>
+    <div class="chart short" id="chart-half" role="img" aria-label="Pain left on each day after a loss, for a chosen half-life"></div>
+    <p class="readout" id="half-read"></p>
+    <figcaption><span class="lab">Figure 4.</span> Equation (2): the pain left on each day, as a share of day 0. Drag the half-life to see what is left on day 100.</figcaption>
+  </figure>
+
+  <p>Of course, not all de-attachment is caused by a sudden change in dynamics. Sometimes life gets busy, exposure fades slowly over time, and eventually the significance of that bond fades away too.</p>
+
+  <h2>Clinging is not attachment</h2>
+
+  <p>When we say attachment is not good, I think we are often referring to the hurt that comes from clinging, possessiveness, or dependence, rather than attachment itself. We tend to overlook the sense of security that attachment can provide. The same bond that makes us vulnerable to someone’s absence can also make us feel secure simply knowing they are there.</p>
+
+  <p>Our parents are the best example of this. The joy of seeing them every day faded long ago, but the bond never did, so it was never just the joy.</p>
+
+  <h2>References</h2>
+  <ol class="refs">
+    <li>Wolfram Schultz, Peter Dayan and P. Read Montague, “A neural substrate of prediction and reward”, <i>Science</i> 275, 1593–1599 (1997). <a href="https://doi.org/10.1126/science.275.5306.1593">doi.org</a></li>
+    <li>Mark E. Bouton, “Context, ambiguity, and unlearning: sources of relapse after behavioral extinction”, <i>Biological Psychiatry</i> 52, 976–986 (2002). <a href="https://doi.org/10.1016/S0006-3223(02)01546-9">doi.org</a></li>
+  </ol>
+</article>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(function () {
+  const signed = (v, n = 2) => (v < -0.005 ? "−" : "") + Math.abs(v).toFixed(n);
+  const pct = p => p >= 0.1 ? Math.round(p * 100) + "%" : p >= 0.01 ? (p * 100).toFixed(1) + "%" : p >= 0.0001 ? (p * 100).toFixed(2) + "%" : "under 0.01%";
+  const swRow = (s, name, v) => `<div class="r"><span class="sw ${s}"></span><span>${name}</span><span class="v">${v}</span></div>`;
+
+  function tooltip(fig) {
+    let t = fig.querySelector(".tt-pop");
+    if (!t) { t = document.createElement("div"); t.className = "tt-pop"; t.hidden = true; fig.appendChild(t); }
+    return t;
+  }
+  function placeTip(t, fig, el, px, py) {
+    const fr = fig.getBoundingClientRect(), er = el.getBoundingClientRect();
+    const ax = er.left - fr.left + px, ay = er.top - fr.top + py;
+    let left = ax + 14;
+    if (left + t.offsetWidth > fig.clientWidth) left = ax - t.offsetWidth - 14;
+    t.style.left = Math.max(0, left) + "px";
+    t.style.top = ay + "px";
+  }
+  function frame(el, H) {
+    el.innerHTML = "";
+    const W = Math.max(280, el.clientWidth);
+    const svg = d3.select(el).append("svg").attr("width", W).attr("height", H).attr("viewBox", `0 0 ${W} ${H}`);
+    return { svg, W };
+  }
+  function yGrid(svg, y, ticks, x0, x1, fmt) {
+    ticks.forEach(v => {
+      svg.append("line").attr("class", v === 0 ? "base" : "gl").attr("x1", x0).attr("x2", x1).attr("y1", y(v)).attr("y2", y(v));
+      svg.append("text").attr("class", "tk").attr("x", x0 - 8).attr("y", y(v)).attr("dy", ".32em").attr("text-anchor", "end").text(fmt(v));
+    });
+  }
+  function xTicks(svg, x, ticks, yb) {
+    ticks.forEach(v => {
+      svg.append("line").attr("class", "xt").attr("x1", x(v)).attr("x2", x(v)).attr("y1", yb).attr("y2", yb + 4);
+      svg.append("text").attr("class", "tk").attr("x", x(v)).attr("y", yb + 17).attr("text-anchor", "middle").text(v);
+    });
+  }
+  function axisLabels(svg, W, H, m, xl, yl) {
+    svg.append("text").attr("class", "axlab").attr("x", (m.l + W - m.r) / 2).attr("y", H - 6).attr("text-anchor", "middle").text(xl);
+    svg.append("text").attr("class", "axlab").attr("text-anchor", "middle")
+      .attr("transform", `translate(12,${(m.t + H - m.b) / 2}) rotate(-90)`).text(yl);
+  }
+
+  // Figure 1: how much someone talks to me, the prediction V and the surprise δ
+  function figPredict() {
+    const el = document.getElementById("chart-pred"), fig = el.closest("figure"), tip = tooltip(fig);
+    const N = 60, ALPHA = 0.1, SKIP = [6, 45];
+    const D = [];
+    for (let d = 1, V = 0; d <= N; d++) { const r = SKIP.includes(d) ? 0 : 1, dl = r - V; D.push({ d, r, V, dl }); V += ALPHA * dl; }
+    return function draw() {
+      const H = 290, m = { t: 22, r: 12, b: 44, l: 46 };
+      const { svg, W } = frame(el, H);
+      const x = d3.scaleBand().domain(D.map(d => d.d)).range([m.l, W - m.r]).paddingInner(0.3);
+      const bw = x.bandwidth(), gap = x.step() - bw, cx = d => x(d) + bw / 2;
+      const y = d3.scaleLinear().domain([-1, 1]).range([H - m.b, m.t]);
+      SKIP.forEach(d => {
+        svg.append("rect").attr("class", "skipcol").attr("x", x(d) - gap / 2).attr("width", x.step()).attr("y", m.t).attr("height", H - m.t - m.b);
+        svg.append("text").attr("class", "ann").attr("x", cx(d)).attr("y", m.t - 6).attr("text-anchor", "middle").text("quiet day");
+      });
+      yGrid(svg, y, [-1, -0.5, 0, 0.5, 1], m.l, W - m.r, v => signed(v, v % 1 ? 1 : 0));
+      xTicks(svg, cx, [1, 10, 20, 30, 40, 50, 60], H - m.b);
+      axisLabels(svg, W, H, m, "Day", "Prediction and surprise");
+      D.forEach(d => {
+        if (Math.abs(d.dl) < 0.004) return;
+        svg.append("rect").attr("class", "bar").attr("x", x(d.d)).attr("width", bw)
+          .attr("y", y(Math.max(0, d.dl))).attr("height", Math.abs(y(d.dl) - y(0)));
+      });
+      svg.append("path").datum(D).attr("class", "ln s1").attr("d", d3.line().x(d => cx(d.d)).y(d => y(d.V)));
+      D.forEach(d => svg.append("rect").attr("x", x(d.d) - gap / 2).attr("width", x.step()).attr("y", m.t).attr("height", H - m.t - m.b).attr("fill", "transparent")
+        .on("pointermove", () => {
+          tip.innerHTML = `<div class="h">Day ${d.d}, ${d.r ? "talked a lot" : "barely talked"}</div>` + swRow("s1", "Prediction", d.V.toFixed(2)) + swRow("bar", "Surprise", signed(d.dl));
+          tip.hidden = false; placeTip(tip, fig, el, cx(d.d), m.t);
+        })
+        .on("pointerleave", () => { tip.hidden = true; }));
+    };
+  }
+
+  // Figure 2: in a relationship, the surprise from one quiet day over the first five years
+  function figSecure() {
+    const el = document.getElementById("chart-secure"), fig = el.closest("figure"), tip = tooltip(fig);
+    const D = [1, 3, 6, 12, 24, 36, 48, 60].map(mo => ({ mo, B: 0.95 * (1 - Math.exp(-mo / 4)), dl: -0.9 * Math.exp(-mo / 18) }));
+    return function draw() {
+      const H = 270, m = { t: 14, r: 16, b: 44, l: 46 };
+      const { svg, W } = frame(el, H);
+      const x = d3.scaleLinear().domain([0, 61]).range([m.l + 8, W - m.r]);
+      const y = d3.scaleLinear().domain([-1, 1]).range([H - m.b, m.t]);
+      const step = x(3) - x(1), bw = Math.min(16, step * 0.75);
+      yGrid(svg, y, [-1, -0.5, 0, 0.5, 1], m.l, W - m.r, v => signed(v, v % 1 ? 1 : 0));
+      xTicks(svg, x, [0, 12, 24, 36, 48, 60], H - m.b);
+      axisLabels(svg, W, H, m, "Months together", "Bond and surprise");
+      D.forEach(d => svg.append("rect").attr("class", "bar").attr("x", x(d.mo) - bw / 2).attr("width", bw).attr("y", y(0)).attr("height", y(d.dl) - y(0)));
+      [D[0], D[D.length - 1]].forEach(d => svg.append("text").attr("class", "ann").attr("x", x(d.mo)).attr("y", y(d.dl) + 14).attr("text-anchor", "middle").text(signed(d.dl)));
+      svg.append("path").datum(D).attr("class", "ln s1").attr("d", d3.line().x(d => x(d.mo)).y(d => y(d.B)));
+      D.forEach(d => svg.append("circle").attr("class", "dot").attr("cx", x(d.mo)).attr("cy", y(d.B)).attr("r", 4));
+      D.forEach(d => svg.append("rect").attr("x", x(d.mo) - step / 2).attr("width", step).attr("y", m.t).attr("height", H - m.t - m.b).attr("fill", "transparent")
+        .on("pointermove", () => {
+          tip.innerHTML = `<div class="h">${d.mo} month${d.mo > 1 ? "s" : ""} together</div>` + swRow("s1", "Bond", d.B.toFixed(2)) + swRow("bar", "Quiet-day surprise", signed(d.dl));
+          tip.hidden = false; placeTip(tip, fig, el, x(d.mo), m.t);
+        })
+        .on("pointerleave", () => { tip.hidden = true; }));
+    };
+  }
+
+  // Figure 3: attachment and de-attachment as two axes
+  function figQuad() {
+    const el = document.getElementById("chart-quad");
+    const Q = [
+      { k: "tl", t: "Faded", e: "friends we got too busy for" },
+      { k: "tr", t: "Bond, without the dependence", e: "a friend from school" },
+      { k: "bl", t: "No bond yet", e: "a colleague I see daily" },
+      { k: "br", t: "Bond, with dependence", e: "parents, when I was a kid" },
+    ];
+    return function draw() {
+      const W0 = Math.max(280, el.clientWidth), narrow = W0 < 520;
+      const H = Math.round(Math.min(460, Math.max(narrow ? 400 : 360, W0 * 0.66)));
+      const { svg, W } = frame(el, H);
+      const m = { t: 8, r: 8, b: 40, l: 34 }, pw = W - m.l - m.r, ph = H - m.t - m.b;
+      const X = u => m.l + u * pw, Y = v => H - m.b - v * ph;
+      const defs = svg.append("defs");
+      ["s1", "s2", "ink"].forEach(c => defs.append("marker").attr("id", "qa-" + c).attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
+        .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto-start-reverse")
+        .append("path").attr("class", "hd " + c).attr("d", "M0,0 L10,5 L0,10 z"));
+      svg.append("line").attr("class", "mid").attr("x1", X(0.5)).attr("x2", X(0.5)).attr("y1", Y(0)).attr("y2", Y(1));
+      svg.append("line").attr("class", "mid").attr("x1", X(0)).attr("x2", X(1)).attr("y1", Y(0.5)).attr("y2", Y(0.5));
+      svg.append("line").attr("class", "axline").attr("x1", X(0)).attr("y1", Y(0)).attr("x2", X(1)).attr("y2", Y(0)).attr("marker-end", "url(#qa-ink)");
+      svg.append("line").attr("class", "axline").attr("x1", X(0)).attr("y1", Y(0)).attr("x2", X(0)).attr("y2", Y(1)).attr("marker-end", "url(#qa-ink)");
+      svg.append("text").attr("class", "axlab").attr("x", X(0.5)).attr("y", H - 12).attr("text-anchor", "middle").text("Attachment");
+      svg.append("text").attr("class", "axlab").attr("text-anchor", "middle").attr("transform", `translate(16,${Y(0.5)}) rotate(-90)`).text("De-attachment");
+
+      const p0 = [X(0.3), Y(0.3)], p1 = [X(0.7), Y(0.3)], p2 = [X(0.7), Y(0.7)];
+      const seg = (a, b, cls) => {
+        const dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy);
+        svg.append("path").attr("class", "arr " + cls).attr("marker-end", `url(#qa-${cls})`)
+          .attr("d", `M${a[0] + dx * 10 / L},${a[1] + dy * 10 / L}L${b[0] - dx * 11 / L},${b[1] - dy * 11 / L}`);
+      };
+      seg(p0, p1, "s1"); seg(p1, p2, "s2");
+      const dip = Math.min(56, ph * 0.15);
+      svg.append("path").attr("class", "arr exp").attr("marker-end", "url(#qa-ink)")
+        .attr("d", `M${p1[0] - 8},${p1[1] + 7} Q${X(0.5)},${p1[1] + dip} ${p0[0] + 9},${p0[1] + 7}`);
+      svg.append("text").attr("class", "qlab").attr("x", X(0.5)).attr("y", p0[1] - 9).attr("text-anchor", "middle").text("attachment");
+      svg.append("text").attr("class", "qlab").attr("x", X(0.5)).attr("y", p1[1] + dip / 2 + 20).attr("text-anchor", "middle").text("what we expect");
+      svg.append("text").attr("class", "qlab").attr("x", p1[0] + 9).attr("y", (p1[1] + p2[1]) / 2).attr("dy", ".32em").text("de-attachment");
+      [[p0, "0", -10, "end"], [p1, "1", 10, "start"], [p2, "2", -10, "end"]].forEach(([p, id, dx, a]) => {
+        svg.append("circle").attr("class", "st").attr("cx", p[0]).attr("cy", p[1]).attr("r", 6);
+        const t = svg.append("text").attr("class", "stlab").attr("x", p[0] + dx).attr("y", p[1] - 9).attr("text-anchor", a).text("S");
+        t.append("tspan").attr("class", "sub").attr("dy", "0.3em").text(id);
+      });
+      const qw = Math.round(pw * (narrow ? 0.33 : 0.31));
+      Q.forEach(q => {
+        const d = document.createElement("div"), top = q.k[0] === "t", left = q.k[1] === "l";
+        d.className = "q " + q.k;
+        d.style.maxWidth = qw + "px";
+        d.style[top ? "top" : "bottom"] = (top ? m.t + 6 : m.b + 6) + "px";
+        d.style[left ? "left" : "right"] = (left ? m.l + 8 : m.r + 8) + "px";
+        d.innerHTML = `<div class="t">${q.t}</div><div class="e">${q.e}</div>`;
+        el.appendChild(d);
+      });
+    };
+  }
+
+  // Figure 4: the half-life of pain, equation (2)
+  function figHalf() {
+    const el = document.getElementById("chart-half"), fig = el.closest("figure"), tip = tooltip(fig);
+    const hIn = document.getElementById("half"), hOut = document.getElementById("half-v"), read = document.getElementById("half-read");
+    function draw() {
+      const T = +hIn.value, beta = Math.LN2 / T;
+      hOut.textContent = T + " days";
+      const D = d3.range(0, 366).map(t => ({ t, p: Math.exp(-beta * t) }));
+      const H = 250, m = { t: 14, r: 18, b: 44, l: 50 };
+      const { svg, W } = frame(el, H);
+      const x = d3.scaleLinear().domain([0, 365]).range([m.l, W - m.r]);
+      const y = d3.scaleLinear().domain([0, 1]).range([H - m.b, m.t]);
+      yGrid(svg, y, [0, 0.25, 0.5, 0.75, 1], m.l, W - m.r, v => Math.round(v * 100) + "%");
+      xTicks(svg, x, W < 480 ? [0, 100, 200, 300] : [0, 50, 100, 150, 200, 250, 300, 350], H - m.b);
+      axisLabels(svg, W, H, m, "Days since", "Pain left");
+      svg.append("path").datum(D).attr("class", "ln s1").attr("d", d3.line().x(d => x(d.t)).y(d => y(d.p)));
+      const p100 = D[100].p;
+      svg.append("line").attr("class", "mark").attr("x1", x(100)).attr("x2", x(100)).attr("y1", y(p100)).attr("y2", H - m.b);
+      svg.append("circle").attr("class", "dot").attr("cx", x(100)).attr("cy", y(p100)).attr("r", 4.5);
+      svg.append("text").attr("class", "endlab").attr("x", x(100) + 8).attr("y", y(p100) - 8).text(`day 100: ${pct(p100)}`);
+      const vr = svg.append("line").attr("class", "cross").attr("y1", m.t).attr("y2", H - m.b).style("display", "none");
+      svg.append("rect").attr("x", m.l).attr("y", m.t).attr("width", W - m.l - m.r).attr("height", H - m.t - m.b).attr("fill", "transparent")
+        .on("pointermove", ev => {
+          const d = D[Math.max(0, Math.min(365, Math.round(x.invert(d3.pointer(ev)[0]))))];
+          vr.style("display", null).attr("x1", x(d.t)).attr("x2", x(d.t));
+          tip.innerHTML = `<div class="h">Day ${d.t}</div>` + swRow("s1", "Pain left", pct(d.p));
+          tip.hidden = false; placeTip(tip, fig, el, x(d.t), m.t);
+        })
+        .on("pointerleave", () => { vr.style("display", "none"); tip.hidden = true; });
+      read.textContent = `With a half-life of ${T} days, the pain on day 100 is ${pct(p100)} of day 0.`;
+    }
+    hIn.addEventListener("input", draw);
+    return draw;
+  }
+
+  function start() {
+    const draws = [figPredict(), figSecure(), figQuad(), figHalf()];
+    draws.forEach(f => f());
+    let w = 0;
+    new ResizeObserver(() => {
+      const nw = document.querySelector(".paper").clientWidth;
+      if (nw !== w) { w = nw; draws.forEach(f => f()); }
+    }).observe(document.querySelector(".paper"));
+  }
+  if (window.d3) start(); else window.addEventListener("load", start);
+})();
+</script>
+
+</body>
+</html>
