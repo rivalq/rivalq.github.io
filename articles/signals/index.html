@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Signals</title>
+<meta name="description" content="On “Byeee”, hot pans, trust and silence: how much of a signal comes from the world, and how much from the one reading it.">
+<meta name="author" content="Jatin Garg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Signals">
+<meta property="og:description" content="On “Byeee”, hot pans, trust and silence: how much of a signal comes from the world, and how much from the one reading it.">
+<meta property="og:url" content="https://rivalq.github.io/articles/signals/">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://rivalq.github.io/articles/signals/">
+<link rel="stylesheet" href="../../assets/fonts.css">
+<link rel="stylesheet" href="../../assets/paper.css">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+<nav class="sitebar"><a href="../../">Jatin Garg</a><a href="../../#writing">All writing</a></nav>
+<style>
+/* Essay variant of the site's paper style: one justified Latin Modern column, unnumbered sections,
+   numbered figures and equations. Two chart series only: s1 (blue, fast / the signal we read) and s2 (orange). */
+:root { --site-bg: #ffffff; --site-fg: #141414; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --site-bg: #15171b; --site-fg: #e9e7e2; color-scheme: dark; } }
+:root[data-theme="dark"] { --site-bg: #15171b; --site-fg: #e9e7e2; color-scheme: dark; }
+html, body { background: var(--site-bg); color: var(--site-fg); }
+body { margin: 0; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+
+.paper { --s1: #2a78d6; --s2: #eb6834; --grid: #e6e6e6; --axis: #b9b9b9; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .paper { --s1: #3987e5; --s2: #e06a3a; --grid: #2a2c30; --axis: #4a4c50; } }
+:root[data-theme="dark"] .paper { --s1: #3987e5; --s2: #e06a3a; --grid: #2a2c30; --axis: #4a4c50; }
+
+.paper.essay h2::before { content: none; }
+.paper.essay h2 { margin-top: 2.1rem; }
+.paper .titleblock .standfirst { font-style: italic; color: var(--ink-2); font-size: 1.02rem; margin: 0 0 1.1rem; }
+.paper .titleblock .draft { font-family: var(--caps); letter-spacing: .06em; font-size: .85rem; color: var(--muted); margin-top: .35rem; }
+
+/* charts */
+.paper .chart { position: relative; }
+.paper .chart .gl { stroke: var(--grid); stroke-width: 1; }
+.paper .chart .base { stroke: var(--axis); stroke-width: 1; }
+.paper .chart .xt { stroke: var(--axis); stroke-width: 1; }
+.paper .chart .tk { font-size: 11.5px; fill: var(--ink-2); font-variant-numeric: tabular-nums; }
+.paper .chart .ln { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.paper .chart .ln.s1 { stroke: var(--s1); }
+.paper .chart .ln.ref { stroke: var(--ink-2); stroke-width: 1.4; stroke-dasharray: 5 4; }
+.paper .chart .dot { fill: var(--s1); stroke: var(--paper); stroke-width: 2; }
+.paper .chart .dot.s2 { fill: var(--s2); }
+.paper .chart .mark { stroke: var(--axis); stroke-width: 1; stroke-dasharray: 2 3; }
+.paper .chart .cross { stroke: var(--axis); stroke-width: 1; }
+.paper .legend { display: flex; flex-wrap: wrap; justify-content: center; gap: .3rem 1.4rem; font-size: .9rem; margin-bottom: .3rem; }
+.paper .legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.paper .sw { display: inline-block; width: 1.1rem; height: 2px; flex: none; }
+.paper .sw.s1 { background: var(--s1); }
+.paper .sw.s2d { background: repeating-linear-gradient(90deg, var(--s2) 0 5px, transparent 5px 8px); }
+.paper .sw.ref { background: repeating-linear-gradient(90deg, var(--ink-2) 0 5px, transparent 5px 8px); }
+.paper .tt-pop .sw { width: .8rem; height: 2px; }
+
+/* figure 1: the fast and the slow path */
+.paper .chart .lane { font-family: var(--caps); font-size: 13px; letter-spacing: .03em; fill: var(--ink); }
+.paper .chart .box { fill: var(--paper); stroke: var(--axis); stroke-width: 1; }
+.paper .chart .box.fast { stroke: var(--s1); stroke-width: 1.6; }
+.paper .chart .box.slow { stroke: var(--s2); stroke-width: 1.6; }
+.paper .chart .bt { font-size: 12.5px; fill: var(--ink); }
+.paper .chart .bs { font-size: 11px; font-style: italic; fill: var(--ink-2); }
+.paper .chart .arr { fill: none; stroke-width: 2; stroke-linecap: round; }
+.paper .chart .arr.s1 { stroke: var(--s1); }
+.paper .chart .arr.s2 { stroke: var(--s2); stroke-width: 1.6; stroke-dasharray: 5 4; }
+.paper .chart .hd.s1 { fill: var(--s1); } .paper .chart .hd.s2 { fill: var(--s2); }
+</style>
+
+<article class="paper essay">
+  <header class="titleblock">
+    <h1>Signals</h1>
+    <p class="standfirst">On “Byeee”, hot pans, trust and silence.</p>
+    <p class="author">Jatin Garg</p>
+    <p class="date">3 November 2026</p>
+  </header>
+
+  <h2>A simple “Bye”</h2>
+
+  <p>Imagine this simple situation. Two different people text you “Bye”. One person always texts “Bye”, no other variants. The other uses a lot of e’s, like “Byeee”. Now if the first person texts “Bye”, you won’t think much: yeah, it’s time to say bye. But what if the other person texted “Bye”? For a moment you will wonder whether that person is in a bad mood, or whether something is off. “Byeee” used to hint at the playful nature of that person, and the absence of that is also a signal for the brain. The same input, “Bye”, can be perceived very differently based on historical interactions. This little thought experiment tells us many things. We’ll come back to it, but first let’s look at signals in general.</p>
+
+  <h2>Signals everywhere</h2>
+
+  <p>When the sun rises, it signals our body to wake up (at least for those of us with a stable circadian rhythm). Well, it may not be just the sun, but a chain of signals. The sun rises, light reaches our eyes, special cells in the retina tell the brain’s internal clock that it’s morning <span class="cite">[1]</span>, and the clock stops the release of melatonin, the hormone that keeps us sleepy. Every action in nature is a signal, and every signal may or may not generate another signal.</p>
+
+  <p>From a human’s perspective, we have multiple sensors that provide signals to the body, and to the brain inside it. Sometimes we act on them, sometimes we don’t. For example, in winter, some days we feel cold and act on the signal provided by the temperature by turning on the heater, and some days the signal is not strong enough to act on.</p>
+
+  <p>Algorithmic trading systems work very similarly. People write sophisticated sensors to sense activity in the market, and these sensors are generally called alphas. Based on the alpha signal, the strategy decides whether to react, and by react I mean the strategy decides whether it wants to place orders on the exchange. Those orders will themselves be another signal for all the other participants.</p>
+
+  <p>In very simple terms, we can think of the brain as a very complex model that processes a lot of signals, like vision, sound and temperature, and decides what action to take based on them. Signals come in a variety of horizons. Imagine touching a hot pan: we take our hand off immediately.</p>
+
+  <p>Not all signals and actions follow the usual path in our body. If a signal is very strong, the action is “accelerated” and taken before we even process it consciously. With the hot pan, the immediate withdrawal response is often mediated through a spinal reflex circuit, allowing our hand to move before conscious pain processing. This is very similar to FPGAs in trading systems: the packet doesn’t even reach the software, and the response is already written, ready to go back to the exchange.</p>
+
+  <p>In both cases the fast path doesn’t think. It follows rules set in advance, and the slow path is still in charge of those rules. The software sets the FPGA’s triggers before the packet arrives, and the brain can hold a reflex back: carrying a hot dish we care about, we often manage not to drop it.</p>
+
+  <figure id="fig-lanes">
+    <div class="legend"><span><i class="sw s1"></i>Fast path</span><span><i class="sw s2d"></i>Slow path</span></div>
+    <div class="chart" id="chart-lanes" role="img" aria-label="Two systems with the same shortcut: a reflex in the body and an FPGA in a trading system"></div>
+    <figcaption><span class="lab">Figure 1.</span> Two systems with the same shortcut. The fast path acts first. The slow path hears about it later, and stays in control of the fast one.</figcaption>
+  </figure>
+
+  <p>Pain itself is a by-product of these signals. The skin doesn’t send pain: heat-pain sensors in it start firing at around 43&#8239;°C, and it’s the brain that turns those signals into pain. Pain is the brain’s creation to help us survive: if we didn’t feel pain from touching a hot pan, we would seriously injure our skin. People born unable to feel pain often get burns and broken bones without noticing <span class="cite">[2]</span>.</p>
+
+  <p>Some signals build fast in our brain, and some take time. Suppose a person disrespects us directly or says something rude. We would react on the spot. But what about a person who acts like a friend, yet every day slips in a little insult, or a small emotional betrayal? Then, on one ordinary day, a small annoyance from that person can generate a very strong reaction from us.</p>
+
+  <h2>Reading between the lines</h2>
+
+  <p>Back to “Bye”. The exact same action can be perceived differently by our brain based on historical actions, so it’s probably the baseline that matters, or relativeness. It’s the surprise <i>δ</i> from <a href="https://rivalq.github.io/articles/attachment/">Attachment</a> again: the gap between what we expected and what we got. Signals may or may not carry the true information. Maybe the second person said “Bye” instead of “Byeee” because they were just busy and didn’t think much about it; their intent to say bye was the same. Or maybe they really were feeling off, and that’s why they just texted “Bye”. So it’s up to the receiver to extract the information from the signal and take action. Texting often generates ambiguous signals because it lacks a lot of information, like tone and body language. Context and experience help resolve this ambiguity.</p>
+
+  <p>Imagine an interaction between two humans. That’s a back-and-forth exchange of signals. Some signals are obvious, like the words they speak, and some are subtle. We don’t just process the voice; we check their eye movements and their body language. And in the voice too, it’s not just about the words spoken, but also about the tone. Humans very often don’t really say what they have in mind. What comes out is usually some processed verbal output. But facial expressions can still leak the information the brain is trying to protect. We are not as good at reading that leak as we think, though. Across more than 200 studies, people told lies from truths correctly only 54% of the time, when a coin flip gets 50%, and they did better when they could hear the person than when they could only see them <span class="cite">[3]</span>.</p>
+
+  <h2>Reliability and trust</h2>
+
+  <p>We can try to model trust as reliability of future signals using past evidence. As the evidence keeps piling up towards reliability, we trust that signal, and the sender of the signal, more and more. The more we trust someone, the less verification we feel we need with them, and then a misleading signal can make us start questioning many signals that previously seemed perfectly ordinary. Hence trust takes time to build, because it’s a pattern our brain learns from signals, but it takes almost no time to break. For some, one misleading signal can be the end of it.</p>
+
+  <p>Psychologists call this the asymmetry principle <span class="cite">[4]</span>, and a little maths shows where it can come from. Say people come in two kinds, reliable and unreliable, and trust is how sure my brain is that someone is the reliable kind. Out of every 100 signals, each kind sends:</p>
+
+  <div class="tablewrap">
+    <table class="booktabs">
+      <thead><tr><th></th><th>Reliable</th><th>Unreliable</th></tr></thead>
+      <tbody>
+        <tr><td>Honest</td><td>99</td><td>80</td></tr>
+        <tr><td>Misleading</td><td>1</td><td>20</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Now read each row. An honest signal is almost as likely from either kind, 99 against 80, so it tells my brain very little. It only moves the odds towards “reliable” by 99/80 ≈ 1.24. A misleading signal is 20 times more likely from an unreliable person, 20 against 1, so it tells my brain a lot. It takes about 14 honest signals in a row to make up for one lie:</p>
+
+  <div class="eq">
+    <math display="block"><msup><mrow><mo>(</mo><mfrac><mn>99</mn><mn>80</mn></mfrac><mo>)</mo></mrow><mn>14</mn></msup><mo>≈</mo><mn>20</mn></math>
+    <span class="eqno">(1)</span>
+  </div>
+
+  <figure id="fig-trust">
+    <div class="legend"><span><i class="sw s1"></i>Trust</span><span><i class="sw ref"></i>Without the lie</span></div>
+    <div class="chart" id="chart-trust" role="img" aria-label="Trust builds over 15 honest signals, drops after one misleading signal, and takes 14 more to recover"></div>
+    <figcaption><span class="lab">Figure 2.</span> Trust over 40 signals from someone who starts as a stranger, at 50%. Every signal is honest except number 16. Trust goes from 96% to 55%, and takes until signal 30 to get back. Toy numbers from the table above.</figcaption>
+  </figure>
+
+  <p>When we get to know that someone is lying to us, or lied in the past, that can become a signal with a very long <a href="https://rivalq.github.io/articles/attachment/">half-life</a>. In every further interaction with that person, we will take into account that this person lied to us in the past, maybe in some specific circumstances. Of course, processing too many signals can exhaust our brain. Hence interactions with people who are deceptive by nature become exhausting, and we tend to dislike them more in general, because extracting the signal from deception requires a lot of processing, or thinking, in the brain. That might even happen subconsciously, but we still feel the exhaustion.</p>
+
+  <h2>The feedback loop</h2>
+
+  <p>Does the generation of a signal need intent? Not really. For example, you are sitting with your partner, and you sense that they are very silent today. Your partner did not really do anything here. They might actually be troubled in mind, or they are just relaxing. But we interpret that silence as a signal too. Overthinkers, or specifically people with an anxious attachment style, often take this silence as a signal, a very strong one, often of rejection. This silence then triggers some action on the receiver’s end, which might simply be politely asking their partner why they are silent, or some (like me) will overthink and often create a dramatic situation around it.</p>
+
+  <p>This thought experiment also tells us one thing: signals can emerge out of nothing, and can create strong feedback loops. Here the partner did not generate any signal. It’s the receiver who perceived the silence as a signal, which made them react to it, creating another signal back to the silent partner.</p>
+
+  <p>Even the “Bye” from the start can begin a loop like this. If I read it as something being off, my next message changes, and that becomes a signal for them.</p>
+
+  <p>We live most of our lives calibrating the signal processing system inside us, and we rarely know how much of what we’re interpreting actually came from the world, and how much was constructed by our own expectations.</p>
+
+  <h2>References</h2>
+  <ol class="refs">
+    <li>David M. Berson, Felice A. Dunn and Motoharu Takao, “Phototransduction by retinal ganglion cells that set the circadian clock”, <i>Science</i> 295, 1070–1073 (2002). <a href="https://doi.org/10.1126/science.1067262">doi.org</a></li>
+    <li>James J. Cox, Frank Reimann, Adeline K. Nicholas et al., “An SCN9A channelopathy causes congenital inability to experience pain”, <i>Nature</i> 444, 894–898 (2006). <a href="https://doi.org/10.1038/nature05413">doi.org</a></li>
+    <li>Charles F. Bond and Bella M. DePaulo, “Accuracy of deception judgments”, <i>Personality and Social Psychology Review</i> 10, 214–234 (2006). <a href="https://doi.org/10.1207/s15327957pspr1003_2">doi.org</a></li>
+    <li>Paul Slovic, “Perceived risk, trust, and democracy”, <i>Risk Analysis</i> 13, 675–682 (1993). <a href="https://doi.org/10.1111/j.1539-6924.1993.tb01329.x">doi.org</a></li>
+  </ol>
+</article>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(function () {
+  const swRow = (s, name, v) => `<div class="r"><span class="sw ${s}"></span><span>${name}</span><span class="v">${v}</span></div>`;
+  const pct = p => Math.round(p * 100) + "%";
+
+  function tooltip(fig) {
+    let t = fig.querySelector(".tt-pop");
+    if (!t) { t = document.createElement("div"); t.className = "tt-pop"; t.hidden = true; fig.appendChild(t); }
+    return t;
+  }
+  function placeTip(t, fig, el, px, py) {
+    const fr = fig.getBoundingClientRect(), er = el.getBoundingClientRect();
+    const ax = er.left - fr.left + px, ay = er.top - fr.top + py;
+    let left = ax + 14;
+    if (left + t.offsetWidth > fig.clientWidth) left = ax - t.offsetWidth - 14;
+    t.style.left = Math.max(0, left) + "px";
+    t.style.top = ay + "px";
+  }
+  function frame(el, H) {
+    el.innerHTML = "";
+    const W = Math.max(280, el.clientWidth);
+    const svg = d3.select(el).append("svg").attr("width", W).attr("height", H).attr("viewBox", `0 0 ${W} ${H}`);
+    return { svg, W };
+  }
+  function yGrid(svg, y, ticks, x0, x1, fmt) {
+    ticks.forEach(v => {
+      svg.append("line").attr("class", "gl").attr("x1", x0).attr("x2", x1).attr("y1", y(v)).attr("y2", y(v));
+      svg.append("text").attr("class", "tk").attr("x", x0 - 8).attr("y", y(v)).attr("dy", ".32em").attr("text-anchor", "end").text(fmt(v));
+    });
+  }
+  function xTicks(svg, x, ticks, yb, fmt = v => v) {
+    ticks.forEach(v => {
+      svg.append("line").attr("class", "xt").attr("x1", x(v)).attr("x2", x(v)).attr("y1", yb).attr("y2", yb + 4);
+      svg.append("text").attr("class", "tk").attr("x", x(v)).attr("y", yb + 17).attr("text-anchor", "middle").text(fmt(v));
+    });
+  }
+  function axisLabels(svg, W, H, m, xl, yl) {
+    svg.append("text").attr("class", "axlab").attr("x", (m.l + W - m.r) / 2).attr("y", H - 6).attr("text-anchor", "middle").text(xl);
+    svg.append("text").attr("class", "axlab").attr("text-anchor", "middle")
+      .attr("transform", `translate(12,${(m.t + H - m.b) / 2}) rotate(-90)`).text(yl);
+  }
+  function arrowheads(svg, prefix) {
+    const defs = svg.append("defs");
+    ["s1", "s2"].forEach(c => defs.append("marker").attr("id", prefix + c).attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
+      .attr("markerWidth", 6).attr("markerHeight", 6).attr("orient", "auto-start-reverse")
+      .append("path").attr("class", "hd " + c).attr("d", "M0,0 L10,5 L0,10 z"));
+  }
+
+  // Figure 1: the same shortcut in the body and in a trading system
+  function figLanes() {
+    const el = document.getElementById("chart-lanes");
+    const L = [
+      { name: "Our body", a: ["hot pan", "skin senses heat"], f: ["spinal cord", "reflex circuit"], o: ["hand moves", "before we feel it"], s: ["brain", "feels the pain"] },
+      { name: "A trading system", a: ["market data", "a packet arrives"], f: ["FPGA", "preset triggers"], o: ["order sent", "to the exchange"], s: ["software", "the strategy"] },
+    ];
+    return function draw() {
+      const W0 = Math.max(280, el.clientWidth), narrow = W0 < 470;
+      const bh = narrow ? 30 : 44, vg = 40, laneH = 22 + bh + vg + bh + 24;
+      const { svg, W } = frame(el, laneH * 2);
+      arrowheads(svg, "fl-");
+      const bw = Math.min(150, (W - 88) / 3), gx = (W - 3 * bw) / 2;
+      const xs = [0, bw + gx, 2 * (bw + gx)];
+      const box = (x, y, lab, cls) => {
+        svg.append("rect").attr("class", "box " + cls).attr("x", x + 0.5).attr("y", y + 0.5).attr("width", bw - 1).attr("height", bh - 1).attr("rx", 3);
+        if (narrow) {
+          svg.append("text").attr("class", "bt").attr("x", x + bw / 2).attr("y", y + bh / 2).attr("dy", ".34em").attr("text-anchor", "middle").text(lab[0]);
+        } else {
+          svg.append("text").attr("class", "bt").attr("x", x + bw / 2).attr("y", y + 18).attr("text-anchor", "middle").text(lab[0]);
+          svg.append("text").attr("class", "bs").attr("x", x + bw / 2).attr("y", y + 34).attr("text-anchor", "middle").text(lab[1]);
+        }
+      };
+      const arrow = (x1, y1, x2, y2, c) => svg.append("path").attr("class", "arr " + c).attr("marker-end", `url(#fl-${c})`).attr("d", `M${x1},${y1}L${x2},${y2}`);
+      L.forEach((ln, i) => {
+        const y0 = i * laneH, ys = y0 + 22, yb = ys + bh + vg, cx = xs[1] + bw / 2, ym = yb + bh / 2;
+        svg.append("text").attr("class", "lane").attr("x", 0).attr("y", y0 + 13).text(ln.name);
+        box(xs[1], ys, ln.s, "slow"); box(xs[0], yb, ln.a, ""); box(xs[1], yb, ln.f, "fast"); box(xs[2], yb, ln.o, "");
+        arrow(xs[0] + bw + 4, ym, xs[1] - 5, ym, "s1");
+        arrow(xs[1] + bw + 4, ym, xs[2] - 5, ym, "s1");
+        arrow(cx - 16, yb - 3, cx - 16, ys + bh + 5, "s2");
+        arrow(cx + 16, ys + bh + 3, cx + 16, yb - 5, "s2");
+        svg.append("text").attr("class", "ann").attr("x", cx - 23).attr("y", ys + bh + vg / 2).attr("dy", ".32em").attr("text-anchor", "end").text("later");
+        svg.append("text").attr("class", "ann").attr("x", cx + 23).attr("y", ys + bh + vg / 2).attr("dy", ".32em").text("control");
+      });
+    };
+  }
+
+  // Figure 2: trust under equation (1), one misleading signal at number 16
+  function figTrust() {
+    const el = document.getElementById("chart-trust"), fig = el.closest("figure"), tip = tooltip(fig);
+    const N = 40, LIE = 16, UP = 0.99 / 0.80, DOWN = 0.01 / 0.20;
+    const D = [{ i: 0, T: 0.5, R: 0.5 }];
+    for (let i = 1, O = 1, R = 1; i <= N; i++) { O *= i === LIE ? DOWN : UP; R *= UP; D.push({ i, T: O / (1 + O), R: R / (1 + R) }); }
+    return function draw() {
+      const H = 270, m = { t: 22, r: 14, b: 44, l: 50 };
+      const { svg, W } = frame(el, H);
+      const x = d3.scaleLinear().domain([0, N]).range([m.l, W - m.r]);
+      const y = d3.scaleLinear().domain([0, 1]).range([H - m.b, m.t]);
+      yGrid(svg, y, [0, 0.25, 0.5, 0.75, 1], m.l, W - m.r, v => Math.round(v * 100) + "%");
+      xTicks(svg, x, [0, 10, 20, 30, 40], H - m.b);
+      axisLabels(svg, W, H, m, "Signals", "Trust");
+      svg.append("line").attr("class", "mark").attr("x1", x(LIE)).attr("x2", x(LIE)).attr("y1", m.t).attr("y2", H - m.b);
+      svg.append("text").attr("class", "ann").attr("x", x(LIE) + 6).attr("y", y(0.08)).text("one misleading signal");
+      svg.append("path").datum(D).attr("class", "ln ref").attr("d", d3.line().x(d => x(d.i)).y(d => y(d.R)));
+      svg.append("path").datum(D).attr("class", "ln s1").attr("d", d3.line().x(d => x(d.i)).y(d => y(d.T)));
+      svg.append("circle").attr("class", "dot s2").attr("cx", x(LIE)).attr("cy", y(D[LIE].T)).attr("r", 4.5);
+      svg.append("text").attr("class", "ann").attr("x", x(LIE) + 9).attr("y", y(D[LIE].T) + 4).text(pct(D[LIE].T));
+      svg.append("text").attr("class", "ann").attr("x", x(LIE - 1) - 4).attr("y", y(D[LIE - 1].T) - 8).attr("text-anchor", "end").text(pct(D[LIE - 1].T));
+      const step = x(1) - x(0);
+      D.forEach(d => svg.append("rect").attr("x", x(d.i) - step / 2).attr("width", step).attr("y", m.t).attr("height", H - m.t - m.b).attr("fill", "transparent")
+        .on("pointermove", () => {
+          const kind = d.i === 0 ? "a stranger" : d.i === LIE ? "misleading" : "honest";
+          tip.innerHTML = `<div class="h">Signal ${d.i}, ${kind}</div>` + swRow("s1", "Trust", pct(d.T)) + swRow("ref", "Without the lie", pct(d.R));
+          tip.hidden = false; placeTip(tip, fig, el, x(d.i), m.t);
+        })
+        .on("pointerleave", () => { tip.hidden = true; }));
+    };
+  }
+
+  function start() {
+    const draws = [figLanes(), figTrust()];
+    draws.forEach(f => f());
+    let w = 0;
+    new ResizeObserver(() => {
+      const nw = document.querySelector(".paper").clientWidth;
+      if (nw !== w) { w = nw; draws.forEach(f => f()); }
+    }).observe(document.querySelector(".paper"));
+  }
+  if (window.d3) start(); else window.addEventListener("load", start);
+})();
+</script>
+
+</body>
+</html>
