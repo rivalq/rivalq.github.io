@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Memories</title>
+<meta name="description" content="On hash maps, noodles, old songs and Diwali: why some days stay with us, and how memories shape the future and the present.">
+<meta name="author" content="Jatin Garg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Memories">
+<meta property="og:description" content="On hash maps, noodles, old songs and Diwali: why some days stay with us, and how memories shape the future and the present.">
+<meta property="og:url" content="https://rivalq.github.io/articles/memories/">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://rivalq.github.io/articles/memories/">
+<link rel="stylesheet" href="../../assets/fonts.css">
+<link rel="stylesheet" href="../../assets/paper.css">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+<nav class="sitebar"><a href="../../">Jatin Garg</a><a href="../../#writing">All writing</a></nav>
+<style>
+/* Essay variant of the site's paper style: one justified Latin Modern column, unnumbered sections,
+   numbered figures. Two highlight colours only: s1 (blue, the memory that stands out / brought back) and s2 (orange, the cue). */
+:root { --site-bg: #ffffff; --site-fg: #141414; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --site-bg: #15171b; --site-fg: #e9e7e2; color-scheme: dark; } }
+:root[data-theme="dark"] { --site-bg: #15171b; --site-fg: #e9e7e2; color-scheme: dark; }
+html, body { background: var(--site-bg); color: var(--site-fg); }
+body { margin: 0; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+
+.paper { --s1: #2a78d6; --s2: #eb6834; --grid: #e6e6e6; --axis: #b9b9b9; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .paper { --s1: #3987e5; --s2: #e06a3a; --grid: #2a2c30; --axis: #55575c; } }
+:root[data-theme="dark"] .paper { --s1: #3987e5; --s2: #e06a3a; --grid: #2a2c30; --axis: #55575c; }
+
+.paper.essay h2::before { content: none; }
+.paper.essay h2 { margin-top: 2.1rem; }
+.paper .titleblock .standfirst { font-style: italic; color: var(--ink-2); font-size: 1.02rem; margin: 0 0 1.1rem; }
+.paper .titleblock .draft { font-family: var(--caps); letter-spacing: .06em; font-size: .85rem; color: var(--muted); margin-top: .35rem; }
+
+/* shared diagram pieces */
+.paper .chart { position: relative; }
+.paper figure .chart { min-height: 0; }
+.paper .chart .lane { font-family: var(--caps); font-size: 13px; letter-spacing: .03em; fill: var(--ink); }
+.paper .chart .tk { font-size: 11.5px; fill: var(--ink-2); font-variant-numeric: tabular-nums; }
+.paper .chart .bt { font-size: 12.5px; fill: var(--ink); }
+.paper .chart .bs { font-size: 11px; font-style: italic; fill: var(--ink-2); }
+.paper .chart .box { fill: var(--paper); stroke: var(--axis); stroke-width: 1; transition: stroke .2s; }
+.paper .chart .box.s1 { stroke: var(--s1); stroke-width: 1.6; }
+.paper .chart .box.s2 { stroke: var(--s2); stroke-width: 1.6; }
+.paper .chart .lk { fill: none; stroke: var(--axis); stroke-width: 1; transition: stroke .2s; }
+.paper .chart .lk.s1 { stroke: var(--s1); stroke-width: 2; }
+.paper .chart .lk.s2 { stroke: var(--s2); stroke-width: 2; }
+.paper .chart .lk.hot { stroke: var(--ink-2); stroke-width: 1.6; }
+.paper .legend { display: flex; flex-wrap: wrap; justify-content: center; gap: .3rem 1.4rem; font-size: .9rem; margin-bottom: .3rem; }
+.paper .legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.paper .sw { display: inline-block; width: 1.1rem; height: 2px; flex: none; }
+.paper .sw.s1 { background: var(--s1); }
+.paper .sw.s2 { background: var(--s2); }
+
+/* figure 1: ticks into buckets */
+.paper .chart .tick { fill: var(--ink-2); stroke: var(--paper); stroke-width: 2; }
+.paper .chart .tick.s1 { fill: var(--s1); }
+.paper .chart .cell { fill: var(--paper); stroke: var(--axis); stroke-width: 1; }
+.paper .chart .cell.s1 { stroke: var(--s1); stroke-width: 1.6; }
+
+/* figure 2: pieces you can use as the cue */
+.paper .chart .piece { cursor: pointer; outline: none; }
+.paper .chart .piece:focus-visible .box { stroke: var(--ink); stroke-width: 2; }
+</style>
+
+<article class="paper essay">
+  <header class="titleblock">
+    <h1>Memories</h1>
+    <p class="standfirst">On hash maps, noodles, old songs and Diwali.</p>
+    <p class="author">Jatin Garg</p>
+    <p class="date">10 November 2026</p>
+  </header>
+
+  <h2>Some days stay</h2>
+
+  <p>We remember some memories, some dates, some events more strongly than others, like the day your sibling was born, or the day you got your first job, or how you used to get so excited about Diwali as a kid. We all remember these events very vividly compared to some day when we got irritated by Uber not working properly, or just some random bad morning.</p>
+
+  <p>You meet a close friend and spend the whole day with them: eating, walking, talking about all sorts of things, from geopolitics to those “deep” talks. And on the other hand, there’s yesterday’s lunch chat. With some people, I remember the exact dates I met them, the exact food we ate, the exact clothes I wore and they wore, everything, very vividly. Does that mean I have a good memory? No, not really, because I can’t even remember what I ate a few days ago, or what I chatted about at lunch yesterday.</p>
+
+  <h2>Novelty</h2>
+
+  <p>This selectivity is not so simple, and we can try many ways to explain it. One is “novelty”: how novel that incident was. You don’t get to meet close friends every day (a bit unfortunate, right?), and that makes it much more novel than the everyday lunch and the everyday casual chats. Our brain likes novelty.</p>
+
+  <p>One really cool way to imagine this is using hash maps. A hash map takes a key, “hashes” it to some index, and stores the value(s) at that index. Of course, collisions can happen, and different implementations tackle them differently, but a unique index is still the most optimal. The hippocampus is sort of the place in the brain that handles our memories of events: it consolidates short-term memories into long-term ones. The way it does this is pretty fascinating, and crazily similar to hash maps. Suppose time is not continuous, but a very fast stream of “events”, or “ticks”. Each tick fires up some neurons in different places in our brain, at different intensities, and the hippocampus takes that as the input to get the hashed index. Everyday stuff keeps piling up into the same bucket(s), but a meeting with someone close forms a unique index and takes a special place in our memories. In layman’s terms, it’s an O(1) look-up vs O(N) or O(log N) look-ups through a crowded bucket.</p>
+
+  <p>This is closer to real neuroscience than it sounds. One well-known theory says the hippocampus doesn’t keep the memory itself, only an index to it: pointers to the pieces, which stay spread across the rest of the brain <span class="cite">[1]</span>. We’ll come back to those pieces.</p>
+
+  <figure id="fig-hash">
+    <div class="chart" id="chart-hash" role="img" aria-label="Everyday ticks, like lunch chats, mornings and Uber rides, pile up in the same few buckets, while a day with a close friend gets a bucket of its own"></div>
+    <figcaption><span class="lab">Figure 1.</span> Ticks into buckets. The everyday ones keep landing in the same few buckets, so finding one particular lunch means digging through the pile. The day with a close friend gets a bucket of its own. An illustration of the analogy, not real data.</figcaption>
+  </figure>
+
+  <h2>Emotional significance</h2>
+
+  <p>Novelty is not the only factor. The emotional significance we attach to our memories, the same <i>E</i> from <a href="https://rivalq.github.io/articles/attachment/">Attachment</a>, is also important. Suppose we met more frequently (in a parallel world, of course), at similar places, doing similar activities. There’s a good chance you would still remember a lot of the details very vividly, because of the emotional significance attached to those particular ticks. What is emotional significance? It is not the intensity of the emotions experienced in that moment. It’s how much that moment matters to us emotionally, which influences how strongly we attend to it, react to it, and potentially remember it. In the brain, the amygdala, which handles emotions, helps decide this: it tells the hippocampus which moments to hold on to more strongly <span class="cite">[2]</span>.</p>
+
+  <p>Suppose you ate noodles with them. The next time you see noodles, your brain will bring that moment back right in front of you, and silly you will instantly send them a pic of the noodles. That’s because we attached emotional significance to that person and that moment, so the food we ate also got our attention. Months later, listening to a song that was played that day would instantly make you remember everything vividly.</p>
+
+  <h2>Remembering is rebuilding</h2>
+
+  <p>There is one more factor: remembering memories repeatedly, reconstructing them in our mind, over and over. Suppose you met someone you really like. The next day you keep remembering the moments, getting all giggly, feeling those weird butterflies in your stomach. We keep “reconstructing” that memory over and over, and that leaves a strong print on our mind. Why did I use “reconstructing”? Because we can’t relive memories exactly how they happened (unless, of course, Doraemon comes to life). The parts of a memory are scattered across different places in the brain, and the hippocampus helps link them. Whenever we try to remember something, the same neurons that fired at that moment tend to fire again, to give us a similar experience, but still not the exact one. In one study, neurons in the hippocampus that fired while people watched a short film clip fired again when they later recalled it, just before they said what they remembered <span class="cite">[3]</span>.</p>
+
+  <figure id="fig-pieces">
+    <div class="legend"><span><i class="sw s2"></i>Cue</span><span><i class="sw s1"></i>Brought back</span></div>
+    <div class="chart" id="chart-pieces" role="group" aria-label="One memory stored in five pieces, linked by the hippocampus. Choose a piece to use it as the cue."></div>
+    <figcaption><span class="lab">Figure 2.</span> One memory, stored in pieces. Each piece stays where it was processed, and the hippocampus keeps the links between them. A cue like the noodles or that song lights up one piece, and the links bring back the rest. Hover over or tap a piece to use it as the cue.</figcaption>
+  </figure>
+
+  <p>Sometimes, because we remember a memory so many times, we override some parts and fill the gaps subconsciously. So even the vivid ones aren’t proof of a good memory.</p>
+
+  <h2>Remembering the future</h2>
+
+  <p>Suppose you plan to meet again, maybe in a month. That event hasn’t even happened yet, but subconsciously we start imagining it: where we will meet, what we will eat. We use our memories to create an event in our brain that hasn’t happened yet. So memory isn’t useful only for revisiting the past; it also contributes to imagining and planning for the future. People with damage to the hippocampus, who struggle to remember their past, also struggle to imagine new experiences: asked to picture simple everyday scenes, they could only describe scattered fragments <span class="cite">[4]</span>.</p>
+
+  <p>Memories aren’t just records of what happened to us; they influence how we experience the things that happen afterwards. We use past memories as feedback to do “better” at future events, like replacing the bitter coffee with a chocolate shake next time.</p>
+
+  <h2>The old us</h2>
+
+  <p>You go to the same restaurant you went to with someone close, but with different people. That restaurant won’t feel the same to you. The food and the place are the same, but it still won’t feel all happy happy. In fact, compared to a restaurant you have never been to before, you might feel a bit negative, because you start remembering the previous time you were there, how happy you were, and you feel nostalgia. Though it depends on the emotional significance you attach to that person and that memory. The same food may not taste as good as it did in the past, because taste is not just a sensory input from the tongue. What we call taste is put together from the tongue, the nose and various other signals, including our surroundings <span class="cite">[5]</span>.</p>
+
+  <p>Memories don’t just help us relive the past or shape the future; they also alter the present we live in. Remember Diwali when we were in school: all excited about the holidays, the crackers, the good food, or, for someone like me, just watching TV quietly in the morning. Why doesn’t Diwali feel the same now? Same festival, same people, same food (maybe even better, technically), and the freedom to buy whatever gift we want. But something changed. Maybe it’s us, or the circumstances, that Diwali doesn’t feel the same. It starts feeling like nostalgia: we remember the happy moments, but also get sad that we can’t physically relive them. Perhaps that’s the curse of memories. Maybe it’s novelty again: for that kid, every Diwali was new and got a bucket of its own, and now they start piling into the same one. Maybe we don’t miss the old Diwali; we miss the old us. We are probably not nostalgic about Diwali, we are nostalgic about that child who saw the world a bit differently.</p>
+
+  <p>But there is something pretty interesting here. What if, ten years from now, we feel the same nostalgia for this Diwali? Perhaps we are already living through memories that our future selves will wish they could relive.</p>
+
+  <p>Memories let us revisit moments we can never truly return to, while sometimes making us overlook the moments we’re living right now.</p>
+
+  <h2>References</h2>
+  <ol class="refs">
+    <li>Timothy J. Teyler and Pascal DiScenna, “The hippocampal memory indexing theory”, <i>Behavioral Neuroscience</i> 100, 147–154 (1986). <a href="https://doi.org/10.1037/0735-7044.100.2.147">doi.org</a></li>
+    <li>James L. McGaugh, “The amygdala modulates the consolidation of memories of emotionally arousing experiences”, <i>Annual Review of Neuroscience</i> 27, 1–28 (2004). <a href="https://doi.org/10.1146/annurev.neuro.27.070203.144157">doi.org</a></li>
+    <li>Hagar Gelbard-Sagiv, Roy Mukamel, Michal Harel, Rafael Malach and Itzhak Fried, “Internally generated reactivation of single neurons in human hippocampus during free recall”, <i>Science</i> 322, 96–101 (2008). <a href="https://doi.org/10.1126/science.1164685">doi.org</a></li>
+    <li>Demis Hassabis, Dharshan Kumaran, Seralynne D. Vann and Eleanor A. Maguire, “Patients with hippocampal amnesia cannot imagine new experiences”, <i>PNAS</i> 104, 1726–1731 (2007). <a href="https://doi.org/10.1073/pnas.0610561104">doi.org</a></li>
+    <li>Charles Spence, “Multisensory flavor perception”, <i>Cell</i> 161, 24–35 (2015). <a href="https://doi.org/10.1016/j.cell.2015.03.007">doi.org</a></li>
+  </ol>
+</article>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(function () {
+  const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function tooltip(fig) {
+    let t = fig.querySelector(".tt-pop");
+    if (!t) { t = document.createElement("div"); t.className = "tt-pop"; t.hidden = true; fig.appendChild(t); }
+    return t;
+  }
+  function placeTip(t, fig, el, px, py) {
+    const fr = fig.getBoundingClientRect(), er = el.getBoundingClientRect();
+    const ax = er.left - fr.left + px, ay = er.top - fr.top + py;
+    let left = ax + 14;
+    if (left + t.offsetWidth > fig.clientWidth) left = ax - t.offsetWidth - 14;
+    t.style.left = Math.max(0, left) + "px";
+    t.style.top = ay + "px";
+  }
+  function frame(el, H) {
+    el.innerHTML = "";
+    const W = Math.max(280, el.clientWidth);
+    const svg = d3.select(el).append("svg").attr("width", W).attr("height", H).attr("viewBox", `0 0 ${W} ${H}`);
+    return { svg, W };
+  }
+
+  // Figure 1: a stream of ticks hashed into buckets
+  function figHash() {
+    const el = document.getElementById("chart-hash"), fig = el.closest("figure"), tip = tooltip(fig);
+    const KIND = {
+      L: { b: 1, card: "lunch", one: "a lunch chat", many: "lunch chats" },
+      M: { b: 2, card: "morning", one: "a regular morning", many: "regular mornings" },
+      F: { b: 4, card: "friend", one: "a day with a close friend", many: "days with a close friend" },
+      U: { b: 5, card: "Uber", one: "an Uber ride", many: "Uber rides" },
+    };
+    const SEQ = "MLULMLUMLMULMFLUMLMLULM".split("");
+    const NB = 6, count = {};
+    SEQ.forEach(k => { count[k] = (count[k] || 0) + 1; });
+    const inBucket = b => Object.keys(KIND).find(k => KIND[k].b === b);
+
+    return function draw() {
+      const H = 252, yT = 34, yB = 150, cellH = 22, yP = yB + cellH + 8, cardH = 20, off = 3;
+      const { svg, W } = frame(el, H);
+      const step = (W - 16) / SEQ.length, tx = i => 8 + (i + 0.5) * step;
+      const gap = 8, bw = (W - gap * (NB - 1)) / NB, bx = b => b * (bw + gap), bc = b => bx(b) + bw / 2;
+      const link = d3.linkVertical().x(d => d[0]).y(d => d[1]);
+
+      svg.append("text").attr("class", "lane").attr("x", 0).attr("y", 13).text("Ticks");
+      svg.append("text").attr("class", "ann").attr("x", W).attr("y", 13).attr("text-anchor", "end").text("time →");
+      const fi = SEQ.indexOf("F"), fx = Math.min(W - 76, Math.max(76, tx(fi)));
+      svg.append("text").attr("class", "ann").attr("x", fx).attr("y", 13).attr("text-anchor", "middle").text("a day with a close friend");
+
+      const order = SEQ.map((k, i) => i).sort((a, b) => (SEQ[a] === "F") - (SEQ[b] === "F"));
+      const lines = {};
+      order.forEach(i => {
+        const k = SEQ[i];
+        lines[i] = svg.append("path").attr("class", "lk" + (k === "F" ? " s1" : ""))
+          .attr("d", link({ source: [tx(i), yT + 5], target: [bc(KIND[k].b), yB - 2] }));
+      });
+      SEQ.forEach((k, i) => svg.append("circle").attr("class", "tick" + (k === "F" ? " s1" : "")).attr("cx", tx(i)).attr("cy", yT).attr("r", 4.5));
+
+      const pw = Math.min(200, W - 40), py = (yT + yB) / 2;
+      svg.append("rect").attr("class", "box").attr("x", (W - pw) / 2).attr("y", py - 13).attr("width", pw).attr("height", 26).attr("rx", 13);
+      svg.append("text").attr("class", "bt").attr("x", W / 2).attr("y", py).attr("dy", ".34em").attr("text-anchor", "middle").text("hippocampus: hash(tick)");
+
+      for (let b = 0; b < NB; b++) {
+        const k = inBucket(b), s1 = k === "F" ? " s1" : "";
+        svg.append("rect").attr("class", "cell" + s1).attr("x", bx(b) + 0.5).attr("y", yB + 0.5).attr("width", bw - 1).attr("height", cellH - 1).attr("rx", 3);
+        svg.append("text").attr("class", "tk").attr("x", bc(b)).attr("y", yB + cellH / 2).attr("dy", ".34em").attr("text-anchor", "middle").text(b);
+        if (!k) continue;
+        const n = count[k], cw = Math.min(bw - 6, 84);
+        for (let j = n - 1; j >= 0; j--) {
+          svg.append("rect").attr("class", "box" + s1).attr("x", bc(b) - cw / 2).attr("y", yP + j * off).attr("width", cw).attr("height", cardH).attr("rx", 3);
+        }
+        svg.append("text").attr("class", "bt").attr("x", bc(b)).attr("y", yP + cardH / 2).attr("dy", ".34em").attr("text-anchor", "middle").text(KIND[k].card);
+        svg.append("text").attr("class", "tk").attr("x", bc(b)).attr("y", yP + (n - 1) * off + cardH + 15).attr("text-anchor", "middle").text("×" + n);
+      }
+
+      const light = (ids, on) => ids.forEach(i => lines[i].classed("hot", on && SEQ[i] !== "F"));
+      const hide = () => { tip.hidden = true; light(SEQ.map((k, i) => i), false); };
+      SEQ.forEach((k, i) => svg.append("rect").attr("x", tx(i) - step / 2).attr("width", step).attr("y", 0).attr("height", yT + 14).attr("fill", "transparent")
+        .on("pointermove", () => {
+          const K = KIND[k], others = count[k] - 1;
+          tip.innerHTML = `<div class="h">Tick ${i + 1}: ${K.one}</div>` +
+            (k === "F" ? `Goes to bucket ${K.b}, alone. Found straight away.` : `Goes to bucket ${K.b}, with ${others} other ${K.many}.`);
+          tip.hidden = false; light([i], true); placeTip(tip, fig, el, tx(i), yT + 10);
+        })
+        .on("pointerleave", hide));
+      for (let b = 0; b < NB; b++) {
+        const k = inBucket(b);
+        svg.append("rect").attr("x", bx(b)).attr("width", bw).attr("y", yB).attr("height", H - yB).attr("fill", "transparent")
+          .on("pointermove", () => {
+            tip.innerHTML = `<div class="h">Bucket ${b}</div>` + (!k ? "Empty." : k === "F"
+              ? `1 day with a close friend. Alone in its bucket, so it’s found straight away.`
+              : `${count[k]} ${KIND[k].many}. They all look alike, so finding one particular one means digging through the pile.`);
+            tip.hidden = false;
+            light(k ? SEQ.map((kk, i) => kk === k ? i : -1).filter(i => i >= 0) : [], true);
+            placeTip(tip, fig, el, bc(b), yB - 40);
+          })
+          .on("pointerleave", hide);
+      }
+    };
+  }
+
+  // Figure 2: one memory in pieces; any piece works as the cue for the rest
+  function figPieces() {
+    const el = document.getElementById("chart-pieces");
+    const P = [
+      { t: "the place", s: "where", r: 0, c: 0 },
+      { t: "their clothes", s: "sight", r: 0, c: 1 },
+      { t: "that song", s: "sound", r: 0, c: 2 },
+      { t: "the noodles", s: "taste", r: 2, c: 0 },
+      { t: "how it felt", s: "feeling", r: 2, c: 2 },
+    ];
+    let cue = 3, timer = null;
+    return function draw() {
+      const bh = 40, vg = 44, H = 3 * bh + 2 * vg + 4;
+      const { svg, W } = frame(el, H);
+      const bw = Math.min(150, (W - 24) / 3), gx = (W - 3 * bw) / 2;
+      const X = c => c * (bw + gx), Y = r => 2 + r * (bh + vg);
+      const cx = W / 2, cy = Y(1) + bh / 2;
+      const links = P.map(p => svg.append("path").attr("class", "lk").attr("d", `M${cx},${cy}L${X(p.c) + bw / 2},${Y(p.r) + bh / 2}`));
+      const card = (g, x, y, t, s) => {
+        const r = g.append("rect").attr("class", "box").attr("x", x + 0.5).attr("y", y + 0.5).attr("width", bw - 1).attr("height", bh - 1).attr("rx", 3);
+        g.append("text").attr("class", "bt").attr("x", x + bw / 2).attr("y", y + 17).attr("text-anchor", "middle").text(t);
+        g.append("text").attr("class", "bs").attr("x", x + bw / 2).attr("y", y + 32).attr("text-anchor", "middle").text(s);
+        return r;
+      };
+      const hub = card(svg.append("g"), cx - bw / 2, Y(1), "the hippocampus", "keeps the links");
+      const boxes = P.map((p, i) => {
+        const g = svg.append("g").attr("class", "piece").attr("tabindex", 0).attr("role", "button")
+          .attr("aria-label", `Use ${p.t} as the cue`)
+          .on("pointerenter", () => set(i)).on("click", () => set(i)).on("focus", () => set(i))
+          .on("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); set(i); } });
+        return card(g, X(p.c), Y(p.r), p.t, p.s);
+      });
+      function paint(stage) {
+        boxes.forEach((b, i) => b.attr("class", "box" + (i === cue ? " s2" : stage > 0 ? " s1" : "")));
+        links.forEach((l, i) => l.attr("class", "lk" + (i === cue ? " s2" : stage > 0 ? " s1" : "")));
+        hub.attr("class", "box" + (stage > 0 ? " s1" : ""));
+      }
+      function set(i) {
+        if (i === cue && timer === null) return;
+        cue = i; clearTimeout(timer); timer = null;
+        if (reduce) { paint(1); return; }
+        paint(0); timer = setTimeout(() => { timer = null; paint(1); }, 320);
+      }
+      paint(1);
+    };
+  }
+
+  function start() {
+    const draws = [figHash(), figPieces()];
+    draws.forEach(f => f());
+    let w = 0;
+    new ResizeObserver(() => {
+      const nw = document.querySelector(".paper").clientWidth;
+      if (nw !== w) { w = nw; draws.forEach(f => f()); }
+    }).observe(document.querySelector(".paper"));
+  }
+  if (window.d3) start(); else window.addEventListener("load", start);
+})();
+</script>
+
+</body>
+</html>
